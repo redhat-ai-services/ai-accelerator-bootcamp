@@ -1,0 +1,6 @@
+name: Red Hat OpenShift Virtualization Roadshow 
+
+modules:
+    activate:
+    - 01_welcome
+

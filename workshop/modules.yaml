@@ -1,0 +1,15 @@
+config:
+    vars:
+    - name: bastion-host
+      value: 192.168.123.100
+    - name: bastion-username
+      value: root
+    - name: bastion-password
+      value: redhat
+    - name: kubeadmin-password-file
+      value: /root/ocp-install/auth/kubeadmin-password
+    - name: node-network-domain
+      value: aio.example.com
+modules:
+    01_welcome:
+        name: Welcome

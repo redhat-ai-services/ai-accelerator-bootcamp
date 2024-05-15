@@ -1,0 +1,5 @@
+:preinstall_operators: %preinstall_operators%
+
+== Welcome to the Red Hat OpenShift Artificial Intelligence Accelerator Bootcamp
+
+
