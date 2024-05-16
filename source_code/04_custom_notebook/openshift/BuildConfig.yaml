@@ -1,0 +1,21 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: custom-notebook
+  namespace: custom-notebook-demo
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'custom-notebook:latest'
+  source:
+    git:
+      ref: main
+      uri: 'https://github.com/JeetRH/JupyterH.git'
+    type: Git
+  strategy:
+    type: Docker
+  triggers:
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange

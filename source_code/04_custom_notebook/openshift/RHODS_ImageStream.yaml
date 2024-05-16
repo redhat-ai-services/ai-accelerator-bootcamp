@@ -1,0 +1,32 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    opendatahub.io/notebook-image-desc: Custom notebook tutorial
+    opendatahub.io/notebook-image-name: Custom Notebook
+    opendatahub.io/notebook-image-url: >-
+      image-registry.openshift-image-registry.svc:5000/custom-notebook-demo/custom-notebook
+  name: custom-jupyter-notebook
+  namespace: redhat-ods-applications
+  labels:
+    component.opendatahub.io/name: jupyterhub
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/notebook-image: 'true'
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: v0.1
+      annotations:
+        opendatahub.io/notebook-python-dependencies: '[]'
+        opendatahub.io/notebook-software: '[]'
+        openshift.io/imported-from: >-
+          image-registry.openshift-image-registry.svc:5000/custom-notebook-demo/custom-notebook
+      from:
+        kind: DockerImage
+        name: >-
+          image-registry.openshift-image-registry.svc:5000/custom-notebook-demo/custom-notebook:latest
+      importPolicy:
+        importMode: Legacy
+      referencePolicy:
+        type: Source
