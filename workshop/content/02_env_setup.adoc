@@ -9,6 +9,7 @@ Follow the following steps to complete the install and setup:
 * After the cluster is running and ready, log in as the admin
 
 * Copy the login token as shown in the image. Paste it in the terminal and run it. This should log you into the cluster through the terminal.
+
 image::images/Login_command.png[Copy the login token]
 
 * Now clone the AI Accelerator repository using the following command:
