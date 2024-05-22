@@ -1,0 +1,24 @@
+# Model Training with Custom Notebook
+
+## In this module you will sync a git repo and run through a the parasol-insurnace Jupyter notebooks. 
+
+We will use the custom image we created and uploaded before and we will create a workbench with the customer image we uploaded in module 04.  
+
+## Steps to create workbench with a custom notebook
+
+* A new repository named custom_notebook will get created in your quay.io account. This will get created as a Private repository. Convert it into a public repository.
+
+* Create a data science project
+
+image::images/Create_Data_Science_Project.png[Create Data Science Project]
+
+* Create workbench with custom image.
+
+image::images/Create_Workbench_with_Custom_Image.png[Create project with custom image selected]
+
+* Open Workbench and git clone parasol insuance repository https://github.com/rh-aiservices-bu/parasol-insurance.git
+
+image::images/Git_Clone_Parasol_Insurance.png[click on source code button and enter repo url]
+
+* Run notebooks 01-04 
+
