@@ -18,7 +18,7 @@ The minio resources should be created for you by the tenant ApplicationSet.
 
 You should find your minio resource in the ai-example-training namespace.
  
-include::https://github.com/redhat-ai-services/ai-accelerator/blob/main/documentation/training_and_learning/data_science_pipeline/README.md[]
+include::https://raw.githubusercontent.com/redhat-ai-services/ai-accelerator/main/documentation/training_and_learning/data_science_pipeline/README.md[]
 
 ### Create and Run a RHOAI Data Science Pipeline
 
