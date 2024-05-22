@@ -16,6 +16,10 @@ image::images/Create_Data_Science_Project.png[Create Data Science Project]
 
 image::images/Create_Workbench_with_Custom_Image.png[Create project with custom image selected]
 
+* Change the Workbench Persistent Storage Size 
+
+image::images/Change_Workbench_Persistent_Storage_Size.png[set size to 50G]
+
 * Open Workbench and git clone parasol insuance repository https://github.com/rh-aiservices-bu/parasol-insurance.git
 
 image::images/Git_Clone_Parasol_Insurance.png[click on source code button and enter repo url]
