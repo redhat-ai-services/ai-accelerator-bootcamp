@@ -4,7 +4,7 @@ The environment install and setup will be performed with the help of the Red Hat
 
 Follow the following steps to complete the install and setup:
 
-* Provision the Red Hat OpenShift Container Platform Cluster from demo.redhat.com
+* We will work with the first provisioned cluster which will act like a demo cluster
 
 * After the cluster is running and ready, log in as the admin
 
@@ -12,10 +12,16 @@ Follow the following steps to complete the install and setup:
 
 image::images/Login_command.png[Copy the login token]
 
-* Now clone the AI Accelerator repository using the following command:
+* Log into your git account and fork the following repository
 [source,terminal]
 ----
-git clone https://github.com/redhat-ai-services/ai-accelerator.git
+git clone https://github.com/{Git_ID}/ai-accelerator.git
+----
+
+* Now clone the AI Accelerator repository using the following command. Replace the {Git_ID} with your Git id:
+[source,terminal]
+----
+git clone https://github.com/{Git_ID}/ai-accelerator.git
 ----
 
 * Navigate to the cloned folder with the command:

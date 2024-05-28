@@ -134,3 +134,7 @@ spec:
 
 * Confirm the new Runtime is in the list, and re-order the list as needed. (the order chosen here is the order in which the users will see these choices)
 
+
+## Data connection to S3 bucket
+
+## Deploying the model with the custom serving runtime
