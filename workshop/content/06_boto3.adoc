@@ -8,7 +8,7 @@ We open your workbench and create a new notebook.
 
 * Create a script to explore the minio deployment. 
 
-[source,py]
+[source,python]
 #!/usr/bin/env python
 # coding: utf-8
 
