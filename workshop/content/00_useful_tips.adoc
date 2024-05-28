@@ -3,6 +3,11 @@
 ## working with bastion host 
 
 ### copy over your ssh-key
+
+Example:
+ssh-copy-id -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -i /home/user/.ssh/$SSH_KEY -p $PORT lab-user@$BASTIONHOST
+
+
 ```bash
 
 (base) [user@localhost ai-practice]$ ssh-copy-id -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -i /home/user/.ssh/training_key -p 31177 lab-user@ssh.ocpv01.dal10.infra.demo.redhat.com
@@ -15,6 +20,20 @@ Number of key(s) added: 1
 
 Now try logging into the machine, with:   "ssh -o 'StrictHostKeyChecking=no' -o 'PubkeyAuthentication=no' -p '31177' 'lab-user@ssh.ocpv01.dal10.infra.demo.redhat.com'"
 and check to make sure that only the key(s) you wanted were added.
+```
+### backing up files from bastion host
+
+This is probably not needed unless you want to collect logs for documentation or troubleshooting. 
+
+Example:
+rsync -av -e "ssh -o StrictHostKeyChecking=no -p $PORT " lab-user@$BASTIONHOST:$DIR $LOCALDIR
+
+```bash
+(base) [user@localhost ai-practice]$ rsync -av -e "ssh -o StrictHostKeyChecking=no -p 31177 " lab-user@ssh.ocpv01.dal10.infra.demo.redhat.com:*  backup/
+receiving incremental file list
+
+sent 367 bytes  received 29,375 bytes  19,828.00 bytes/sec
+total size is 20,003,529  speedup is 672.57
 ```
 
 ## tmux 
@@ -35,27 +54,36 @@ Ctrl-b
 :pipe-pane -o 'cat >>~/tmux_LOGNAME.#S:#I-#P'
 ```
 
-From: https://mdschreier.com/2018/03/01/tmux-logging-and-preserving-sessions/
-you can have more than one tmux-session by connecting to the server via separate terminal-sessions and start tmux separately in each one. (this might not be the main idea of tmux, BUT it is possible and needs to be thought of in the following)
-in each tmux-session you can have many windows
-in each window you can have many panes
-in each pane a separate terminal-session is running
-pipe-pane
+### tmux logging useful tips from: 
+
+https://mdschreier.com/2018/03/01/tmux-logging-and-preserving-sessions/
+
+* you can have more than one tmux-session by connecting to the server via separate terminal-sessions and start tmux separately in each one. (this might not be the main idea of tmux, BUT it is possible and needs to be thought of in the following)
+* in each tmux-session you can have many windows
+* in each window you can have many panes
+* in each pane a separate terminal-session is running
+
+### pipe-pane
+
 The easiest way to get logging activated is by following command
 
+```bash
 tmux  pipe-pane -o 'cat >>~/tmux_output.#S:#I-#P'
+```
+
 This would log the output of the current pane to the file mentioned.
 While you can use following substitutions to define your filename:
 
-\#H Hostname of local host
-\#h Hostname of local host without the domain name
-\#F Current window flag
-\#I Current window index
-\#P Current pane index
-\#S Session name
-\#T Current window title
-\#W Current window name
-\\## A literal `#’
+* #H Hostname of local host
+* #h Hostname of local host without the domain name
+* #F Current window flag
+* #I Current window index
+* #P Current pane index
+* #S Session name
+* #T Current window title
+* #W Current window name
+* ## A literal `#’
+
 The substitution i choose assure unique-ness on any given point in time, so  you will not overwrite your output. It does not assure uniqueness over the time, so maybe you will have output of the todays session added to a complete different session, which had the same ideas before.
 
 
