@@ -86,4 +86,6 @@ While you can use following substitutions to define your filename:
 
 The substitution i choose assure unique-ness on any given point in time, so  you will not overwrite your output. It does not assure uniqueness over the time, so maybe you will have output of the todays session added to a complete different session, which had the same ideas before.
 
+## Other useful commands
 
+* Covert ipython notebook to script: jupyter nbconvert --to script config_template.ipynb
