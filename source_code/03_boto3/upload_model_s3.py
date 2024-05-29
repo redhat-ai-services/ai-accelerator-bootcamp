@@ -18,7 +18,7 @@ s3 = boto3.client(
     endpoint_url=minio_url,
     aws_access_key_id=access_key,
     aws_secret_access_key=secret_key,
-    # config=Config(signature_version='s3v4'),
+    config=Config(signature_version='s3v4'),
 )
 
 # Function to upload a file to a bucket
