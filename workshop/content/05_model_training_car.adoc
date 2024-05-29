@@ -24,5 +24,5 @@ image::images/Change_Workbench_Persistent_Storage_Size.png[set size to 50G]
 
 image::images/Git_Clone_Parasol_Insurance.png[click on source code button and enter repo url]
 
-* Run notebooks 01-04 
+* Navigate to parasol-insurance/lab-materials/04 and run the notebooks 04-01-over-approach, 04-02-car-recognition, 04-03-model-retraining and 04-04-accident-recog
 

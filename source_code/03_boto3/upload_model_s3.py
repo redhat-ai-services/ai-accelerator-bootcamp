@@ -10,7 +10,7 @@ access_key = "minio"
 secret_key = "minio123"
 bucket_name = "pipelines"
 file_path = "accident_detect.onnx"
-object_name = "accident_detect.onnx"  # You can change this if you want a different object name
+object_name = "accident_model/accident_detect.onnx"  # You can change this if you want with a different object name and a folder name
 
 # Setting up the MinIO client
 s3 = boto3.client(
@@ -18,7 +18,7 @@ s3 = boto3.client(
     endpoint_url=minio_url,
     aws_access_key_id=access_key,
     aws_secret_access_key=secret_key,
-    config=Config(signature_version='s3v4'),
+    # config=Config(signature_version='s3v4'),
 )
 
 # Function to upload a file to a bucket

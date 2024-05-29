@@ -61,7 +61,7 @@ access_key = "minio"
 secret_key = "minio123"
 bucket_name = "pipelines"
 file_path = "accident_detect.onnx"
-object_name = "accident_detect.onnx"  # You can change this if you want a different object name
+object_name = "accident_model/accident_detect.onnx"  # You can change this if you want with a different object name and a folder name
 
 # Setting up the MinIO client
 s3 = boto3.client(

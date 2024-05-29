@@ -2,6 +2,8 @@
 
 == Welcome to the Red Hat OpenShift Artificial Intelligence Accelerator Bootcamp
 
-For this bootcamp, provision 3 instances of the Red Hat OpenShift Container Platform Cluster from demo.redhat.com
+For this bootcamp, provision 3 instances of the Red Hat OpenShift Container Platform Cluster from demo.redhat.com.
+
+These would be used as demo, dev and prod clusters in this bootcamp.
 
 

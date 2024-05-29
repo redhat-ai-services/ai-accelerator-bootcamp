@@ -1,5 +1,9 @@
 # Deploy a model from S3 using RHOAI and a Custom Serving runtime
 
+In the previous sections we pushed a model to the s3 bucket (minio) created in the ai-example-training namespace. You should have got the output similar to this: File 'accident_detect.onnx' successfully uploaded to bucket 'pipelines' as 'accident_detect.onnx'.
+
+In this section we serve this model in our RHOAI instance
+
 ## Custom Serving runtime
 
 RHOAI supports the ability to add your own serving runtime. But it does not support the runtimes themselves. Therefore, it is up to you to configure, adjust and maintain your custom runtimes.
@@ -137,4 +141,30 @@ spec:
 
 ## Data connection to S3 bucket
 
+In the data science project we created, go to the Data connections tab and click on Add data connection
+
+image::images/Data_Connection.png[Add data connection]
+
+Fill in the details to where the accident_detect.onnx model is stored. It should look similar to this:
+
+image::images/Data_Connection_Details.png[Data connection details]
+
+## Model server
+
+Next we create a model server in RHOAI with the custom serving runtime that we created. To do this go to the Models tab and click on Add model server in the Multi-model serving platform section
+
+Fill in the details in the form. It should look similar to this:
+
+image::images/Model_Server_Details.png[Model server details]
+
 ## Deploying the model with the custom serving runtime
+
+In the model server that we created, click on Deploy model
+
+Fill in the details in the form. It should look similar to this: 
+
+image::images/Deploy_Model.png[Deploy model]
+
+After this the model should be deployed as follows: 
+
+image::images/Deployed_Model.png[Deployed model]
