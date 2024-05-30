@@ -8,7 +8,8 @@ We open your workbench and create a new notebook.
 
 * Create a script to explore the minio deployment. 
 
-[source,python]
+[source, python]
+----
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -44,11 +45,12 @@ print("MinIO client configured successfully.")
 
 # Getting MinIO server info
 get_minio_info()
+----
 
 * Create a script to upload the model to your s3 pipeline bucket
 
 [source,python]
-
+----
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -82,7 +84,7 @@ def upload_file(file_path, bucket_name, object_name):
 
 # Upload the file
 upload_file(file_path, bucket_name, object_name)
-
+----
 
 
 
