@@ -31,6 +31,7 @@ cd ai-accelerator-bootcamp/source_code/04_custom_notebook
 ----
 podman build -t quay.io/{quay id}/custom_notebook .
 ----
+NOTE: if using an M-powered Mac, build with `podman build -t quay.io/{quay id}/custom_notebook . --platform linux/amd64``
 
 * After the image is built successfully, push it to your quay repository. Replace {quay id} with your quay id
 [source,terminal]
