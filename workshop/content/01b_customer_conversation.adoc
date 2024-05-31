@@ -266,7 +266,7 @@ The questions/answers have been broken up into several sections: technical, deli
 * After the role-playing, bring the class back together.
 * Have each group briefly share their experience, highlighting any interesting discussions or challenges they encountered.
 * Were there any questions that couldn't be answered?
-* Were there any questions that we felt was irrelevant?
+* Were there any questions that we felt were not relevant/necessary?
 * Discuss as a class what was learned about the consultation process and the key considerations for deploying OpenShift AI.
 
 
