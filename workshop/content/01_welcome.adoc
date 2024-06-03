@@ -6,4 +6,29 @@ For this bootcamp, provision 3 instances of the Red Hat OpenShift Container Plat
 
 These would be used as demo, dev and prod clusters in this bootcamp.
 
+## Spin up Demo Cluster
+Navigate to https://demo.redhat.com/catalog?search=aws&item=babylon-catalog-prod%2Fsandboxes-gpte.sandbox-ocp.prod and order a _**AWS with OpenShift Open Environment**_.
 
+The Control Plane Instance Type should be set to _**m6a.4xlarge**_
+
+image::images/OrderAWS_env.png[Demo.Redhat.com AWS Environment]
+
+This will take around 1-1:20 hrs.
+
+Once it's up and running, move onto the Environment Setup page.
+
+When prompted with which overlay to install, choose: `3. bootstrap/overlays/rhoai-fast-aws-gpu/`
+
+This will take around 25-30 minutes for everything to spin up.
+
+This will install RHOAI and related operators. Since we are using GPUs for the demo instance, it will also install the Nvidia GPU Operator and the Node Feature Discovery (NFD) Operator.
+
+This GPU overlay also uses _**MachineAutoscalers**_. Since there are Inferencing Service examples that use GPUs, a _**5.2xlarge**_ machineset (with GPU) will spin up. This can take a few minutes.
+
+Note: If the granite inference service fails to spin up, delete the deployment and Argo should redeploy it.
+
+## Spin up Dev and Prod Cluster
+
+Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment.
+
+Once it's up and running, move onto the Environment Setup page.

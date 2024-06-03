@@ -13,12 +13,11 @@ Follow the following steps to complete the install and setup:
 image::images/Login_command.png[Copy the login token]
 
 * Log into your git account and fork the following repository
-[source,terminal]
 ----
-git clone https://github.com/{Git_ID}/ai-accelerator.git
+https://github.com/redhat-ai-services/ai-accelerator.git
 ----
 
-* Now clone the AI Accelerator repository using the following command. Replace the {Git_ID} with your Git id:
+* Once forked, clone the repository to your local machine.
 [source,terminal]
 ----
 git clone https://github.com/{Git_ID}/ai-accelerator.git
@@ -45,7 +44,11 @@ cd ai-accelerator/
 3. bootstrap/overlays/rhoai-fast-aws-gpu/
 4. bootstrap/overlays/rhoai-fast/
 
-* Type the number 4 and press Enter. This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link to check the status
+* For _**Dev**_ and _**Prod**_ environments type the number 4 and press Enter. 
+
+* For _**Demo**_ environments type the number 3 and press Enter. 
+
+This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link to check the status
 
 * Log into the Argo CD link with the Openshift credentials and wait till everything Syncs correctly
 
