@@ -9,18 +9,19 @@ Following this activity, there will be a class debrief to review the interaction
 
 ## Activity Guidelines
 Ideally for this activity, the class should be split into small groups or 4-6 people. Within each group, assign roles: 2-3 people will act as customer resources and 2-3 people will act as consulting resources. The customer resources should pick one of the following titles and role play as an enterprise client acting in the capacity of their title: 
+
 * Container platform team analyst
 * IT infrastructure team lead
 * Director of IT
 * DevOps engineer
 
-**For Consultants:**
+.**For Consultants:**
 * Your goal is to gather detailed information about the customer’s environment and needs.
 * Use the provided questions as a guide, listen carefully to the responses, and take notes.
 * Feel free to ask follow-up questions based on the answers to gather more specifics.
 * Ensure you cover questions in each section to help understand the environment and engagement goals.
 
-**For Customers:**
+.**For Customers:**
 * Your goal is to provide accurate information about your environment and requirements. Your level of clarity, detail, and motivations can be guided by your chosen role.
 * Use the provided answers as a guide but feel free to elaborate and add plausible / realistic details.
 * Each answer is independent from the others and some answers may contradict other choices, use common sense in deciding which answer fits the situation you have in mind.
