@@ -2,5 +2,13 @@ name: Red Hat OpenShift Virtualization Roadshow
 
 modules:
     activate:
+    - 00_useful_tips
     - 01_welcome
-
+    - 01b_customer_conversation
+    - 02_env_setup
+    - 03_minio
+    - 04_custom_notebook
+    - 05_model_training_car
+    - 06_boto3
+    - 07_deploy_model
+    - 08_gitops
