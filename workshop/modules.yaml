@@ -14,26 +14,26 @@ modules:
     01_welcome:
       name: Welcome
       exit_sign: Customer Conversation
-    01b_customer_conversation:
+    10_customer_conversation:
       name: Customer Conversation
       exit_sign: Environment Setup
-    02_env_setup:
+    20_env_setup:
       name: Environment Setup
       exit_sign: Minio Setup
-    03_minio:
+    22_minio:
       name: Minio Setup
       exit_sign: Custom Notebook
-    04_custom_notebook:
+    30_custom_notebook:
       name: Custom Notebook
       exit_sign: Model Training
-    05_model_training_car:
+    32_model_training_car:
       name: Model Training
       exit_sign: Boto3
-    06_boto3:
+    34_boto3:
       name: Boto3
       exit_sign: Deploy Model
-    07_deploy_model:
+    36_deploy_model:
       name: Deploy Model
       exit_sign: Gitops
-    08_gitops:
+    38_gitops:
       name: Gitops
