@@ -1,1 +1,7 @@
 # Gitops
+
+## Custom notebook
+
+In this section we are going to create the same custom notebook that we created in the previous sections, but in a Gitops way.
+
+To do this we are going to edit ai-accelerator code that we have forked.

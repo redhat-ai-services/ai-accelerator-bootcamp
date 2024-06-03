@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+- includeSelectors: false
+  pairs:
+    opendatahub.io/dashboard: "true"
+
+resources:
+  - dev-namespace.yaml
