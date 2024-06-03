@@ -37,42 +37,72 @@ The questions have been broken up into several sections: technical, delivery, an
 
 ---
 ### Technical
-(T01) **Consultant**: Where are we deploying OpenShift AI? Do you have a platform or hardware in mind already?
-(T02) **Consultant**: Are you planning to use GPU accelerators?
-(T03) **Consultant**: What do you plan to use for storage? (Enterprise Array? Ceph/ODF? S3?)
-(T04) **Consultant**: Will we be deploying/using ODF (converged or external)?
-(T05) **Consultant**: Does the deployment environment have direct or proxied internet access, or is it a disconnected environment?
-(T06) **Consultant**: Do you have experience with OpenShift?
-(T07) **Consultant**: Do you have an internal git repository?
-(T08) **Consultant**: What do you use for DNS, SSO, NTP?
-(T09) **Consultant**: Do you have CI/CD/DevOps processes in use in the environment today?
+
+* (T01) **Consultant**: Where are we deploying OpenShift AI? Do you have a platform or hardware in mind already?
+
+* (T02) **Consultant**: Are you planning to use GPU accelerators?
+
+* (T03) **Consultant**: What do you plan to use for storage? (Enterprise Array? Ceph/ODF? S3?)
+
+* (T04) **Consultant**: Will we be deploying/using ODF (converged or external)?
+
+* (T05) **Consultant**: Does the deployment environment have direct or proxied internet access, or is it a disconnected environment?
+
+* (T06) **Consultant**: Do you have experience with OpenShift?
+
+* (T07) **Consultant**: Do you have an internal git repository?
+
+* (T08) **Consultant**: What do you use for DNS, SSO, NTP?
+
+* (T09) **Consultant**: Do you have CI/CD/DevOps processes in use in the environment today?
 
 ---
 ### Delivery
-(D01) **Consultant**: Is the environment ready for deployment?
-(D02) **Consultant**: How will the consultant gain access to the environment? (VPN, VDI, SSH, etc.)
-(D03) **Consultant**: Who is the primary point-of-contact on the team we will be working with?
-(D04) **Consultant**: Who are the internal teams involved in this deployment? (Containers, Network, Storage, Infrastructure, Security, ...?)
-(D05) **Consultant**: Are there any processes around change control or activity planning we need to be aware of?
-(D06) **Consultant**: What time zone is the team based in? Is there flexibility in working hours?
-(D07) **Consultant**: Are there any upcoming change freezes, holidays, training, or other disruptions to the delivery schedule?
+
+* (D01) **Consultant**: Is the environment ready for deployment?
+
+* (D02) **Consultant**: How will the consultant gain access to the environment? (VPN, VDI, SSH, etc.)
+
+* (D03) **Consultant**: Who is the primary point-of-contact on the team we will be working with?
+
+* (D04) **Consultant**: Who are the internal teams involved in this deployment? (Containers, Network, Storage, Infrastructure, Security, ...?)
+
+* (D05) **Consultant**: Are there any processes around change control or activity planning we need to be aware of?
+
+* (D06) **Consultant**: What time zone is the team based in? Is there flexibility in working hours?
+
+* (D07) **Consultant**: Are there any upcoming change freezes, holidays, training, or other disruptions to the delivery schedule?
 
 ---
 ### Business
-(B01) **Consultant**: Do you have specific challenges you're aiming to address with machine learning?
-(B02) **Consultant**: Do you have any AI models or data science projects in use today?
-(B03) **Consultant**: How do you deploy/serve models today?
-(B04) **Consultant**: What tools/applications are being used for data science in your organization today?
-(B05) **Consultant**: Are there specific frameworks like TensorFlow or PyTorch you plan to utilize or know your data scientists are already using?
-(B06) **Consultant**: What are your business/technical goals for deploying OpenShift AI?
-(B07) **Consultant**: Do you have any specific success criteria for this engagement?
-(B08) **Consultant**: What are the key metrics you'll use to gauge the effectiveness of this engagement?
-(B09) **Consultant**: Are there other vendors you're working with to build your AI/ML platforms? **Customer**:
-(B10) **Consultant**: What is the timeframe you are working with to get this deployed?
-(B11) **Consultant**: What kinds of internal datasets do you expect to use/connect with your AI/ML projects?
-(B12) **Consultant**: Do you have projections on the number of users/growth rate for this environment?
-(B13) **Consultant**: What is the scale of the environment we're going to build?
-(B14) **Consultant**: How will most of the target audience access this environment?
+
+* (B01) **Consultant**: Do you have specific challenges you're aiming to address with machine learning?
+
+* (B02) **Consultant**: Do you have any AI models or data science projects in use today?
+
+* (B03) **Consultant**: How do you deploy/serve models today?
+
+* (B04) **Consultant**: What tools/applications are being used for data science in your organization today?
+
+* (B05) **Consultant**: Are there specific frameworks like TensorFlow or PyTorch you plan to utilize or know your data scientists are already using?
+
+* (B06) **Consultant**: What are your business/technical goals for deploying OpenShift AI?
+
+* (B07) **Consultant**: Do you have any specific success criteria for this engagement?
+
+* (B08) **Consultant**: What are the key metrics you'll use to gauge the effectiveness of this engagement?
+
+* (B09) **Consultant**: Are there other vendors you're working with to build your AI/ML platforms? **Customer**:
+
+* (B10) **Consultant**: What is the timeframe you are working with to get this deployed?
+
+* (B11) **Consultant**: What kinds of internal datasets do you expect to use/connect with your AI/ML projects?
+
+* (B12) **Consultant**: Do you have projections on the number of users/growth rate for this environment?
+
+* (B13) **Consultant**: What is the scale of the environment we're going to build?
+
+* (B14) **Consultant**: How will most of the target audience access this environment?
 
 ---
 ## Debrief, Discussion, and 3-point Estimate (15 minutes)
