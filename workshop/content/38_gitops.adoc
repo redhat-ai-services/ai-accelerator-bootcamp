@@ -1,7 +1,31 @@
 # Gitops
 
-## Custom notebook
+## Custom notebook image stream
 
 In this section we are going to create the same custom notebook that we created in the previous sections, but in a Gitops way.
 
 To do this we are going to edit ai-accelerator code that we have forked.
+
+The aim to is create an overlay named dev and in that, instead of creating the ai-custom-workbenches and ai-example tenants, we just create the dev tenant.
+
+In this dev tenant we want to create an image stream for our custom notebook image. This way it shows up in our RHOAI notebook options and we can start a workbench with it.
+
+The aim of this tutorial is to understand how we can utilize the AI Accelerator script and make edits to it based on the needs of our customers.
+
+Apart from adding the custom notebook, the rest of the content should be similar to the rhoai-fast. 
+
+Make the following changes to the existing script:
+
+1. Add a dev folder to the bootstrap -> overlays folder. This should have a kustomization.yaml file
+
+2. Add a dev folder to the clusters -> overlays folder. This should have the kustomization.yaml, patch-application-manual-sync.yaml, patch-application-repo-revision.yaml and patch-applicationset-manual-sync.yaml files
+
+3. Add a dev folder to the components -> argocd -> apps -> overlays folder. This should have the kustomization.yaml, patch-cluster-config-app-of-apps.yaml, patch-configs-list.yaml, patch-operators-list.yaml and patch-tenants-applicationset.yaml files
+
+4. Add a dev folder to the tenants folder. In this create a new namespace named dev with the namespaces folder and an image-stream folder to add an image stream.
+
+5. Delete the other folders in the tenants folder.
+
+6. Now run the ./bootstrap.sh script on a new cluster. This time select the dev option as follows
+
+image::images/Dev_run.png[Dev Run]
