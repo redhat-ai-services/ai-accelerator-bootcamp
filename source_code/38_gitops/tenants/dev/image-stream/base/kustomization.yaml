@@ -9,6 +9,4 @@ labels:
     opendatahub.io/dashboard: "true"
 
 resources:
-  # - example-workbench-pvc.yaml
-  # - example-workbench.yaml
   - custom-workbench-is.yaml
