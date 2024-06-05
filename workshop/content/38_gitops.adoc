@@ -1,6 +1,6 @@
 # Gitops
 
-## Custom notebook image stream
+## Custom notebook image stream and minio
 
 In this section we are going to create the same custom notebook that we created in the previous sections, but in a Gitops way.
 
@@ -28,6 +28,8 @@ Make the following changes to the existing script:
 
 6. Delete the other folders in the tenants folder.
 
-7. Now run the ./bootstrap.sh script on a new cluster. This time select the dev option as follows
+7. To add a minio instance we can make use of resources (to be continued)
+
+8. Now run the ./bootstrap.sh script on a new cluster. This time select the dev option as follows
 
 image::images/Dev_run.png[Dev Run]
