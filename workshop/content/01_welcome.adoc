@@ -6,7 +6,7 @@ For this bootcamp, provision 3 instances of the Red Hat OpenShift Container Plat
 
 These would be used as demo, dev and prod clusters in this bootcamp.
 
-## Spin up Demo Cluster
+### Spin up Demo Cluster
 Navigate to https://demo.redhat.com/catalog?search=aws&item=babylon-catalog-prod%2Fsandboxes-gpte.sandbox-ocp.prod and order a _**AWS with OpenShift Open Environment**_.
 
 The Control Plane Instance Type should be set to _**m6a.4xlarge**_
@@ -16,9 +16,61 @@ image::images/OrderAWS_env.png[width=45%]
 
 This will take around 1-1:20 hrs.
 
-Once it's up and running, move onto the Environment Setup page.
+### Spin up Dev and Prod Cluster
 
-When prompted with which overlay to install, choose: `3. bootstrap/overlays/rhoai-fast-aws-gpu/`
+Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment.
+
+We'll be using the DEV and PROD clusters for the gitops sections.
+
+
+## Install and Setup RHOAI & Components: DEMO Environment
+
+The environment install and setup will be performed with the help of the Red Hat AI Accelerator repository. This repo is intended to provide a core set of OpenShift features that would commonly be used for a Data Science environment, but can also be highly customized for specific scenarios.
+
+## DEMO cluster
+Follow the following steps to complete the install and setup:
+
+1. After the cluster is running and ready, log in as the admin.
+
+2. In the top right drop down, select the _**Copy Login Command**_. Enter credentials again. Copy the login token as shown in the image. Paste and run the command in your local terminal. This should log you into the cluster through the terminal.
+
+image::images/Login_command.png[Copy the login token]
+
+[start=3]
+3. Git clone the following repository to your local machine:
+----
+git clone https://github.com/redhat-ai-services/ai-accelerator.git
+----
+
+[start=4]
+4. Navigate to the cloned folder with the command:
+[source,terminal]
+----
+cd ai-accelerator/
+----
+
+[start=5]
+5. Run the bootstrap script by running the bootstrap.sh script
+[source,terminal]
+----
+./bootstrap.sh
+----
+
+* This will first install the GitOps Operator and then provide the user with the following overlays:
+
+[start=6]
+6. For _**Demo**_ cluster type the number 3 and press Enter. 
+
+image::images/Bootstrap_selection_1.png[]
+
+This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link.
+
+image::images/Bootstrap_argo_url.png[]
+[start=7]
+7. Log into the Argo CD link with the Openshift credentials and wait till everything syncs successfully.
+
+image::images/Argo_home_screen.png[]
+
 
 This will take around 25-30 minutes for everything to spin up.
 
@@ -28,8 +80,12 @@ This GPU overlay also uses _**MachineAutoscalers**_. Since there are Inferencing
 
 Note: If the granite inference service fails to spin up, delete the deployment and Argo should redeploy it.
 
+
 ## Spin up Dev and Prod Cluster
 
 Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment.
 
 We'll be using the DEV and PROD clusters for the gitops sections.
+
+---
+Continue using the _**DEMO**_ cluster for the exercises.

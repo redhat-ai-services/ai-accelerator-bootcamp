@@ -16,9 +16,6 @@ modules:
       exit_sign: Customer Conversation
     10_customer_conversation:
       name: Customer Conversation
-      exit_sign: Environment Setup
-    20_env_setup:
-      name: Environment Setup
       exit_sign: Minio Setup
     22_minio:
       name: Minio Setup
