@@ -59,11 +59,12 @@ cd ai-accelerator/
 ----
 
 * This will first install the GitOps Operator and then provide the user with the following overlays:
+* If the script times out waiting for GitOps to come up, you may need to run the bootstrap script again.
+
+image::images/Bootstrap_selection_1.png[]
 
 [start=6]
 6. For _**Demo**_ cluster type the number 3 and press Enter. 
-
-image::images/Bootstrap_selection_1.png[]
 
 This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link.
 

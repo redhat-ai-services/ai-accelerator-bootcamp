@@ -6,9 +6,15 @@ Navigate to the ai-accelerator github project: https://github.com/redhat-ai-serv
 2. Navigate and read the https://github.com/redhat-ai-services/ai-accelerator/blob/main/documentation/overview.md[Project Overview documentation]
 3. Navigate and read the https://github.com/redhat-ai-services/ai-accelerator/blob/main/documentation/installation.md[Installation documentation]
 
-4. The ai-accelerator project installs Open Shift Git Ops (ArgoCD) first, then uses ArgoCD to install RHOAI and the related operators. It also deploys examples such as serving examples, a workbench, and pipelines.
+4. Navigate and read the https://github.com/redhat-ai-services/ai-accelerator/tree/main/tenants[tenants documentation]
+
+5. The ai-accelerator project installs Open Shift GitOps (ArgoCD) first, then uses ArgoCD to install RHOAI and the related operators. It also deploys examples such as serving examples, a workbench, and pipelines.
 
 * The list of operators it can install are in the https://github.com/redhat-ai-services/ai-accelerator/tree/main/components/operators[operators] folder.
 *  Examples of model serving, workbench, and pipelines can be found in the https://github.com/redhat-ai-services/ai-accelerator/tree/main/tenants[tenants] folder.
 
 ## Overlays
+
+This project is set up with ArgoCD and Kustomize in mind. Meaning ArgoCD will handle the deployment of resources based on what Kustomize tells it.
+
+When running the _**bootstrap.sh**_ script, it will apply the Open Shift GitOps operator by using Kustomize on the https://github.com/redhat-ai-services/ai-accelerator/blob/b90f025691e14d8e8a8d5ff3452107f8a0c8f48d/scripts/bootstrap.sh#L11[GitOps_Overlay] https://github.com/redhat-ai-services/ai-accelerator/tree/b90f025691e14d8e8a8d5ff3452107f8a0c8f48d/components/operators/openshift-gitops/operator/overlays/latest[folder]
