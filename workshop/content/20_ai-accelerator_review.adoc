@@ -1,3 +1,14 @@
 # ai-accelerator Project
 
 Navigate to the ai-accelerator github project: https://github.com/redhat-ai-services/ai-accelerator
+
+1. Read the README
+2. Navigate and read the https://github.com/redhat-ai-services/ai-accelerator/blob/main/documentation/overview.md[Project Overview documentation]
+3. Navigate and read the https://github.com/redhat-ai-services/ai-accelerator/blob/main/documentation/installation.md[Installation documentation]
+
+4. The ai-accelerator project installs Open Shift Git Ops (ArgoCD) first, then uses ArgoCD to install RHOAI and the related operators. It also deploys examples such as serving examples, a workbench, and pipelines.
+
+* The list of operators it can install are in the https://github.com/redhat-ai-services/ai-accelerator/tree/main/components/operators[operators] folder.
+*  Examples of model serving, workbench, and pipelines can be found in the https://github.com/redhat-ai-services/ai-accelerator/tree/main/tenants[tenants] folder.
+
+## Overlays
