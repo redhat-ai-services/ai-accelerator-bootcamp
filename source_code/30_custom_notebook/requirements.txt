@@ -122,10 +122,10 @@ jupyterlab-lsp==4.3.0; python_version >= '3.8'
 jupyterlab-pygments==0.3.0; python_version >= '3.8'
 jupyterlab-server==2.26.0; python_version >= '3.8'
 jupyterlab-widgets==3.0.10; python_version >= '3.7'
-kfp==1.8.22; python_full_version >= '3.6.1'
-kfp-pipeline-spec==0.1.16; python_full_version >= '3.7.0'
-kfp-server-api==1.8.5
-kfp-tekton==1.5.10; python_full_version >= '3.6.1'
+kfp==2.7.0
+kfp-kubernetes==1.2.0
+kfp-pipeline-spec==0.3.0
+kfp-server-api==2.0.5
 kiwisolver==1.4.5; python_version >= '3.7'
 kubernetes==25.3.0; python_version >= '3.6'
 langchain==0.1.12; python_version < '4.0' and python_full_version >= '3.8.1'
