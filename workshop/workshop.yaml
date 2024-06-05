@@ -5,7 +5,6 @@ modules:
     - 00_useful_tips
     - 01_welcome
     - 10_customer_conversation
-    - 22_minio
     - 30_custom_notebook
     - 32_model_training_car
     - 34_boto3

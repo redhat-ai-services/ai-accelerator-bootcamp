@@ -1,12 +1,58 @@
 # Boto3 exploration
 
-## In this module you will use boto3 to explore the existing minio configuration and set up scripts to automate uploading the models to the locations you need for your pipelines to run. 
+In this module you will use boto3 to explore the existing minio configuration and set up scripts to automate uploading the models to the locations you need for your pipelines to run. 
 
-We open your workbench and create a new notebook.   
+## Minio S3 Storage
+The minio resources should be created for you by the tenant ApplicationSet when we installed GitOps and ran the bootstrap script. 
+
+._Set up minio manually (if needed)_
+[%collapsible]
+====
+ 1. Create `minio` namespace or use whatever namespace you would like
+ 2. Change to new namespace and change to new namespace.
+ 3. Apply the _**pvc.yaml**_, _**secret.yaml**_, _**service.yaml**_, _**routes.yaml**_, and _**deployment.yaml**_ from the https://github.com/redhat-ai-services/ai-accelerator/tree/main/components/apps/minio/base[ai-accelerator project].
+    This will create the PVC, admin password secret, deployment, service, api route, and UI route.
+ 4. The credentials to log into minio are from the secret `minio-secret` from the secret.yaml to login. `minio:minio123`
+====
+[%collapsible]
+
+You should find your minio resource in the _**ai-example-training**_ namespace.
+
+The *minio-ui* route can be found in _**ai-example-training**_ namespace under _**Routes**_. Open this in a new tab and log in with `minio:minio123`.
+
+Explore the S3 storage.
+Create buckets and add a files and folder to it.
+
+._Bonus: Use pipeline to add files to S3_
+[%collapsible]
+====
+1. In the _ai-example-training_ namespace, a Pipeline Server has already been configured. You can view the yaml of the pipeline server here: https://github.com/redhat-ai-services/ai-accelerator/blob/main/tenants/ai-example/datascience-pipelines/base/dspa.yaml[ai-accelerator_dspa.yaml]
+2. Under the _Pipeline_ tab, import a pipeline
+
+image::images/Import_pipeline_page.png[width=75%]
+3. Use this example pipeline 
+
+====
+[%collapsible]
+
+## Explore S3 in RHOAI Workbench:
+Sometimes you won't have access to a customer's S3 storage UI or CLI. If that is the case, we can explore an S3 storage using a workbench and python code.
+
+1. Go to RHOAI Dashboard and go to the _**ai-example-training**_ Data Science Project.
+
+image::images/DSP_ai-example-training.png[width:50%]
+
+[start=2]
+2. As you can see there is a workbench running named _example-workbench_. 
+
+3. Launch the workbench and wait for the Jupyter notebook to spin up.
+
+
+
 
 ## Steps to create  
 
-* Create a script to explore the minio deployment. 
+* Create a script to explore S3 Storage. 
 
 [source, python]
 ----

@@ -16,9 +16,6 @@ modules:
       exit_sign: Customer Conversation
     10_customer_conversation:
       name: Customer Conversation
-      exit_sign: Minio Setup
-    22_minio:
-      name: Minio Setup
       exit_sign: Custom Notebook
     30_custom_notebook:
       name: Custom Notebook
