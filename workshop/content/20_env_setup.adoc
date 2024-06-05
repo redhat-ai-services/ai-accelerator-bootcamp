@@ -50,5 +50,5 @@ cd ai-accelerator/
 
 This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link to check the status
 
-* Log into the Argo CD link with the Openshift credentials and wait till everything Syncs correctly
+* Log into the Argo CD link with the Openshift credentials and wait till everything syncs correctly
 
