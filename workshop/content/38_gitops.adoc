@@ -20,12 +20,14 @@ Make the following changes to the existing script:
 
 2. Add a dev folder to the clusters -> overlays folder. This should have the kustomization.yaml, patch-application-manual-sync.yaml, patch-application-repo-revision.yaml and patch-applicationset-manual-sync.yaml files
 
-3. Add a dev folder to the components -> argocd -> apps -> overlays folder. This should have the kustomization.yaml, patch-cluster-config-app-of-apps.yaml, patch-configs-list.yaml, patch-operators-list.yaml and patch-tenants-applicationset.yaml files
+3. Add your forked branch to the patch-application-repo-revision.yaml file
 
-4. Add a dev folder to the tenants folder. In this create a new namespace named dev with the namespaces folder and an image-stream folder to add an image stream.
+4. Add a dev folder to the components -> argocd -> apps -> overlays folder. This should have the kustomization.yaml, patch-cluster-config-app-of-apps.yaml, patch-configs-list.yaml, patch-operators-list.yaml and patch-tenants-applicationset.yaml files
 
-5. Delete the other folders in the tenants folder.
+5. Add a dev folder to the tenants folder. In this create a new namespace named dev with the namespaces folder and an image-stream folder to add an image stream.
 
-6. Now run the ./bootstrap.sh script on a new cluster. This time select the dev option as follows
+6. Delete the other folders in the tenants folder.
+
+7. Now run the ./bootstrap.sh script on a new cluster. This time select the dev option as follows
 
 image::images/Dev_run.png[Dev Run]
