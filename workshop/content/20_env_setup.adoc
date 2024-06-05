@@ -1,7 +1,8 @@
-# Environment Install and Setup
+# Environment Install and Setup: DEMO Cluster
 
 The environment install and setup will be performed with the help of the Red Hat AI Accelerator repository. This repo is intended to provide a core set of OpenShift features that would commonly be used for a Data Science environment, but can also be highly customized for specific scenarios.
 
+## DEMO cluster
 Follow the following steps to complete the install and setup:
 
 * We will work with the first provisioned cluster which will act like a demo cluster
@@ -12,7 +13,7 @@ Follow the following steps to complete the install and setup:
 
 image::images/Login_command.png[Copy the login token]
 
-* Log into your git account and fork the following repository
+* Log into your git account and fork the following repository:
 ----
 https://github.com/redhat-ai-services/ai-accelerator.git
 ----
@@ -44,11 +45,14 @@ cd ai-accelerator/
 3. bootstrap/overlays/rhoai-fast-aws-gpu/
 4. bootstrap/overlays/rhoai-fast/
 
-* For _**Dev**_ and _**Prod**_ environments type the number 4 and press Enter. 
-
 * For _**Demo**_ environments type the number 3 and press Enter. 
 
 This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link to check the status
 
-* Log into the Argo CD link with the Openshift credentials and wait till everything syncs correctly
+* Log into the Argo CD link with the Openshift credentials and wait till everything syncs correctly.
 
+
+## DEV and PROD clusters
+We'll be setting up the DEV and PROD clusters in the GitOps section.
+
+Continue using the _*DEMO*_ cluster for the exercises.

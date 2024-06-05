@@ -34,6 +34,9 @@ modules:
       exit_sign: Deploy Model
     36_deploy_model:
       name: Deploy Model
+      exit_sign: Setup Dev & Prod Environments
+    37_gitops_env_setup_dev_prod:
+      name: Setup Dev & Prod Environments
       exit_sign: Gitops
     38_gitops:
       name: Gitops

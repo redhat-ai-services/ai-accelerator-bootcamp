@@ -10,6 +10,7 @@ These would be used as demo, dev and prod clusters in this bootcamp.
 Navigate to https://demo.redhat.com/catalog?search=aws&item=babylon-catalog-prod%2Fsandboxes-gpte.sandbox-ocp.prod and order a _**AWS with OpenShift Open Environment**_.
 
 The Control Plane Instance Type should be set to _**m6a.4xlarge**_
+Please make sure this is set correctly or your cluster will not have enough resources
 
 image::images/OrderAWS_env.png[Demo.Redhat.com AWS Environment]
 
@@ -31,4 +32,4 @@ Note: If the granite inference service fails to spin up, delete the deployment a
 
 Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment.
 
-Once it's up and running, move onto the Environment Setup page.
+We'll be using the DEV and PROD clusters for the gitops sections.

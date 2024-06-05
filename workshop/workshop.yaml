@@ -11,4 +11,5 @@ modules:
     - 32_model_training_car
     - 34_boto3
     - 36_deploy_model
+    - 37_gitops_env_setup_dev_prod
     - 38_gitops
