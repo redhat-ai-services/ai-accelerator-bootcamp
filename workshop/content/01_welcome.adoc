@@ -81,7 +81,17 @@ This will install RHOAI and related operators. Since we are using GPUs for the d
 
 This GPU overlay also uses _**MachineAutoscalers**_. Since there are Inferencing Service examples that use GPUs, a _**g5.2xlarge**_ machineset (with GPU) will spin up. This can take a few minutes.
 
-Note: If the granite inference service fails to spin up, delete the deployment and Argo should redeploy it.
+[NOTE]
+====
+If the granite inference service fails to spin up, delete the deployment and Argo should redeploy it.
+
+[SOURCE]
+----
+oc delete deployment granite-predictor-00001-deployment -n ai-example-single-model-serving
+----
+
+====
+
 
 We will cover the ai-accelerator project overview in a later section.
 
