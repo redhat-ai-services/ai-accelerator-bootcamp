@@ -12,7 +12,7 @@ Navigate to https://demo.redhat.com/catalog?search=aws&item=babylon-catalog-prod
 IMPORTANT: The Control Plane Instance Type should be set to _**m6a.4xlarge**_
 Please make sure this is set correctly or your cluster will not have enough resources
 
-image::images/OrderAWS_env.png[width=45%]
+image::images/OrderAWS_env.png[width=35%]
 
 This will take around 1-1:20 hrs.
 

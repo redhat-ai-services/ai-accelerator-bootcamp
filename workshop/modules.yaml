@@ -16,6 +16,9 @@ modules:
       exit_sign: Customer Conversation
     10_customer_conversation:
       name: Customer Conversation
+      exit_sign: AI-accelerator Project
+    20_ai-accelerator_review:
+      name: AI-accelerator Project
       exit_sign: Custom Notebook
     30_custom_notebook:
       name: Custom Notebook

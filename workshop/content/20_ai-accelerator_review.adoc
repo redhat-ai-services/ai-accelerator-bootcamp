@@ -1,0 +1,3 @@
+# ai-accelerator Project
+
+Navigate to the ai-accelerator github project: https://github.com/redhat-ai-services/ai-accelerator
