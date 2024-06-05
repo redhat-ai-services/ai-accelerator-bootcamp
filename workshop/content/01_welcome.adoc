@@ -9,7 +9,7 @@ These would be used as demo, dev and prod clusters in this bootcamp.
 ### Spin up Demo Cluster
 Navigate to https://demo.redhat.com/catalog?search=aws&item=babylon-catalog-prod%2Fsandboxes-gpte.sandbox-ocp.prod and order a _**AWS with OpenShift Open Environment**_.
 
-The Control Plane Instance Type should be set to _**m6a.4xlarge**_
+IMPORTANT: The Control Plane Instance Type should be set to _**m6a.4xlarge**_
 Please make sure this is set correctly or your cluster will not have enough resources
 
 image::images/OrderAWS_env.png[width=45%]
