@@ -105,7 +105,7 @@ def get_minio_content(bucket):
     # MinIO admin info is not directly supported by boto3; you'd need to use MinIO's admin API.
     print("Content:")
     for key in s3.list_objects(Bucket=bucket)['Contents']:
-        print(f'  {key['Key']}')
+        print(f'  {key["Key"]}')
        
 # Setting alias (not applicable in Boto3, but setup is similar to configuring the client)
 print("MinIO client configured successfully.")
