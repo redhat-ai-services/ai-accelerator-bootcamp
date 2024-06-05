@@ -30,29 +30,29 @@ The environment install and setup will be performed with the help of the Red Hat
 ## DEMO cluster
 Follow the following steps to complete the install and setup:
 
-1. After the cluster is running and ready, log in as the admin.
+. After the cluster is running and ready, log in as the admin.
 
-2. In the top right drop down, select the _**Copy Login Command**_. Enter credentials again. Copy the login token as shown in the image. Paste and run the command in your local terminal. This should log you into the cluster through the terminal.
+. In the top right drop down, select the _**Copy Login Command**_. Enter credentials again. Copy the login token as shown in the image. Paste and run the command in your local terminal. This should log you into the cluster through the terminal.
 
 image::images/Login_command.png[Copy the login token]
 
 NOTE: If the `oc login` command fails because of certificate issue, use: `--insecure-skip-tls-verify`
 
 [start=3]
-3. Git clone the following repository to your local machine:
+. Git clone the following repository to your local machine:
 ----
 git clone https://github.com/redhat-ai-services/ai-accelerator.git
 ----
 
 [start=4]
-4. Navigate to the cloned folder with the command:
+. Navigate to the cloned folder with the command:
 [source,terminal]
 ----
 cd ai-accelerator/
 ----
 
 [start=5]
-5. Run the bootstrap script by running the bootstrap.sh script
+. Run the bootstrap script by running the bootstrap.sh script
 [source,terminal]
 ----
 ./bootstrap.sh
@@ -64,13 +64,13 @@ cd ai-accelerator/
 image::images/Bootstrap_selection_1.png[]
 
 [start=6]
-6. For _**Demo**_ cluster type the number 3 and press Enter. 
+. For _**Demo**_ cluster type the number 3 and press Enter. 
 
 This will install all the applications in the bootstrap script and also provide a openshift-gitops-server (ArgoCD) link.
 
 image::images/Bootstrap_argo_url.png[]
 [start=7]
-7. Log into the Argo CD link with the Openshift credentials and wait till everything syncs successfully.
+. Log into the Argo CD link with the Openshift credentials and wait till everything syncs successfully.
 
 image::images/Argo_home_screen.png[]
 
