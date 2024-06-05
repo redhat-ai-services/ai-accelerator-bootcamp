@@ -158,7 +158,7 @@ Replace the repoURL with your fork URL.
 [start=8]
 8. The folder structure should look like this:
 
-image::images/GitOpsFolderStructure1.png[ai-acceleratorfolderstructure1]
+image::images/GitOpsFolderStructure1.png[width=50%]
 
 [start=9]
 9. In the `tenants` folder, delete the example folders: `ai-custom-workbenches` and `ai-example`. Create a new folder named `dev`.
