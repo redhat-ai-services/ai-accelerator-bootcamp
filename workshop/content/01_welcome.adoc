@@ -36,6 +36,8 @@ Follow the following steps to complete the install and setup:
 
 image::images/Login_command.png[Copy the login token]
 
+NOTE: If the `oc login` command fails because of certificate issue, use: `--insecure-skip-tls-verify`
+
 [start=3]
 3. Git clone the following repository to your local machine:
 ----
@@ -76,7 +78,7 @@ This will take around 25-30 minutes for everything to spin up.
 
 This will install RHOAI and related operators. Since we are using GPUs for the demo instance, it will also install the Nvidia GPU Operator and the Node Feature Discovery (NFD) Operator.
 
-This GPU overlay also uses _**MachineAutoscalers**_. Since there are Inferencing Service examples that use GPUs, a _**5.2xlarge**_ machineset (with GPU) will spin up. This can take a few minutes.
+This GPU overlay also uses _**MachineAutoscalers**_. Since there are Inferencing Service examples that use GPUs, a _**g5.2xlarge**_ machineset (with GPU) will spin up. This can take a few minutes.
 
 Note: If the granite inference service fails to spin up, delete the deployment and Argo should redeploy it.
 
