@@ -38,6 +38,7 @@ kind: Kustomization
 namespace: parasol-insurance
 
 resources:
+  - data-connection.yaml
   - inference-service.yaml
   - serving-runtime.yaml
 ----
