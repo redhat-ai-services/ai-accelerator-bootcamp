@@ -5,6 +5,78 @@ In this module you will use boto3 to explore the existing minio configuration an
 ## Minio S3 Storage
 The minio resources should be created for you by the tenant ApplicationSet when we installed GitOps and ran the bootstrap script. 
 
+### Set up minio
+
+. Create a `object-datastore.yaml` file in the `tenants/parasol-insurance/namespaces/base` directory with the following content:
+
++
+. object-datastore.yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: object-datastore
+  labels:
+    opendatahub.io/dashboard: "true"
+    kubernetes.io/metadata.name: object-datastore
+----
+
+. Modify the `tenants/parasol-insurance/namespaces/base/kustomization.yaml` file to include the new namespace:
+
++
+. kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - parasol-insurance.yaml
+  - object-datastore.yaml
+----
+
+. Create a new directory named `minio` in the `tenants/parasol-insurance` directory.
+
+. Create the `base` and `overlays` directories inside the `minio` directory.
+
+. Create a file named `kustomization.yaml` inside the `minio/base` directory with the following content:
+
++
+. kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: object-datastore
+
+resources:
+  - ../../../../components/apps/minio/overlays/default
+----
+
+. Add the overlay for `parasol-insurance-dev` with the following `kustomization.yaml` file content:
+
++
+. kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
++
+[TIP]
+====
+The same content will work for both overlays
+====
+
+
+
+
 ._Set up minio manually (if needed)_
 [%collapsible]
 ====
