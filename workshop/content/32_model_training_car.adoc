@@ -24,3 +24,5 @@ image::images/Git_Clone_Parasol_Insurance.png[click on source code button and en
 This is an example on how a model gets created, in the following sections we will deploy a pre-trained model.
 ====
 
+upload to s3 using boto3
+

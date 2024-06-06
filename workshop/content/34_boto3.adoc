@@ -103,6 +103,7 @@ kind: Kustomization
 
 resources:
   - standard-workbench-pvc.yaml
+  - minio-data-connection.yaml
   - standard-workbench-notebook.yaml
 ----
 
@@ -124,6 +125,31 @@ spec:
     requests:
       storage: 40Gi
   volumeMode: Filesystem
+----
+
+. Create a file named `minio-data-connection.yaml` inside the `standard-workbench/base` directory with the following content:
+
++
+.minio-data-connection.yaml
+[source,yaml]
+----
+kind: Secret
+apiVersion: v1
+metadata:
+  name: minio-data-connection
+  labels:
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/managed: 'true'
+  annotations:
+    opendatahub.io/connection-type: s3
+    openshift.io/display-name: minio-data-connection
+    argocd.argoproj.io/sync-wave: "-100"
+stringData:
+  AWS_ACCESS_KEY_ID: minio
+  AWS_S3_ENDPOINT: http://minio.object-datastore.svc.cluster.local:9000
+  AWS_SECRET_ACCESS_KEY: minio123
+  AWS_DEFAULT_REGION: east-1
+type: Opaque
 ----
 
 . Create a file named `standard-workbench-notebook.yaml` inside the `standard-workbench/base` directory with the following content:
@@ -213,6 +239,9 @@ spec:
               readOnly: true
               subPath: ca-bundle.crt
           workingDir: /opt/app-root/src
+          envFrom:
+            - secretRef:
+                name: minio-data-connection
       enableServiceLinks: false
       serviceAccountName: standard-workbench
       volumes:
@@ -267,29 +296,27 @@ image::images/standard-workbench.png[Standard workbench]
 
 . Create a new Notebook. 
 
-. In a new cell, add and run the content below to install boto3 so we can use it.
+. In a new cell, add and run the content below to install boto3 and ultralytics.
 
 +
 [source, python]
 ----
-!pip install boto3
+!pip install boto3 ultralytics
 ----
 
-. In a new cell, add the content below. Change the minio_url to your cluster's _**minio-api**_ url. Use the function to view the buckets and content of the bucket in the minio storage.
+. Configure the connection to minio S3
 
++
 [source, python]
 ----
-#!/usr/bin/env python
-# coding: utf-8
-
-# Boto3 interactive exploration
+import os
 import boto3
 from botocore.client import Config
 
 # Configuration
-minio_url = "https://minio-api-ai-example-training.apps.cluster-CHANGEME.dynamic.redhatworkshops.io"
-access_key = "minio"
-secret_key = "minio123"
+minio_url = os.environ["AWS_S3_ENDPOINT"]
+access_key = os.environ["AWS_ACCESS_KEY_ID"]
+secret_key = os.environ["AWS_SECRET_ACCESS_KEY"]
 
 # Setting up the MinIO client
 s3 = boto3.client(
@@ -299,7 +326,13 @@ s3 = boto3.client(
     aws_secret_access_key=secret_key,
     config=Config(signature_version='s3v4'),
 )
+----
 
+. List the current buckets
+
++
+[source, python]
+----
 # Function to get MinIO server info
 def get_minio_buckets():
     # This function retrieves the list of buckets as an example.
@@ -308,55 +341,43 @@ def get_minio_buckets():
     print("Buckets:")
     for bucket in response['Buckets']:
         print(f'  {bucket["Name"]}')
-
-def get_minio_content(bucket):
-    # This function retrieves the content in the bucket
-    # MinIO admin info is not directly supported by boto3; you'd need to use MinIO's admin API.
-    print("Content:")
-    for key in s3.list_objects(Bucket=bucket)['Contents']:
-        print(f'  {key["Key"]}')
-       
-# Setting alias (not applicable in Boto3, but setup is similar to configuring the client)
-print("MinIO client configured successfully.")
-
-# Getting MinIO server info
+  
 get_minio_buckets()
-get_minio_content('your_bucket_name')
 ----
 
-You should see the contents of the S3 buckets:
++
+[NOTE]
+====
+We currently have no buckets in the S3 storage. We will create a bucket and upload a file to it.
+====
+
+. Create a new bucket
 
 +
-image::images/Boto3_view_content.png[]
-
-. Create a script to upload the model to your s3 pipeline bucket
-
-+
-[source,python]
+[source, python]
 ----
-#!/usr/bin/env python
-# coding: utf-8
+# Function to create a bucket
+def create_minio_bucket(bucket_name):
+    try:
+        s3.create_bucket(Bucket=bucket_name)
+        print(f"Bucket '{bucket_name}' successfully created.")
+    except Exception as e:
+        print(f"Error creating bucket '{bucket_name}': {e}")
+----
 
-import boto3
-from botocore.client import Config
++
+[source, python]
+----
+create_minio_bucket('models')
+create_minio_bucket('pipelines')
+get_minio_buckets()
+----
 
-# Configuration
-minio_url = "https://minio-api-ai-example-training.apps.cluster-CHANGEME.dynamic.redhatworkshops.io"
-access_key = "minio"
-secret_key = "minio123"
-bucket_name = "pipelines"
-file_path = "accident_detect.onnx"
-object_name = "accident_model/accident_detect.onnx"  # You can change this if you want with a different object name and a folder name
+. Upload a file to the bucket
 
-# Setting up the MinIO client
-s3 = boto3.client(
-    's3',
-    endpoint_url=minio_url,
-    aws_access_key_id=access_key,
-    aws_secret_access_key=secret_key,
-    config=Config(signature_version='s3v4'),
-)
-
++
+[source, python]
+----
 # Function to upload a file to a bucket
 def upload_file(file_path, bucket_name, object_name):
     try:
@@ -364,10 +385,36 @@ def upload_file(file_path, bucket_name, object_name):
         print(f"File '{file_path}' successfully uploaded to bucket '{bucket_name}' as '{object_name}'.")
     except Exception as e:
         print(f"Error uploading file '{file_path}' to bucket '{bucket_name}': {e}")
-
-# Upload the file
-upload_file(file_path, bucket_name, object_name)
 ----
 
-. View the contents of your S3 bucket and make sure the file has been uploaded.
++
+[source, python]
+----
+# Download the model
+from ultralytics import YOLO
+model = YOLO("https://rhods-public.s3.amazonaws.com/demo-models/ic-models/accident/accident_detect.onnx", task="detect")
+# Upload the file
+upload_file('accident_detect.onnx', 'models', 'accident_model/accident_detect.onnx')
+----
+
+. View the contents of the bucket
+
++
+[source, python]
+----
+# Function to get the content in the bucket
+def get_minio_content(bucket):
+    # This function retrieves the content in the bucket
+    # MinIO admin info is not directly supported by boto3; you'd need to use MinIO's admin API.
+    print("Content:")
+    for key in s3.list_objects(Bucket=bucket)['Contents']:
+        print(f'  {key["Key"]}')
+----
+
++
+[source, python]
+----
+get_minio_content('models')
+----
+
 
