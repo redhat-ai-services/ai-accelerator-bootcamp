@@ -37,3 +37,6 @@ modules:
       exit_sign: Gitops
     38_gitops:
       name: Gitops
+      exit_sign: Working with Pipelines
+    40_working_with_pipelines:
+      name: Working with Pipelines
