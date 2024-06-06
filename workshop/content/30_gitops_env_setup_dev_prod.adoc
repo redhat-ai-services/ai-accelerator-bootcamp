@@ -215,6 +215,7 @@ metadata:
   labels:
     opendatahub.io/dashboard: "true"
     kubernetes.io/metadata.name: parasol-insurance
+    modelmesh-enabled: "true"
 ----
 
 . In the `tenants/parasol-insurance/namespaces/overlays` folder, create a new folder named `parasol-insurance-dev`.
