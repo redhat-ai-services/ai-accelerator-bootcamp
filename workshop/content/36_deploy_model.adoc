@@ -90,12 +90,16 @@ apiVersion: serving.kserve.io/v1alpha1
 # kind: ClusterServingRuntime     ## changed by EG
 kind: ServingRuntime
 metadata:
-  name: triton-23.05-20230804
+  name: multi-model-server
   labels:
-    name: triton-23.05-20230804
+    opendatahub.io/dashboard: 'true'
   annotations:
     maxLoadingConcurrency: "2"
-    openshift.io/display-name: "Triton runtime 23.05 - added on 20230804 - with /dev/shm"
+    openshift.io/template-display-name: "Triton Model Server"
+    openshift.io/display-name: multi-model-server
+    opendatahub.io/apiProtocol: REST
+    enable-route: 'true'
+    opendatahub.io/template-name: triton
 spec:
   supportedModelFormats:
     - name: keras
