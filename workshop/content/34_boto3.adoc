@@ -5,68 +5,277 @@ In this module you will use boto3 to explore the existing minio configuration an
 ## Minio S3 Storage
 The minio resources should be created for you by the tenant ApplicationSet when we installed GitOps and ran the bootstrap script. 
 
-._Set up minio manually (if needed)_
-[%collapsible]
-====
- 1. Create `minio` namespace or use whatever namespace you would like
- 2. Change to new namespace and change to new namespace.
- 3. Apply the _**pvc.yaml**_, _**secret.yaml**_, _**service.yaml**_, _**routes.yaml**_, and _**deployment.yaml**_ from the https://github.com/redhat-ai-services/ai-accelerator/tree/main/components/apps/minio/base[ai-accelerator project].
-    This will create the PVC, admin password secret, deployment, service, api route, and UI route.
- 4. The credentials to log into minio are from the secret `minio-secret` from the secret.yaml to login. `minio:minio123`
-====
-[%collapsible]
+### Set up minio
 
-You should find your minio resource in the _**ai-example-training**_ namespace.
+. Create a `object-datastore.yaml` file in the `tenants/parasol-insurance/namespaces/base` directory with the following content:
 
-The *minio-ui* route can be found in _**ai-example-training**_ namespace under _**Routes**_. Open this in a new tab and log in with `minio:minio123`.
++
+.object-datastore.yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: object-datastore
+  labels:
+    kubernetes.io/metadata.name: object-datastore
+----
+
+. Modify the `tenants/parasol-insurance/namespaces/base/kustomization.yaml` file to include the new namespace:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - parasol-insurance.yaml
+  - object-datastore.yaml
+----
+
+. Create a new directory named `minio` in the `tenants/parasol-insurance` directory.
+
+. Create the `base` and `overlays` directories inside the `minio` directory.
+
+. Create a file named `kustomization.yaml` inside the `minio/base` directory with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: object-datastore
+
+resources:
+  - ../../../../components/apps/minio/overlays/default
+----
+
+. Add the overlay for `parasol-insurance-dev`, and `parasol-insurance-prod` with the following `kustomization.yaml` file content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
++
+[TIP]
+====
+The same content will work for both overlays (dev and prod)
+====
+
+
+You should find your minio resource in the _**object-datastore**_ namespace.
+
+The *minio-ui* route can be found in _**object-datastore**_ namespace under _**Routes**_. Open this in a new tab and log in with `minio:minio123`.
 
 Explore the S3 storage.
-Create buckets and add a files and folder to it.
 
-._Bonus: Use a pipeline to add files to S3_
-[%collapsible]
-====
-1. In the _ai-example-training_ namespace, a Pipeline Server has already been configured. You can view the yaml of the pipeline server here: https://github.com/redhat-ai-services/ai-accelerator/blob/main/tenants/ai-example/datascience-pipelines/base/dspa.yaml[ai-accelerator_dspa.yaml]
-2. Under the _Pipeline_ tab, import a pipeline
+## Set up an standard data science workbench to explore S3 with boto3
 
-image::images/Import_pipeline_page.png[width=75%]
+We have previously used a custom workbench to explore how to train a model. Now we will use a standard workbench to explore the S3 storage.
 
-[start=3]
-3. Use this example pipeline: https://raw.githubusercontent.com/redhat-ai-services/ai-accelerator-bootcamp/main/source_code/34_boto3/compiled_pipeline.yaml[compiled_pipeline.yaml] (Download the file or use it in the _Import by url_)
+### Create a standard workbench
 
-[start=4]
-4. After the pipeline has been imported, create a run.
+. Navigate to RHOAI dashboard, and stop the `custom-workbench`.
 
-5. The pipeline will now run. You can go into OpenShift Dashboard>Pipelines>Pipeline Runs to see more details about the pipeline run.
+. Create a directory named `standard-workbench` in the `tenants/parasol-insurance` directory.
 
-6. After the pipeline run has ran successfully, check S3 and there should be a bucket named _**pipelines**_ with the results of the pipeline run.
+. Create the `base` and `overlays` directories inside the `standard-workbench` directory.
 
-====
-[%collapsible]
+. Create a file named `kustomization.yaml` inside the `standard-workbench/base` directory with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - standard-workbench-pvc.yaml
+  - standard-workbench-notebook.yaml
+----
+
+. Create a file named `standard-workbench-pvc.yaml` inside the `standard-workbench/base` directory with the following content:
+
++
+.standard-workbench-pvc.yaml
+[source,yaml]
+----
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: standard-workbench
+  namespace: parasol-insurance
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
+  volumeMode: Filesystem
+----
+
+. Create a file named `standard-workbench-notebook.yaml` inside the `standard-workbench/base` directory with the following content:
+
++
+.standard-workbench-notebook.yaml
+[source,yaml]
+----
+apiVersion: kubeflow.org/v1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.opendatahub.io/inject-oauth: 'true'
+    opendatahub.io/image-display-name: Standard Data Science
+    notebooks.opendatahub.io/oauth-logout-url: ''
+    opendatahub.io/accelerator-name: ''
+    openshift.io/description: ''
+    openshift.io/display-name: standard-workbench
+    notebooks.opendatahub.io/last-image-selection: 's2i-generic-data-science-notebook:2024.1'
+  name: standard-workbench
+  namespace: parasol-insurance
+spec:
+  template:
+    spec:
+      affinity: {}
+      containers:
+        - name: standard-workbench
+          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2024.1'
+          resources:
+            limits:
+              cpu: '2'
+              memory: 8Gi
+            requests:
+              cpu: '1'
+              memory: 8Gi
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/standard-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/standard-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          env:
+            - name: NOTEBOOK_ARGS
+              value: |-
+                --ServerApp.port=8888
+                --ServerApp.token=''
+                --ServerApp.password=''
+                --ServerApp.base_url=/notebook/parasol-insurance/standard-workbench
+                --ServerApp.quit_button=False
+                --ServerApp.tornado_settings={"user":"user1","hub_host":"","hub_prefix":"/projects/parasol-insurance"}
+            - name: JUPYTER_IMAGE
+              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2024.1'
+            - name: PIP_CERT
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: REQUESTS_CA_BUNDLE
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: SSL_CERT_FILE
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: PIPELINES_SSL_SA_CERTS
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+          ports:
+            - containerPort: 8888
+              name: notebook-port
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /opt/app-root/src
+              name: standard-workbench
+            - mountPath: /dev/shm
+              name: shm
+            - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
+              name: trusted-ca
+              readOnly: true
+              subPath: ca-bundle.crt
+          workingDir: /opt/app-root/src
+      enableServiceLinks: false
+      serviceAccountName: standard-workbench
+      volumes:
+        - name: standard-workbench
+          persistentVolumeClaim:
+            claimName: standard-workbench
+        - emptyDir:
+            medium: Memory
+          name: shm
+        - configMap:
+            items:
+              - key: ca-bundle.crt
+                path: ca-bundle.crt
+            name: workbench-trusted-ca-bundle
+            optional: true
+          name: trusted-ca
+----
+
+. Create a directory named `parasol-insurance-dev` under the `standard-workbench/overlays` directory.
+
+. Create a file named `kustomization.yaml` inside the `standard-workbench/overlays/parasol-insurance-dev` directory with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
+. Push the changes to git, and wait for the synchrnization to complete.
+
+. Navigate to RHOAI dashboard, and you should see an `Standard Workbench` available in the `Workbenches` tab.
+
++
+image::images/standard-workbench.png[Standard workbench]
 
 ## Explore S3 in RHOAI Workbench:
-Sometimes you won't have access to a customer's S3 storage UI or CLI. If that is the case, we can explore an S3 storage using a workbench and python code.
+Some S3 technologies do not come with UI or CLI to interact with the buckets or files. A common tool that can be used accross all S3 technologies is boto3. Boto3 is the AWS SDK for Python. It allows you to directly interact with AWS services such as S3, EC2, and more.
 
-1. Go to RHOAI Dashboard and go to the _**ai-example-training**_ Data Science Project.
+. Go to RHOAI Dashboard and go to the _**parasol-insurance**_ Data Science Project.
 
-image::images/DSP_ai-example-training.png[width=50%]
++
+image::images/standard-workbench.png[Standard workbench]
 
-[start=2]
-2. As you can see there is a workbench running named _example-workbench_. 
+. As you can see there is a workbench running named _standard-workbench_. 
 
-3. Launch the workbench and wait for the Jupyter notebook to spin up.
+. Launch the workbench and wait for the Jupyter notebook to spin up.
 
-4. Create a new Notebook. 
+. Create a new Notebook. 
 
-5. In a new cell, add and run the content below to install boto3 so we can use it.
+. In a new cell, add and run the content below to install boto3 so we can use it.
 
++
 [source, python]
 ----
 !pip install boto3
 ----
 
-[start=6]
-6. In a new cell, add the content below. Change the minio_url to your cluster's _**minio-api**_ url. Use the function to view the buckets and content of the bucket in the minio storage.
+. In a new cell, add the content below. Change the minio_url to your cluster's _**minio-api**_ url. Use the function to view the buckets and content of the bucket in the minio storage.
 
 [source, python]
 ----
@@ -117,11 +326,12 @@ get_minio_content('your_bucket_name')
 
 You should see the contents of the S3 buckets:
 
++
 image::images/Boto3_view_content.png[]
 
-[start=7]
-7. Create a script to upload the model to your s3 pipeline bucket
+. Create a script to upload the model to your s3 pipeline bucket
 
++
 [source,python]
 ----
 #!/usr/bin/env python
@@ -159,6 +369,5 @@ def upload_file(file_path, bucket_name, object_name):
 upload_file(file_path, bucket_name, object_name)
 ----
 
-[start=8]
-8. View the contents of your S3 bucket and make sure the file has been uploaded.
+. View the contents of your S3 bucket and make sure the file has been uploaded.
 
