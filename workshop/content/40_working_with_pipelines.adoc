@@ -1,0 +1,26 @@
+# Working with Pipelines
+
+In this module we will be working with pipelines. We will be creating a pipeline that will be used to aggregate inference results from multiple models. We will be using the Elyra tool to create the pipeline.
+
+We will also create a pipeline to train a model. We will be using the KFP SDK to create the pipeline.
+
+## Create a pipeline to aggregate inference results
+
+Read more about the pipeline use case in the [Process claims with a pipeline](https://rh-aiservices-bu.github.io/parasol-insurance/modules/05-05-process-claims.html)
+
+### Deploy the application via GitOps
+
+It is required to deploy the application via GitOps before creating the pipeline. Follow the instructions in the [Deploy the application via GitOps](https://rh-aiservices-bu.github.io/parasol-insurance/modules/05-03-web-app-deploy-application.html) module.
+
+[NOTE]
+====
+Follow the steps in the second section, as you can notice, the first section is to deploy an instance of ArgoCD, which is already deployed in the environment.
+====
+
+### Create a pipeline to aggregate inference results
+
+##TODO: Add the steps to create the pipeline to aggregate inference results##
+
+## Create a pipeline to train a model
+
+##TODO: Add the steps to create the pipeline to train a model##
