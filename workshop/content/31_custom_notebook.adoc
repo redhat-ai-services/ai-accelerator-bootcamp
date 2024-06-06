@@ -12,34 +12,255 @@ The best and recommended solution in this case is to create a custom notebook in
 
 ## Steps to create a custom notebook
 
-* Install Podman and log into quay.io
+. Install Podman and log into quay.io
 
-* Clone the bootcamp git repository with the following command:
+. Clone the bootcamp git repository with the following command:
+
++
 [source,terminal]
 ----
 git clone https://github.com/redhat-ai-services/ai-accelerator-bootcamp.git
 ----
 
-* Navigate to the custom notebook code in the cloned folder using the following command:
+. Navigate to the custom notebook code in the cloned folder using the following command:
+
++
 [source,terminal]
 ----
 cd ai-accelerator-bootcamp/source_code/31_custom_notebook
 ----
 
-* Run the podman build command to build the image and use the -t flag to tag it with your quay id. Replace {quay id} with your quay id
+. Run the podman build command to build the image and use the -t flag to tag it with your quay id. Replace {quay id} with your quay id
+
++
 [source,terminal]
 ----
 podman build -t quay.io/{quay id}/custom_notebook .
 ----
-NOTE: if using an M-powered Mac, build with `podman build -t quay.io/{quay id}/custom_notebook . --platform linux/amd64``
 
-* After the image is built successfully, push it to your quay repository. Replace {quay id} with your quay id
++
+WARNING: if using an M-powered Mac, build with `podman build -t quay.io/{quay id}/custom_notebook . --platform linux/amd64`
+
+. After the image is built successfully, push it to your quay repository. Replace {quay id} with your quay id
+
++
 [source,terminal]
 ----
 podman push quay.io/{quay id}/custom_notebook
 ----
 
-* A new repository named custom_notebook will get created in your quay.io account. This will get created as a Private repository. Convert it into a public repository.
+. A new repository named custom_notebook will get created in your quay.io account. This will get created as a Private repository. Convert it into a public repository.
+
+. In the `parasol-insurance` tenant, create a directory named `custom_workbench`
+
+. Create the `base` and `overlays` directories inside the `custom_workbench` directory
+
+. Create a file named `kustomization.yaml` inside the `custom_workbench/base` directory with the following content:
+
++
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - custom-workbench-is.yaml
+  - custom-workbench-pvc.yaml
+  - custom-workbench-notebook.yaml
+----
+
+. Create a file named `custom-workbench-is.yaml` inside the `custom_workbench/base` directory with the following content:
+
++
+.custom-workbench-is.yaml
+[source,yaml]
+----
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    opendatahub.io/notebook-image-creator: admin
+    opendatahub.io/notebook-image-desc: This is a custom notebook for running the parasol insurance code
+    opendatahub.io/notebook-image-name: Custom Notebook
+    opendatahub.io/notebook-image-url: 'quay.io/{quay_id}/custom_notebook:latest'
+    opendatahub.io/recommended-accelerators: '[]'
+  name: custom-notebook
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/created-by: byon
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/notebook-image: 'true'
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: latest
+      annotations:
+        opendatahub.io/notebook-python-dependencies: '[]'
+        opendatahub.io/notebook-software: '[]'
+        openshift.io/imported-from: 'quay.io/{quay_id}/custom_notebook:latest'
+      from:
+        kind: DockerImage
+        name: 'quay.io/{quay_id}/custom_notebook:latest'
+      importPolicy:
+        importMode: Legacy
+      referencePolicy:
+        type: Source
+----
+
++
+[IMPORTANT]
+====
+Replace {quay_id} with your quay id. This ensures that the image stream you are creating references to the image you pushed to quay.io
+====
+
+. Create a file named `custom-workbench-pvc.yaml` inside the `custom_workbench/base` directory with the following content:
+
++
+.custom-workbench-pvc.yaml
+[source,yaml]
+----
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: custom-workbench
+  namespace: parasol-insurance
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
+  volumeMode: Filesystem
+
+----
+
+. Create a file named `custom-workbench-notebook.yaml` inside the `custom_workbench/base` directory with the following content:
+
++
+.custom-workbench-notebook.yaml
+[source,yaml]
+----
+apiVersion: kubeflow.org/v1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.opendatahub.io/inject-oauth: 'true'
+    opendatahub.io/image-display-name: Minimal Python
+    notebooks.opendatahub.io/oauth-logout-url: ''
+    opendatahub.io/accelerator-name: ''
+    openshift.io/description: ''
+    openshift.io/display-name: custom-workbench
+    notebooks.opendatahub.io/last-image-selection: 'custom-notebook:latest'
+  name: custom-workbench
+  namespace: parasol-insurance
+spec:
+  template:
+    spec:
+      affinity: {}
+      containers:
+        - name: custom-workbench
+          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest'
+          resources:
+            limits:
+              cpu: '2'
+              memory: 8Gi
+            requests:
+              cpu: '1'
+              memory: 8Gi
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          env:
+            - name: NOTEBOOK_ARGS
+              value: |-
+                --ServerApp.port=8888
+                --ServerApp.token=''
+                --ServerApp.password=''
+                --ServerApp.base_url=/notebook/parasol-insurance/custom-workbench
+                --ServerApp.quit_button=False
+                --ServerApp.tornado_settings={"user":"user1","hub_host":"","hub_prefix":"/projects/parasol-insurance"}
+            - name: JUPYTER_IMAGE
+              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest'
+            - name: PIP_CERT
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: REQUESTS_CA_BUNDLE
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: SSL_CERT_FILE
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+            - name: PIPELINES_SSL_SA_CERTS
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
+          ports:
+            - containerPort: 8888
+              name: notebook-port
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /opt/app-root/src
+              name: custom-workbench
+            - mountPath: /dev/shm
+              name: shm
+            - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
+              name: trusted-ca
+              readOnly: true
+              subPath: ca-bundle.crt
+          workingDir: /opt/app-root/src
+      enableServiceLinks: false
+      serviceAccountName: custom-workbench
+      volumes:
+        - name: custom-workbench
+          persistentVolumeClaim:
+            claimName: custom-workbench
+        - emptyDir:
+            medium: Memory
+          name: shm
+        - configMap:
+            items:
+              - key: ca-bundle.crt
+                path: ca-bundle.crt
+            name: workbench-trusted-ca-bundle
+            optional: true
+          name: trusted-ca
+----
+
+. Create a directory named `parasol-insurance-dev` under the `custom_workbench/overlays` directory
+
+. Create a file named `kustomization.yaml` inside the `custom_workbench/overlays/parasol-insurance-dev` directory with the following content:
+
++
+.custom-workbench/overlays/parasol-insurance-dev/kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
+. Push the changes to the git repository
+
+. Navigate to the `parasol-insurance` data science project in RHOAI, and notice the `custom-workbench` notebook available in the workbench tab
+
+
+##TODO: add steps to add the image to RHOAI##
 
 * Log in into RHOAI and navigate to Settings -> Notebook images
 
