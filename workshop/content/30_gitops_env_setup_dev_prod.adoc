@@ -45,6 +45,23 @@ In our case, we want to set up a _parasol-insurance-dev_ overlay.
 
 . Open the the redhat-ai-services/ai-accelerator fork that was cloned earlier in your code editor.
 
+. Change the git `repoUrl` at `components/argocd/apps/base/tenants-applicationset.yaml` to your forked repository URL.
+
++
+image::images/30_gitops_setup/01_change_repo_url.png[Change repoUrl]
+
+. Copy `componets/argocd/apps/overlays/rhoai-fast` and paste it as `components/argocd/apps/overlays/parasol-insurance-dev`.
+
+. Change the `line 7` of the `patch-cluster-config-app-of-apps.yaml` file to `path: parasol-insurance-dev`.
+
++
+image::images/30_gitops_setup/02_patch_cluster_path.png[Patch cluster path]
+
+. Change the `line 3` of the `patch-tenants-applicationset.yaml` file to `value: tenants/_*/*_/overlays/parasol-insurance-dev`.
+
++
+image::images/30_gitops_setup/03_patch_applicationset.png[Patch application set]
+
 . Open `bootstrap/overlays` and create a new folder under the `overlays` folder named `parasol-insurance-dev`.
 
 +
@@ -67,6 +84,8 @@ resources:
 +
 [IMPORTANT]
 As you can see, the Kustomization resource from above is referencing the `clusters/overlays/parasol-insurance-dev` folder. Let's create that folder
+
+. Create a new folder named `parasol-insurance-dev` in the `clusters/overlays` folder.
 
 . In the `clusters/overlays/parasol-insurance-dev` folder, create a new file named `kustomization.yaml` add the below content to the file:
 
@@ -148,42 +167,130 @@ Replace the repoURL with your fork URL.
 ----
 - op: replace
   path: /spec/source/repoURL
-  value: 'https://github.com/JeetRH/ai-accelerator.git'
+  value: 'https://github.com/{GIT_ID}/ai-accelerator.git'
 - op: replace
   path: /spec/source/targetRevision
   value: main
 ----
 
-. The folder structure should look like this:
-
 +
-image::images/GitOpsFolderStructure1.png[width=20%]
+[IMPORTANT]
+====
+Replace `{GIT_ID}` with your GitHub ID.
+====
 
-. In the `tenants` folder, create a new folder named `parasol-insurance-dev`.
+. In the `tenants` folder, create a new folder named `parasol-insurance`.
 Here is where we'll be adding our new resources.
 
-+
-NOTE: Remember to add the base and overlays files and folders. Make sure you have the `parasol-insurance-dev` overlay in the `overlays` folder for Argo to pick up what it needs for the _parasol-insurance-dev_ environment.
+. In the `tenants/parasol-insurance` folder, create a folder named `namespaces`
 
+. In the `tenants/parasol-insurance/namespaces` folder, create the `base` and `overlays` folders.
+
++
+NOTE: Remember to add the `base` and `overlays` files and folders. Make sure you have the `parasol-insurance-dev` overlay in the `overlays` folder for Argo to pick up what it needs for the _parasol-insurance-dev_ environment.
+
+. In the `tentans/parasol-insurance/namespaces/base` folder, create a new file named `kustomization.yaml` add the below content to the file:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - parasol-insurance.yaml
+----
+
+. In the `tenants/parasol-insurance/namespaces/base` folder, create a new file named `parasol-insurance.yaml` add the below content to the file:
+
++
+.parasol-insurance.yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: parasol-insurance
+  labels:
+    opendatahub.io/dashboard: "true"
+    kubernetes.io/metadata.name: parasol-insurance
+----
+
+. In the `tenants/parasol-insurance/namespaces/overlays` folder, create a new folder named `parasol-insurance-dev`.
+
+. In the `tenants/parasol-insurance/namespaces/overlays/parasol-insurance-dev` folder, create a new file named `kustomization.yaml` add the below content to the file:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
++
+[TIP]
+====
+The `opendatahub.io/dashboard: "true"` label is used to identify the namespace as a RHOAI data science project.
+
+Our first component for the _parasol-insurance_ tenant is the namespace.
+
+This namespace is defined to be created in the `parasol-insurance-dev` environment as per the `parasol-insurance-dev` overlay.
+====
+
+
+. In the `tenants/parasol-insurance` folder, create a new file named `kustomization.yaml` add the below content to the file:
+
+. Push the changes to your forked repository.
+
++
+.push_changes
+[source,terminal]
+----
+git add .
+git commit -m "Add parasol-insurance-dev overlay"
+git push origin main
+----
 
 . Run the bootstrap script by running the bootstrap.sh script
++
 [source,terminal]
 ----
 ./bootstrap.sh
-----
+...
 
-* This will first install the GitOps Operator and then provide the user with the following overlays:
-
-+
-.Please enter a number to select a bootstrap folder:
-[order=arabic]
 1. bootstrap/overlays/parasol-insurance-dev/
 2. bootstrap/overlays/rhoai-eus-2.8-aws-gpu/
 3. bootstrap/overlays/rhoai-eus-2.8/
 4. bootstrap/overlays/rhoai-fast-aws-gpu/
 5. bootstrap/overlays/rhoai-fast/
+----
 
-* For _**parasol-insurance-dev**_ environments type the number 1 and press Enter.
++
+[NOTE]
+====
+For _**parasol-insurance-dev**_ environments type the number 1 and press Enter.
+====
+
+. After the script is done, you can check the ArgoCD console to see the applications deployed.
+
++
+image::images/30_gitops_setup/04_parasol-insurance-dev-sync_1.png[ArgoCD Apps]
+
++
+[TIP]
+====
+Notice that the `parasol-insurance-namespaces` application was also deployed.
+====
+
+. Navigate to RHOAI, and validate that there is a data science project created with the name _parasol-insurance_.
+
++
+image::images/30_gitops_setup/05_parasol-insurance-ds-project.png[RHOAI Data Science Project]
 
 ## parasol-insurance-prod cluster
 The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol-insurance-dev_, except change _dev_ to _prod_ in the kustomization files and folders.
