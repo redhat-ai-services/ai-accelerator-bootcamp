@@ -186,6 +186,6 @@ NOTE: Remember to add the base and overlays files and folders. Make sure you hav
 * For _**DEV**_ environments type the number 1 and press Enter.
 
 ## parasol-insurance-prod cluster
-The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol_insurance_dev_, except change _dev_ to _prod_ in the kustomization files and folders.
+The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol-insurance-dev_, except change _dev_ to _prod_ in the kustomization files and folders.
 
 When running the bootstrap script, select `bootstrap/overlays/parasol-insurance-prod`
