@@ -163,7 +163,7 @@ image::images/GitOpsFolderStructure1.png[width=20%]
 Here is where we'll be adding our new resources.
 
 +
-NOTE: Remember to add the base and overlays files and folders. Make sure you have the `parasol-insurance-dev` overlay in the `overlays` folder for Argo to pick up what it needs for the DEV environment.
+NOTE: Remember to add the base and overlays files and folders. Make sure you have the `parasol-insurance-dev` overlay in the `overlays` folder for Argo to pick up what it needs for the _parasol-insurance-dev_ environment.
 
 
 . Run the bootstrap script by running the bootstrap.sh script
@@ -183,7 +183,7 @@ NOTE: Remember to add the base and overlays files and folders. Make sure you hav
 4. bootstrap/overlays/rhoai-fast-aws-gpu/
 5. bootstrap/overlays/rhoai-fast/
 
-* For _**DEV**_ environments type the number 1 and press Enter.
+* For _**parasol-insurance-dev**_ environments type the number 1 and press Enter.
 
 ## parasol-insurance-prod cluster
 The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol-insurance-dev_, except change _dev_ to _prod_ in the kustomization files and folders.

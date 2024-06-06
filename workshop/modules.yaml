@@ -20,7 +20,10 @@ modules:
     20_ai-accelerator_review:
       name: AI-accelerator Project
       exit_sign: Custom Notebook
-    30_custom_notebook:
+    30_gitops_env_setup_dev_prod:
+      name: Setup Dev & Prod Environments
+      exit_sign: Custom Notebook
+    31_custom_notebook:
       name: Custom Notebook
       exit_sign: Model Training
     32_model_training_car:
@@ -31,9 +34,6 @@ modules:
       exit_sign: Deploy Model
     36_deploy_model:
       name: Deploy Model
-      exit_sign: Setup Dev & Prod Environments
-    37_gitops_env_setup_dev_prod:
-      name: Setup Dev & Prod Environments
       exit_sign: Gitops
     38_gitops:
       name: Gitops
