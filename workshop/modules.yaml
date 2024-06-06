@@ -19,7 +19,7 @@ modules:
       exit_sign: AI-accelerator Project
     20_ai-accelerator_review:
       name: AI-accelerator Project
-      exit_sign: Custom Notebook
+      exit_sign: Setup Dev & Prod Environments
     30_gitops_env_setup_dev_prod:
       name: Setup Dev & Prod Environments
       exit_sign: Custom Notebook
@@ -40,3 +40,6 @@ modules:
       exit_sign: Working with Pipelines
     40_working_with_pipelines:
       name: Working with Pipelines
+      exit_sign: Explore LLMs
+    60_llm_explore:
+      name: Explore LLMs
