@@ -1,8 +1,6 @@
-# Deploy a model from S3 using RHOAI and a Custom Serving runtime
+In this section we will serve our model in our RHOAI instance using Gitops. We will also use a Custom serving runtime (Triton) in order to deploy the model.
 
-In the previous sections we pushed a model to the s3 bucket (minio) created in the ai-example-training namespace. You should have got the output similar to this: File 'accident_detect.onnx' successfully uploaded to bucket 'pipelines' as 'accident_detect.onnx'.
-
-In this section we serve this model in our RHOAI instance
+To do this we would need a data connection to the S3 instance where our model is stored, and we would need to create the Custom serving runtime and an Inference server 
 
 ## Custom Serving runtime
 
@@ -10,18 +8,43 @@ RHOAI supports the ability to add your own serving runtime. But it does not supp
 
 In this tutorial we will setup the Triton Runtime (NVIDIA Triton Inference Server). Use the following steps to add the runtime:
 
-* Log in to your OpenShift AI with a user who is part of the RHOAI admin group
+. In the `parasol-insurance` tenant, create a directory named `multi-model-serving`
 
-* Navigate to the Settings menu, then Serving Runtimes
+. Create the `base` and `overlays` directories inside the `multi-model-serving` directory
 
-image::images/ServingRuntimes.png[Serving runtimes]
+. Create a directory named `parasol-insurance-dev` under the `multi-model-serving/overlays` directory
 
-* Click on the Add Serving Runtime button
+. Create a file named `kustomization.yaml` inside the `multi-model-serving/overlays/parasol-insurance-dev` directory with the following content:
 
-* From the drop down menu, select Multi-model serving platform. The option for REST will be selected automatically
++
+.multi-model-serving/overlays/parasol-insurance-dev/kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 
-* Click on Start from scratch and in the window that opens up, paste the following YAML:
+resources:
+  - ../../base
+----
 
+. Create a file named `kustomization.yaml` inside the `multi-model-serving/base` directory with the following content:
+
++
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: parasol-insurance
+
+resources:
+  - inference-service.yaml
+  - serving-runtime.yaml
+----
+
+. To create the custom serving Triton runtime, create a file named 'serving-runtime.yaml' inside the `multi-model-serving/base` directory with the following content: 
+
++
 [source,yaml]
 ----
 # Copyright 2021 IBM Corporation
@@ -132,52 +155,38 @@ spec:
     modelLoadingTimeoutMillis: 90000
 ----
 
-* You will likely want to update the name, label and display name but it is not mandatory.
+## Inference Service
 
-* Click Add
+. To create the inference service, create a file named 'inference-service.yaml' inside the `multi-model-serving/base` directory with the following content:
 
-* Confirm the new Runtime is in the list, and re-order the list as needed. (the order chosen here is the order in which the users will see these choices)
-
-
-## Data connection to S3 bucket
-
-In the data science project we created, go to the Data connections tab and click on Add data connection
-
-image::images/Data_Connection.png[Add data connection]
-
-Fill in the details to where the accident_detect.onnx model is stored. It should look similar to this:
-
-image::images/Data_Connection_Details.png[Data connection details]
-
-## Model server
-
-Next we create a model server in RHOAI with the custom serving runtime that we created. To do this go to the Models tab and click on Add model server in the Multi-model serving platform section
-
-Fill in the details in the form. It should look similar to this:
-
-image::images/Model_Server_Details.png[Model server details]
-
-## Deploying the model with the custom serving runtime
-
-In the model server that we created, click on Deploy model
-
-Fill in the details in the form. It should look similar to this: 
-
-image::images/Deploy_Model.png[Deploy model]
-
-After this the model should be deployed as follows: 
-
-image::images/Deployed_Model.png[Deployed model]
-
-To test if the served model is working as expected, go back to the workbench and navigate to parasol-insurance/lab-materials/04. Open the 04-05-model-serving notebook. We need to change the RestURL value. We can get it from the internal service that we just deployed. For example:
-
-image::images/Internal_Service.png[RestURL details]
-
-We also need to change the infer_url variable value. We need to insert the model name in this link. For example if the deployed model is named as accident detect model then the value of infer_url needs to be as follows:
-
-[source,python]
++
+[source,yaml]
 ----
-infer_url = f'{RestURL}/v2/models/accident-detect-model/infer'
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    openshift.io/display-name: accident-detect-model
+    serving.kserve.io/deploymentMode: ModelMesh
+  name: accident-detect-model
+  labels:
+    opendatahub.io/dashboard: 'true'
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: onnx
+        version: '1'
+      name: ''
+      resources: {}
+      runtime: multi-model-server
+      storage:
+        key: accident-model-data-conn
+        path: accident_detect/accident_detect.onnx
 ----
 
-After making these changes, run the notebook and we should see an output to the image that we pass to the model
+## Test the served model
+
+To test if the served model is working as expected, go back to the workbench and navigate to parasol-insurance/lab-materials/04. Open the 04-05-model-serving notebook. We need to change the RestURL/infer_url value. We can get it from the model that we just deployed.
+
+After making these changes, run the notebook and we should see an output to the image that we pass to the model.
