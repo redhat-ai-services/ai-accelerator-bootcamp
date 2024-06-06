@@ -24,4 +24,4 @@ You can also see that there is a `toleration` policy. When using the toleration 
 
 In this case, a node with a taint is a node with a GPU attached to it. The toleration has a key to validate against the taint. If it matches, the pod can run on the node.
 
-In the test folders of the examples, there are notebooks that we can use to test out the inference service.
+In the test folders of the examples, there are notebooks that we can use to test out the inference service. These are very simple tests to make sure that the InferenceService is working.
