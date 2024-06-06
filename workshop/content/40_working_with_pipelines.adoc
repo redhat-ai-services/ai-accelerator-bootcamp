@@ -10,12 +10,18 @@ Read more about the pipeline use case in the [Process claims with a pipeline](ht
 
 ### Deploy the application via GitOps
 
-It is required to deploy the application via GitOps before creating the pipeline. Follow the instructions in the [Deploy the application via GitOps](https://rh-aiservices-bu.github.io/parasol-insurance/modules/05-03-web-app-deploy-application.html) module.
+It is required to deploy the application via GitOps before creating the pipeline. Read the instructions in the [Deploy the application via GitOps](https://rh-aiservices-bu.github.io/parasol-insurance/modules/05-03-web-app-deploy-application.html) module.
 
 [NOTE]
 ====
-Follow the steps in the second section, as you can notice, the first section is to deploy an instance of ArgoCD, which is already deployed in the environment.
+Do not follow the application creation steps, we will use the Accelerator template to create the required application.
 ====
+
+. Add a namespace for `claim-insurance-app` in the `tenants/parasol-insurance-dev/namespaces/base` directory.
+
+. Add a directory for the `claim-insurance-app` in the `tenants/parasol-insurance-dev` directory, and include its `base/kustomize.yml` and `overlays/kustomize.yml` files.
+
+. Add the following content to the 
 
 ### Create a pipeline to aggregate inference results
 
