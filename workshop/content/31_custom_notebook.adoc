@@ -23,7 +23,7 @@ git clone https://github.com/redhat-ai-services/ai-accelerator-bootcamp.git
 * Navigate to the custom notebook code in the cloned folder using the following command:
 [source,terminal]
 ----
-cd ai-accelerator-bootcamp/source_code/04_custom_notebook
+cd ai-accelerator-bootcamp/source_code/31_custom_notebook
 ----
 
 * Run the podman build command to build the image and use the -t flag to tag it with your quay id. Replace {quay id} with your quay id

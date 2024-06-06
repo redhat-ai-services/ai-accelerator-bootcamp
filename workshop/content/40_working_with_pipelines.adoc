@@ -4,6 +4,18 @@ In this module we will be working with pipelines. We will be creating a pipeline
 
 We will also create a pipeline to train a model. We will be using the KFP SDK to create the pipeline.
 
+## Enable Data Science Pipelines Application
+
+Pipelines require DSPA to be enabled, so that we can create and run pipelines from the JupyterLab workbench.
+
+Enable DSPA by following these steps:
+
+. In the `parasol-insurance` tenant, create a new directory named `datascience-pipelines`.
+
+. In the `datascience-pipelines` directory, create the `base` and `overlays` directories.
+
+. In the `base` directory, create a new file named `kustomization.yaml` and add the following content:
+
 ## Create a pipeline to aggregate inference results
 
 Read more about the pipeline use case in the [Process claims with a pipeline](https://rh-aiservices-bu.github.io/parasol-insurance/modules/05-05-process-claims.html)
