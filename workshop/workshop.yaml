@@ -5,6 +5,8 @@ modules:
     - 00_useful_tips
     - 01_welcome
     - 10_customer_conversation
+    - 11_customer_conv_with_answers
+    - 12_customer_conv_three_point
     - 20_ai-accelerator_review
     - 30_gitops_env_setup_dev_prod
     - 31_custom_notebook

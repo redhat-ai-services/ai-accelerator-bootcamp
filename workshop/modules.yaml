@@ -13,9 +13,15 @@ config:
 modules:
     01_welcome:
       name: Welcome
-      exit_sign: Customer Conversation
+      exit_sign: Customer Conversation Exercise
     10_customer_conversation:
-      name: Customer Conversation
+      name: Customer Conversation Exercise
+      exit_sign: Sample answers for Customer Conversation
+    11_customer_conv_with_answers:
+      name: Sample answers for Customer Conversation
+      exit_sign: Three-Point Estimate Instructions
+    12_customer_conv_three_point:
+      name: Three-Point Estimate Instructions
       exit_sign: AI-accelerator Project
     20_ai-accelerator_review:
       name: AI-accelerator Project
