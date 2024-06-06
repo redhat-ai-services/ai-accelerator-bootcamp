@@ -119,10 +119,10 @@ replacements:
           - spec.generators.*.git.revision
 ----
 
-. In the `clusters/overlays/parasol-insurance-dev` folder, create a new file named `patchpatch-applicationset-manual-sync.yaml` add the below content to the file:
+. In the `clusters/overlays/parasol-insurance-dev` folder, create a new file named `patch-applicationset-manual-sync.yaml` add the below content to the file:
 
 +
-.patchpatch-applicationset-manual-sync.yaml
+.patch-applicationset-manual-sync.yaml
 [source,yaml]
 ----
 - op: remove
@@ -159,7 +159,7 @@ Replace the repoURL with your fork URL.
 +
 image::images/GitOpsFolderStructure1.png[width=20%]
 
-. In the `tenants` folder, create a new folder named `dev`.
+. In the `tenants` folder, create a new folder named `parasol-insurance-dev`.
 Here is where we'll be adding our new resources.
 
 +
