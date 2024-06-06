@@ -1,0 +1,5 @@
+# Explore LLMs
+
+In the https://github.com/redhat-ai-services/ai-accelerator[ai-accelerator project], there is an example of an LLM. Let's look at the single-model-serving-tgis example.
+
+This inference service uses flan-t5-small model.
