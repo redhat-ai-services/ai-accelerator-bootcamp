@@ -161,7 +161,7 @@ Replace the repoURL with your fork URL.
 image::images/GitOpsFolderStructure1.png[width=20%]
 
 [start=9]
-9. In the `tenants` folder, delete the example folders: `ai-custom-workbenches` and `ai-example`. Create a new folder named `dev`.
+9. In the `tenants` folder, create a new folder named `dev`.
 Here is where we'll be adding our new resources.
 
 NOTE: Remember to add the base and overlays files and folders. Make sure you have the `dev` overlay in the `overlays` folder for Argo to pick up what it needs for the DEV environment.
