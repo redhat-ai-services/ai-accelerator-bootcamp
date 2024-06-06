@@ -6,7 +6,8 @@ modules:
     - 01_welcome
     - 10_customer_conversation
     - 20_ai-accelerator_review
-    - 30_custom_notebook
+    - 30_gitops_env_setup_dev_prod
+    - 31_custom_notebook
     - 32_model_training_car
     - 34_boto3
     - 36_deploy_model
