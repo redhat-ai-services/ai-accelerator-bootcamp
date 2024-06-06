@@ -8,7 +8,7 @@ This activity should help develop a better understanding of both the technical a
 Following this activity, there will be a class debrief to review the interactions, highlighting any notable discussions or challenges and every student (no matter which role) will fill out a 3-point estimate to scope this engagement.
 
 ## Activity Guidelines
-Ideally for this activity, the class should be split into small groups or 4-6 people. Within each group, assign roles: 2-3 people will act as customer resources and 2-3 people will act as consulting resources. The customer resources should pick one of the following titles and role play as an enterprise client acting in the capacity of their title: 
+Ideally for this activity, the class should be split into smaller groups with each group facilitated by an instructor or designated person that will act as the client. The person acting as the customer resource should pick one of the following titles and role play as an enterprise client acting in the capacity of their title: 
 
 * Container platform team analyst
 * IT infrastructure team lead
@@ -30,7 +30,7 @@ Ideally for this activity, the class should be split into small groups or 4-6 pe
 **Activity Execution (~45 minutes):**
 
 Each group will conduct their role-playing session.
-The 'consultant' team will ask the following questions, and the 'customer' team will respond accordingly.
+The 'consultant' team will ask the following questions, and the 'customer' will respond accordingly.
 
 ## Q&A
 The questions have been broken up into several sections: technical, delivery, and business. Feel free to jump to questions in different sections periodically to ensure everyone is being engaged and information about each section has been gathered. Sample answers are available in the following document if some questions are unanswered or ideas are needed.
@@ -114,5 +114,8 @@ The questions have been broken up into several sections: technical, delivery, an
 * Discuss as a class what was learned about the consultation process and the key considerations for deploying OpenShift AI.
 * Share your notes with your group as *all* students (both customers and consultants) will fill out a 3-point estimate as if they were scoping this engagement.
 
+Official Three-Point Estimate is available through: https://red.ht/ThreePointEstimate
+
+Please contact the instructor if the 'AI Accelerator' Three-Point template is not available.
 
 By the end of this activity, participants should have a deeper understanding of the consultation process for deploying IT solutions and the importance of gathering comprehensive and accurate information from the customer.
