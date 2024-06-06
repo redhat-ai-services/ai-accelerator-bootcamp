@@ -257,19 +257,7 @@ resources:
 
 . Push the changes to the git repository
 
-. Navigate to the `parasol-insurance` data science project in RHOAI, and notice the `custom-workbench` notebook available in the workbench tab
+. Navigate to the `parasol-insurance` data science project in RHOAI, and notice the `custom-workbench` notebook available in the *Workbenches* tab:
 
-
-##TODO: add steps to add the image to RHOAI##
-
-* Log in into RHOAI and navigate to Settings -> Notebook images
-
-image::images/Notebook_settings.png[Notebook images]
-
-* Import a new image with the following details. Replace {quay id} with your quay id
-
-image::images/Import_image.png[Import image]
-
-* After the image is imported successfully, it will appear in the list of notebooks available while launching a workbench
-
-image::images/Custom_image.png[Custom image in a workbench]
++
+image::images/31_custom_notebook/01_custom_workbench.png[Custom workbench]
