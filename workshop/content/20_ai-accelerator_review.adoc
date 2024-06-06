@@ -28,9 +28,11 @@ image::images/GitOps_overlay.png[]
 [start=2]
 2. After GitOps installs, it will then run a https://github.com/redhat-ai-services/ai-accelerator/blob/b90f025691e14d8e8a8d5ff3452107f8a0c8f48d/scripts/bootstrap.sh#L80[`kustomize build`] on the `bootstrap/overlays/*` folder. Which ever overlay you select in the bootstrap folder, it will apply RHOAI as well as the `clusters` folder. In this instance, we choose the `rhoai-fast` overlay.
 
-Looking at the picture:
+Looking at the picture below:
 
 Remember: Kustomize looks for the `kustomization.yaml` file in the folder
+
+image::images/Bootstrap_overlays2.png[]
 
 1. Starting at `bootstrap/overlays/rhoai-fast` (this is the one we chose in the menu when running the _bootstrap.sh_ script). `bootstrap/overlays/rhoai-fast/kustomization.yaml` references two folders: `bootstrap/base` and `clusters/overlays/rhoai-fast`.
 
@@ -49,8 +51,6 @@ Remember: Kustomize looks for the `kustomization.yaml` file in the folder
 
 [start=10]
 10. `clusters/overlays/rhoai-fast/kustomization.yaml` references `components/argocd/apps/overlays/rhoai-fast`.
-
-image::images/Bootstrap_overlays2.png[]
 
 As you can see, there are a lot of references to different folders. Let's keep digging on what is in the components folder.
 
@@ -101,4 +101,6 @@ Line 15 will be replaced with:
 
 image::images/Kustomization_patch4.png[]
 
-When ArgoCD reads the repository and the kustomization files, it reads teh patches and applies the patches when deploying the resources.
+When ArgoCD reads the repository and the kustomization files, it reads the patches and applies the patches when deploying the resources.
+
+Explore the ai-accelerator project and understand how rhoai, operators, and applications are being deployed.
