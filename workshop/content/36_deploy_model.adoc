@@ -62,7 +62,7 @@ metadata:
 stringData:
   AWS_ACCESS_KEY_ID: minio
   AWS_S3_BUCKET: models
-  AWS_S3_ENDPOINT: http://minio.dev.svc.cluster.local:9000
+  AWS_S3_ENDPOINT: http://minio.object-datastore.svc.cluster.local:9000
   AWS_SECRET_ACCESS_KEY: minio123
   AWS_DEFAULT_REGION: east-1
 type: Opaque
@@ -192,8 +192,14 @@ spec:
       runtime: multi-model-server
       storage:
         key: accident-model-data-conn
-        path: accident_detect/accident_detect.onnx
+        path: accident-model/accident_detect.onnx
 ----
+
+. Push the changes to the ai-accelerator repository
+
+. Wait for the application to sync
+
+. Navigate to RHOAI, and validate that there is a new model serving under the `Models` tab, and check that its status looks green.
 
 ## Test the served model
 
