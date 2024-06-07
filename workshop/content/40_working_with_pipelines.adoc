@@ -16,7 +16,10 @@ cd ai-accelerator/
 
 . Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
 
+[source,yaml]
+----
      - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
+----
 
 . Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
 
