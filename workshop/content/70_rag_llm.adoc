@@ -259,7 +259,9 @@ The PgVector extension must be manually enabled in the server. This can only be 
 - Connect to the running server Pod, either through the Terminal view in the OpenShift Console, or through the CLI with: `oc rsh services/postgresql`
 - Once connected, enter the following command:
 
-`psql -d vectordb -c "CREATE EXTENSION vector;"`
+```
+psql -d vectordb -c "CREATE EXTENSION vector;"
+```
 
 (adapt the command if you changed the name of the database in the Secret).
 If the command succeeds, it will print `CREATE EXTENSION`.
@@ -472,7 +474,9 @@ Depended on which workbench image you are using, we have to make some changes to
 
 1. Update the packages to install:
 
-`!pip install -q pgvector langchain-community pypdf sentence-transformers`
+```
+!pip install -q pgvector langchain-community pypdf sentence-transformers
+```
 
 [start=2]
 2. Update the _Base Parameters and PostgreSQL info_
@@ -512,5 +516,9 @@ PRESENCE_PENALTY=1.03
 CONNECTION_STRING = "postgresql+psycopg://vectordb:vectordb@postgresql.rag-llm-demo.svc.cluster.local:5432/vectordb"
 COLLECTION_NAME = "rhoai-doc-2.9"
 ```
+
+At the end, should have a successful RAG with LLM sample that you can query.
+
+image::images/rag_results.png[]
 
 Run through the notebook to successfully demo an LLM with RAG using PGVector.

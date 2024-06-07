@@ -40,9 +40,6 @@ modules:
       exit_sign: Deploy Model
     36_deploy_model:
       name: Deploy Model
-      exit_sign: Gitops
-    38_gitops:
-      name: Gitops
       exit_sign: Working with Pipelines
     40_working_with_pipelines:
       name: Working with Pipelines
