@@ -40,8 +40,11 @@ modules:
       exit_sign: Deploy Model
     36_deploy_model:
       name: Deploy Model
+      exit_sign: Introduction to KFP Pipelines
+    40_introduction_to_kfp_pipelines:
+      name: Introduction to KFP Pipelines
       exit_sign: Working with Pipelines
-    40_working_with_pipelines:
+    41_working_with_pipelines:
       name: Working with Pipelines
       exit_sign: Explore LLMs
     60_llm_explore:

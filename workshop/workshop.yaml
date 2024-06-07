@@ -13,6 +13,7 @@ modules:
     - 32_model_training_car
     - 34_boto3
     - 36_deploy_model
-    - 40_working_with_pipelines
+    - 40_introduction_to_kfp_pipelines
+    - 41_working_with_pipelines
     - 60_llm_explore
     - 70_rag_llm
