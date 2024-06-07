@@ -62,7 +62,7 @@ image::images/30_gitops_setup/02_patch_cluster_path.png[Patch cluster path]
 +
 image::images/30_gitops_setup/03_patch_applicationset.png[Patch application set]
 
-. Open `bootstrap/overlays` and create a new folder under the `overlays` folder named `parasol-insurance-dev`.
+. Create a new folder under the `bootstrap/overlays` folder named `parasol-insurance-dev`.
 
 +
 image::images/parasol-insurance-dev-overlay.png[ParaSol Insurance Dev Overlay]
