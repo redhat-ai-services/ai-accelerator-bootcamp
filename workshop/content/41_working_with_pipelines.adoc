@@ -53,13 +53,13 @@ spec:
     externalStorage:
       basePath: ''
       bucket: pipelines
-      host: 'minio.parasol-insurance.svc.cluster.local:9000'
+      host: 'minio.object-datastore.svc.cluster.local:9000'
       port: ''
       region: us-east-1
       s3CredentialsSecret:
-        accessKey: minio_root_user
-        secretKey: minio_root_password
-        secretName: minio
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: accident-model-data-conn
       scheme: http
   persistenceAgent:
     deploy: true
@@ -80,7 +80,6 @@ kind: Kustomization
 namespace: parasol-insurance
 
 resources:
-  - ../../../../components/apps/minio/overlays/default
   - dspa.yaml
 ----
 
