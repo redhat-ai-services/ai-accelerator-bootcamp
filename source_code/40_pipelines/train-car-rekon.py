@@ -11,7 +11,7 @@ load_dotenv(override=True)
 kubeflow_endpoint = os.environ["KUBEFLOW_ENDPOINT"]
 base_image = os.getenv(
     "BASE_IMAGE", 
-    "image-registry.openshift-image-registry.svc:5000/parasol-insurance/yolo-trainer:latest")
+    "image-registry.openshift-image-registry.svc:5000/openshift/python:latest")
 
 
 @dsl.component(
