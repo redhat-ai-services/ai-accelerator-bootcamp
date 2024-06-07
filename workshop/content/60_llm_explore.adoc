@@ -8,12 +8,11 @@ The model has been uploaded to minio S3 automatically when we ran the bootstrap 
 
 Take a look at the InferenceService and the ServingRuntime resource in your _**Demo**_ cluster.
 
-Now let's take a look at the https://github.com/redhat-ai-services/ai-accelerator/tree/main/tenants/ai-example/single-model-serving-vllm[single-model-serving-vllm] example.
-
-This inference service uses IBM's https://huggingface.co/ibm-granite/granite-3b-code-base[granite-3b-code-base] model.
+Now let's take a look at the https://github.com/redhat-ai-services/ai-accelerator/tree/main/tenants/ai-example/single-model-serving-vllm[single-model-serving-vllm] example. This inference service uses IBM's https://huggingface.co/ibm-granite/granite-3b-code-base[granite-3b-code-base] model.
 
 The Inference Service uses a vllm ServingRuntime which can be found https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/serving-runtimes/vllm_runtime/vllm-runtime.yaml[here].
 
+### Nodes and Taints
 Notice in the InferenceService of the vllm example there are GPU sections:
 
 image::images/vllm_gpu.png[]
@@ -24,4 +23,37 @@ You can also see that there is a `toleration` policy. When using the toleration 
 
 In this case, a node with a taint is a node with a GPU attached to it. The toleration has a key to validate against the taint. If it matches, the pod can run on the node.
 
-In the test folders of the examples, there are notebooks that we can use to test out the inference service. These are very simple tests to make sure that the InferenceService is working.
+Let's take a look at the node:
+
+In `OpenShift Dashboard > Compute > Nodes` we can see we have 3 nodes. Let's look at the one with the gpu.
+
+image::images/nodes.png[]
+
+Select the GPU node. The instance is g5.2xlarge which has a gpu. You can see the different type of instances here: https://aws.amazon.com/ec2/instance-types/[]
+
+If we look at the node details and scroll down we can see the taint that is has.
+
+image::images/node_taint_edit.png[]
+
+We can also see it in the yaml.
+
+image::images/node_taint.png[]
+
+In the node yaml we can view the labels associated with the node. Lets look at the the `nvidia.com/*` labels. As you can see we have: `nvidia.com/gpu.count: '1'` which tells us that we have a gpu attached to this node
+
+image::images/node_gpu_count.png[]
+
+We can also run a `oc describe`` on the node:
+
+`oc describe node ip-**-*-**-***.us-east-2.compute.internal | grep gpu` 
+
+image::images/node_describe_gpu.png[]
+
+### Test Model Notebooks
+After exploring the GPU Node details, open RHOAI and launch new workbench and run the tests for the LLMs. These can be found in the `https://github.com/redhat-ai-services/ai-accelerator` [] 
+
+- tenants/ai-example/multi-model-serving/test
+- tenants/ai-example/single-model-serving-tgis/test
+- tenants/ai-example/single-model-serving-vllm/test
+
+These are very simple tests to make sure that the InferenceService is working. View the logs of the inference service pod while you test.
