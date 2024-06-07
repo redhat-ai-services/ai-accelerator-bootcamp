@@ -2,3 +2,7 @@ kfp
 requests
 ultralytics
 boto3
+
+python-dotenv
+pandas
+scikit-learn
