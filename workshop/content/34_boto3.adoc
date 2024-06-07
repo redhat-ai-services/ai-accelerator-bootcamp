@@ -3,7 +3,9 @@
 In this module you will use boto3 to explore the existing minio configuration and set up scripts to automate uploading the models to the locations you need for your pipelines to run. 
 
 ## Minio S3 Storage
-The minio resources should be created for you by the tenant ApplicationSet when we installed GitOps and ran the bootstrap script. 
+Let's add Minio s3 storage to our dev environment project so Argo can deploy it.
+
+If you need a reference, the ai-accelerator project has minio set up in under the `tenants/ai-examples folder`.
 
 ### Set up minio
 

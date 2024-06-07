@@ -2,17 +2,17 @@
 
 ## Need for custom notebooks
 
-RHOAI provides many inbuilt notebooks like Standard Data Science notebook, Tensorflow notebook, Pytorch notebook etc. Data scientists can just spin up these notebooks and start runnings their experiments and creating their machine learning models.
+RHOAI provides many pre-built notebooks like Standard Data Science notebook, Tensorflow notebook, Pytorch notebook etc. Data scientists can spin up these notebooks and start runnings their experiments and creating their machine learning models without much set up.
 
 These inbuilt notebooks come with most of the packages that one would need to run their Data Science projects. But the world of Data Science and Machine Learning is vast and there might be a need to download other python packages.
 
-In this case the user can use the pip install command inside the notebook but this might lead to issues like kernel mismatches or limited visibility and control.
+In this case the user can use the `pip install` command inside the notebook but this might lead to issues like kernel mismatches or limited visibility and control.
 
-The best and recommended solution in this case is to create a custom notebook in RHOAI. RHOAI has made it extremely easy to import a notebook image form any image registry.
+The best and recommended solution in this case is to create a custom notebook. RHOAI has made it extremely easy to import a notebook image form any image registry.
 
 ## Steps to create a custom notebook
 
-. Install Podman and log into quay.io
+. Install Podman and log into https://quay.io[quay.io]
 
 . Clone the bootcamp git repository with the following command:
 

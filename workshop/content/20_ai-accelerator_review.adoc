@@ -1,5 +1,7 @@
 # ai-accelerator Project
 
+The AI-accelerator project is an automated way to deploy RHOAI, relevent operators, and examples to a cluster.
+
 Navigate to the ai-accelerator github project: https://github.com/redhat-ai-services/ai-accelerator
 
 1. Read the README
@@ -18,6 +20,8 @@ Navigate to the ai-accelerator github project: https://github.com/redhat-ai-serv
 This project is set up with ArgoCD and Kustomize in mind. Meaning ArgoCD will handle the deployment of resources based on what Kustomize tells it. 
 
 If you are unfamiliar with Kustomize, this is a very good tutorial: https://devopscube.com/kustomize-tutorial/[Learn more about Kustomize]
+
+Let's try to understand how Kustomize is being used to deploy the different resources.
 
 1. When running the _**bootstrap.sh**_ script, it will apply the Open Shift GitOps operator by using Kustomize on the https://github.com/redhat-ai-services/ai-accelerator/blob/b90f025691e14d8e8a8d5ff3452107f8a0c8f48d/scripts/bootstrap.sh#L11[GitOps_Overlay] https://github.com/redhat-ai-services/ai-accelerator/tree/b90f025691e14d8e8a8d5ff3452107f8a0c8f48d/components/operators/openshift-gitops/operator/overlays/latest[folder]
 

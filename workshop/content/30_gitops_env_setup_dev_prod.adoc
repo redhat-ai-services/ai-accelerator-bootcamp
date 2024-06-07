@@ -1,6 +1,6 @@
 # Environment Install and Setup: DEV and PROD Cluster
 
-## parasol-insurance-dev cluster
+## Parasol-insurance-dev cluster
 Follow the following steps to complete the install and setup:
 
 * After the cluster is running and ready, log in as the admin
@@ -293,7 +293,9 @@ Notice that the `parasol-insurance-namespaces` application was also deployed.
 +
 image::images/30_gitops_setup/05_parasol-insurance-ds-project.png[RHOAI Data Science Project]
 
-## parasol-insurance-prod cluster
+## Parasol-insurance-prod cluster
 The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol-insurance-dev_, except change _dev_ to _prod_ in the kustomization files and folders.
+
+Make the changes for _prod_ in your forked repository and use it to set up the _prod_ cluster.
 
 When running the bootstrap script, select `bootstrap/overlays/parasol-insurance-prod`
