@@ -2,10 +2,48 @@
 
 In this module we will be working with pipelines. We will be creating a pipeline that will train a model and then deploy it to a serving runtime.
 
-## Creating a pipeline
+## Creating a pipeline using gitops.
 
-To create a pipeline, we will need to create a pipeline definition file. This file will contain the steps that the pipeline will execute. We will first use Elyra to create the pipeline definition file.
+We will be using tekton pipelines to automate the deployment of a model-retraining job. To create a pipeline, we will need to create a pipeline definition file. We will create a couple of folders in our parasol-insuance tenent. .
 
+* Navigate to the cloned folder with the command:
+[source,terminal]
+----
+cd ai-accelerator/
+----
+
+. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
+
+. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
+
+     - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
+
+. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
+
+     - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
+
+. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`
+
+ namespace: parasol-insurance
+
+. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
+
+. Change `line 33` of tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml
+
+       host: 'minio.parasol-insurance.svc.cluster.local:9000'
+
+. Change `line 4` of tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml 
+
+ namespace: parasol-insurance
+
+
+
+
+
+
+
+
+## Diego script modifications.  
 . Create a python script to train the model. This script will be used in the pipeline to train the model. Save the script as `train_model.py`:
 
 [source,python]
