@@ -474,6 +474,7 @@ Depended on which workbench image you are using, we have to make some changes to
 
 `!pip install -q pgvector langchain-community pypdf sentence-transformers`
 
+[start=2]
 2. Update the _Base Parameters and PostgreSQL info_
 
 ```
