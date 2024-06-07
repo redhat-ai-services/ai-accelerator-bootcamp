@@ -463,11 +463,14 @@ NOTE: We are greatly reducing the amount of resources the LLM uses.
 
 Download and run through these 3 notebooks in your workbench:
 
-1. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/Langchain-PgVector-Ingest.ipynb[Langchain-PgVector-Ingest.ipynb]
+1. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/Langchain-PgVector-Ingest.ipynb[examples/notebooks/langchain/Langchain-PgVector-Ingest.ipynb]
 
-2. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/Langchain-PgVector-Query.ipynb[Langchain-PgVector-Query.ipynb]
+2. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/Langchain-PgVector-Query.ipynb[examples/notebooks/langchain/Langchain-PgVector-Query.ipynb]
 
-3. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/RAG_with_sources_Langchain-vLLM-PgVector.ipynb[RAG_with_sources_Langchain-vLLM-PgVector.ipynb]
+3. https://github.com/rh-aiservices-bu/llm-on-openshift/blob/main/examples/notebooks/langchain/RAG_with_sources_Langchain-vLLM-PgVector.ipynb[examples/notebooks/langchain/RAG_with_sources_Langchain-vLLM-PgVector.ipynb]
+
+or upload the repository to the workbench:
+`https://github.com/rh-aiservices-bu/llm-on-openshift.git`
 
 #### Creating an index and populating it with documents using PostgreSQL+pgvector
 Depended on which workbench image you are using, we have to make some changes to the notebook.
