@@ -14,6 +14,32 @@ base_image = os.getenv(
 
 @dsl.component(
     base_image=base_image,
+    packages_to_install=["requests", "zipfile"],
+)
+def download_data(dataset_type: str, 
+                  datasets_zip: dsl.Output[dsl.Dataset],
+                  datasets_dir: dsl.Output[dsl.Dataset]):
+    import requests
+    import zipfile
+
+    URL = f"https://rhods-public.s3.amazonaws.com/sample-data/accident-data/accident-{dataset_type}.zip"
+
+    print("Downloading file...")
+    response = requests.get(URL, stream=True)
+    block_size = 1024
+    with open(f'{datasets_zip.path}/accident-{dataset_type}.zip', 'wb') as f:
+        for data in response.iter_content(block_size):
+            f.write(data)
+        
+    if os.path.exists(f'{datasets_zip.path}/accident-{dataset_type}.zip'):
+        print("Unzipping file...")
+        with zipfile.ZipFile(f'{datasets_zip.path}/accident-{dataset_type}.zip', 'r') as zip_ref:
+            zip_ref.extractall(path=datasets_dir.path)
+    print("Done!")
+
+
+@dsl.component(
+    base_image=base_image,
     packages_to_install=["pandas", "scikit-learn"],
 )
 def data_prep(
@@ -210,6 +236,9 @@ def validate_model(onnx_model_file: dsl.Input[dsl.Model]):
     name="Iris Pipeline",
 )
 def iris_pipeline(model_obc: str = "iris-model"):
+    
+    download_data(dataset_type="sample")
+
     data_prep_task = data_prep()
 
     train_model_task = train_model(
