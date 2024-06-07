@@ -4,50 +4,56 @@ In this module we will be working with pipelines. We will be creating a pipeline
 
 ## Creating a pipeline using gitops.
 
-We will be using tekton pipelines to automate the deployment of a model-retraining job. To create a pipeline, we will need to create a pipeline definition file. We will create a couple of folders in our parasol-insuance tenent. .
+We will be using pipelines to automate the deployment of a model-retraining job. To create a pipeline, we will need to create a pipeline definition file. We will create a couple of folders in our parasol-insuance tenent.
 
-* Navigate to the cloned folder with the command:
+1. Navigate to the cloned folder with the command:
 [source,terminal]
 ----
 cd ai-accelerator/
 ----
 
-. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
+[start=2]
+2. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
 
-. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
+3. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
 
 [source,yaml]
 ----
-     - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
+- default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
 ----
 
-. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`
+[start=4]
+4. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+[source,yaml]
+----
+- default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
+----
 
-     - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
-
-. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`
-
+[start=5]
+5. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`.
+```
  namespace: parasol-insurance
+```
 
-. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
+[start=6]
+6. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
 
-. Change `line 33` of tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml
+[start=7]
+7. Change `line 33` of `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`
 
-       host: 'minio.parasol-insurance.svc.cluster.local:9000'
+```
+host: 'minio.parasol-insurance.svc.cluster.local:9000'
+```
+[start=8]
+8. Change `line 4` of `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
 
-. Change `line 4` of tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml 
-
+```
  namespace: parasol-insurance
-
-
-
-
-
-
+```
 
 
 ## Diego script modifications.  
-. Create a python script to train the model. This script will be used in the pipeline to train the model. Save the script as `train_model.py`:
+1. Create a python script to train the model. This script will be used in the pipeline to train the model. Save the script as `train_model.py`:
 
 [source,python]
 ----
@@ -134,7 +140,8 @@ upload_file(f"runs/detect/train/weights/{model_filename}", "models", f"accident_
 
 ----
 
-. Create a python script to store the model in the S3 bucket. This script will be used in the pipeline to store the model in the S3 bucket. Save the script as `store_model.py`:
+[start=2]
+2. Create a python script to store the model in the S3 bucket. This script will be used in the pipeline to store the model in the S3 bucket. Save the script as `store_model.py`:
 
 [source,python]
 ----
@@ -148,7 +155,8 @@ s3 = boto3.client('s3')
 s3.upload_file('model.joblib', 'parasol-insurance', 'model.joblib')
 ----
 
-. Create a python script to commit and push a change to the GitOps repository. This script will be used in the pipeline to commit and push a change to the GitOps repository. Save the script as `commit_and_push.py`:
+[start=3]
+3. Create a python script to commit and push a change to the GitOps repository. This script will be used in the pipeline to commit and push a change to the GitOps repository. Save the script as `commit_and_push.py`:
 
 [source,python]
 ----
@@ -159,5 +167,4 @@ os.system('git add .')
 os.system('git commit -m "Add model.joblib"')
 os.system('git push')
 ----
-
 
