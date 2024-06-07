@@ -192,7 +192,7 @@ spec:
       runtime: multi-model-server
       storage:
         key: accident-model-data-conn
-        path: accident-model/accident_detect.onnx
+        path: accident_model/accident_detect.onnx
 ----
 
 . Push the changes to the ai-accelerator repository
