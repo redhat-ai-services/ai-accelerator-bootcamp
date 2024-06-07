@@ -6,50 +6,57 @@ In this module we will be working with pipelines. We will be creating a pipeline
 
 We will be using pipelines to automate the deployment of a model-retraining job. To create a pipeline, we will need to create a pipeline definition file. We will create a couple of folders in our parasol-insuance tenent.
 
-1. Navigate to the cloned folder with the command:
+. Navigate to the cloned folder with the command:
+
++
 [source,terminal]
 ----
 cd ai-accelerator/
 ----
 
-[start=2]
-2. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
+. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
 
-3. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
 
++
 [source,yaml]
 ----
 - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
 ----
 
-[start=4]
-4. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+
++
 [source,yaml]
 ----
 - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
 ----
 
-[start=5]
-5. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`.
-```
+. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`.
+
++
+[source,yaml]
+----
  namespace: parasol-insurance
-```
+----
 
-[start=6]
-6. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
+. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
 
-[start=7]
-7. Change `line 33` of `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`
+. Change `line 33` of `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`
 
-```
++
+[source,yaml]
+----
 host: 'minio.parasol-insurance.svc.cluster.local:9000'
-```
-[start=8]
-8. Change `line 4` of `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
+----
 
-```
+. Change `line 4` of `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
+
++
+[source,yaml]
+----
  namespace: parasol-insurance
-```
+----
 
 
 ## Diego script modifications.  
