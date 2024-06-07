@@ -14,35 +14,9 @@ We will be using pipelines to automate the deployment of a model-retraining job.
 cd ai-accelerator/
 ----
 
-. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
-
-. Change `line 17` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
-
-+
-[source,yaml]
-----
-- default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
-----
-
-. Change `line 20` of `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
-
-+
-[source,yaml]
-----
-- default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
-----
-
-. Change `line 4` of  `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`.
-
-+
-[source,yaml]
-----
- namespace: parasol-insurance
-----
-
 . Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
 
-. Modify file `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`
+. Modify file `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`.
 
 +
 [source,yaml]
@@ -95,7 +69,7 @@ spec:
     deploy: true
 ----
 
-. Modify file `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`
+. Modify file `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
 
 +
 [source,yaml]
@@ -110,26 +84,11 @@ resources:
   - dspa.yaml
 ----
 
-. Change `line 33` of `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`
+. Modfify `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
 
-+
-[source,yaml]
-----
-host: 'minio.parasol-insurance.svc.cluster.local:9000'
-----
+. Create directories `tenants/parasol-insurance/dsp-example/{base,overlay}`.
 
-. Change `line 4` of `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
-
-+
-[source,yaml]
-----
- namespace: parasol-insurance
-----
-
-. Create directories `tenants/parasol-insurance/dsp-example/{base,overlay}`
-
-
-. Create the following file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+. Modify the following file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
 
 +
 [source,yaml]
@@ -271,7 +230,6 @@ resources:
   - dsp-example-rbac.yaml
   - execute-kfp-task.yaml
 ----
-
 
 ## Diego script modifications.  
 1. Create a python script to train the model. This script will be used in the pipeline to train the model. Save the script as `train_model.py`:
