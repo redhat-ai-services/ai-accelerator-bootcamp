@@ -49,3 +49,6 @@ modules:
       exit_sign: Explore LLMs
     60_llm_explore:
       name: Explore LLMs
+      exit_sign: RAG with LLM
+    70_rag_llm:
+      name: RAG with LLM

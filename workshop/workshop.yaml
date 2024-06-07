@@ -17,3 +17,4 @@ modules:
     - 38_gitops
     - 40_working_with_pipelines
     - 60_llm_explore
+    - 70_rag_llm
