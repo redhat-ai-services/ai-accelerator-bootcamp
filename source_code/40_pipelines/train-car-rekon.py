@@ -14,7 +14,7 @@ base_image = os.getenv(
 
 @dsl.component(
     base_image=base_image,
-    packages_to_install=["requests", "zipfile"],
+    packages_to_install=["requests", "zipp"],
 )
 def download_data(dataset_type: str, 
                   datasets_zip: dsl.Output[dsl.Dataset],
