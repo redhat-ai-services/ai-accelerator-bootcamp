@@ -84,11 +84,9 @@ resources:
   - dspa.yaml
 ----
 
-. Modfify `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/dsp-example`.
+. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/model-training-pipeline`.
 
-. Create directories `tenants/parasol-insurance/dsp-example/{base,overlay}`.
-
-. Modify the following file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+. Modify the following file `tenants/parasol-insurance/model-training-pipeline/base/model-training-pipeline.yaml`.
 
 +
 [source,yaml]
@@ -172,7 +170,7 @@ spec:
     - name: source
 ----
 
-. Modify file `tenants/parasol-insurance/dsp-example-pipeline/base/execute-kfp-task.yaml`
+. Modify file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml`.
 
 +
 [source,yaml]
@@ -213,7 +211,7 @@ spec:
         set +x
 ----
 
-. Modify file `tenants/parasol-insurance/dsp-example-pipeline/base/kustomization.yaml`
+. Modify file `tenants/parasol-insurance/model-training-pipeline/base/kustomization.yaml`
 
 +
 [source,yaml]
