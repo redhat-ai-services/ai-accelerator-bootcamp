@@ -1,5 +1,3 @@
-"""Example of a pipeline to demonstrate a simple real world data science workflow."""
-
 import os
 
 import kfp.compiler
@@ -10,7 +8,7 @@ load_dotenv(override=True)
 
 kubeflow_endpoint = os.environ["KUBEFLOW_ENDPOINT"]
 base_image = os.getenv(
-    "BASE_IMAGE", 
+    "BASE_IMAGE",
     "image-registry.openshift-image-registry.svc:5000/openshift/python:latest")
 
 
@@ -235,7 +233,7 @@ def iris_pipeline(model_obc: str = "iris-model"):
 if __name__ == "__main__":
     print(f"Connecting to kfp: {kubeflow_endpoint}")
 
-    sa_token_path = "/run/secrets/kubernetes.io/serviceaccount/token"  # noqa: S105
+    sa_token_path = "/run/secrets/kubernetes.io/serviceaccount/token"
     if os.path.isfile(sa_token_path):
         with open(sa_token_path) as f:
             bearer_token = f.read().rstrip()
