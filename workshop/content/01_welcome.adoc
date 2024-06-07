@@ -97,7 +97,9 @@ We will cover the ai-accelerator project overview in a later section.
 
 ## Spin up Dev and Prod Cluster
 
-Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment.
+Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment. Create using the defaults:
+
+image::images/clustersettings_Dev_Prod.png[width=50%]
 
 We'll be using the DEV and PROD clusters for the GitOps section later.
 
