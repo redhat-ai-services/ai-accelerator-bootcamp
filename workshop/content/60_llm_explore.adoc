@@ -50,7 +50,7 @@ We can also run a `oc describe`` on the node:
 image::images/node_describe_gpu.png[]
 
 ### Test Model Notebooks
-After exploring the GPU Node details, open RHOAI and launch new workbench and run the tests for the LLMs. These can be found in the `https://github.com/redhat-ai-services/ai-accelerator` [] 
+After exploring the GPU Node details, open RHOAI and launch new workbench and run the tests for the LLMs. These can be found in the `https://github.com/redhat-ai-services/ai-accelerator[]` 
 
 - tenants/ai-example/multi-model-serving/test
 - tenants/ai-example/single-model-serving-tgis/test
