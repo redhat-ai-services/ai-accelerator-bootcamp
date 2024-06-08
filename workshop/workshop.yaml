@@ -15,5 +15,6 @@ modules:
     - 36_deploy_model
     - 40_introduction_to_kfp_pipelines
     - 41_working_with_pipelines
+    - 50_distributed_training
     - 60_llm_explore
     - 70_rag_llm
