@@ -58,6 +58,7 @@ podman push quay.io/{quay id}/custom_notebook
 . Create a file named `kustomization.yaml` inside the `custom_workbench/base` directory with the following content:
 
 +
+.kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -245,7 +246,7 @@ spec:
 . Create a file named `kustomization.yaml` inside the `custom_workbench/overlays/parasol-insurance-dev` directory with the following content:
 
 +
-.custom-workbench/overlays/parasol-insurance-dev/kustomization.yaml
+.kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
