@@ -51,11 +51,11 @@ podman push quay.io/{quay id}/custom_notebook
 
 . A new repository named custom_notebook will get created in your quay.io account. This will get created as a Private repository. Convert it into a public repository.
 
-. In the `parasol-insurance` tenant, create a directory named `custom_workbench`
+. In the `parasol-insurance` tenant, create a directory named `custom-workbench`
 
-. Create the `base` and `overlays` directories inside the `custom_workbench` directory
+. Create the `base` and `overlays` directories inside the `custom-workbench` directory
 
-. Create a file named `kustomization.yaml` inside the `custom_workbench/base` directory with the following content:
+. Create a file named `kustomization.yaml` inside the `custom-workbench/base` directory with the following content:
 
 +
 .kustomization.yaml
@@ -70,7 +70,7 @@ resources:
   - custom-workbench-notebook.yaml
 ----
 
-. Create a file named `custom-workbench-is.yaml` inside the `custom_workbench/base` directory with the following content:
+. Create a file named `custom-workbench-is.yaml` inside the `custom-workbench/base` directory with the following content:
 
 +
 .custom-workbench-is.yaml
@@ -115,7 +115,7 @@ spec:
 Replace {quay_id} with your quay id. This ensures that the image stream you are creating references to the image you pushed to quay.io
 ====
 
-. Create a file named `custom-workbench-pvc.yaml` inside the `custom_workbench/base` directory with the following content:
+. Create a file named `custom-workbench-pvc.yaml` inside the `custom-workbench/base` directory with the following content:
 
 +
 .custom-workbench-pvc.yaml
@@ -136,7 +136,7 @@ spec:
 
 ----
 
-. Create a file named `custom-workbench-notebook.yaml` inside the `custom_workbench/base` directory with the following content:
+. Create a file named `custom-workbench-notebook.yaml` inside the `custom-workbench/base` directory with the following content:
 
 +
 .custom-workbench-notebook.yaml
@@ -241,9 +241,9 @@ spec:
           name: trusted-ca
 ----
 
-. Create a directory named `parasol-insurance-dev` under the `custom_workbench/overlays` directory
+. Create a directory named `parasol-insurance-dev` under the `custom-workbench/overlays` directory
 
-. Create a file named `kustomization.yaml` inside the `custom_workbench/overlays/parasol-insurance-dev` directory with the following content:
+. Create a file named `kustomization.yaml` inside the `custom-workbench/overlays/parasol-insurance-dev` directory with the following content:
 
 +
 .kustomization.yaml
