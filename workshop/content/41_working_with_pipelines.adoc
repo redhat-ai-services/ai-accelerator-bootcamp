@@ -102,6 +102,8 @@ resources:
   - ../base
 ----
 
+## CONTINUE INSTRUCTIONS FOR THE NEXT SECTIONS FOLLOWING THIS BY STEP PATTERN
+
 . Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
 
 . Modify file `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`.
