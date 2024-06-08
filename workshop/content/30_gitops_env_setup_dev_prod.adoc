@@ -243,9 +243,6 @@ Our first component for the _parasol-insurance_ tenant is the namespace.
 This namespace is defined to be created in the `parasol-insurance-dev` environment as per the `parasol-insurance-dev` overlay.
 ====
 
-
-. In the `tenants/parasol-insurance` folder, create a new file named `kustomization.yaml` add the below content to the file:
-
 . Push the changes to your forked repository.
 
 +
