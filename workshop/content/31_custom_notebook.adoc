@@ -262,3 +262,8 @@ resources:
 
 +
 image::images/31_custom_notebook/01_custom_workbench.png[Custom workbench]
+
+[TIP]
+====
+Verify your work against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/31_custom_notebook:[This custom-workbench branch]
+====
