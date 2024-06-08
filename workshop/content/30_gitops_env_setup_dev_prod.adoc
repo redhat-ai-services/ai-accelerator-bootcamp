@@ -290,6 +290,11 @@ Notice that the `parasol-insurance-namespaces` application was also deployed.
 +
 image::images/30_gitops_setup/05_parasol-insurance-ds-project.png[RHOAI Data Science Project]
 
+[TIP]
+====
+To check your work please refer to https://github.com/redhat-ai-services/ai-accelerator-qa/tree/30_gitops_env_setup_dev_prod[This Branch] 
+====
+
 ## Parasol-insurance-prod cluster
 The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _parasol-insurance-dev_, except change _dev_ to _prod_ in the kustomization files and folders.
 
