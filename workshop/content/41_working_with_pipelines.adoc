@@ -87,7 +87,6 @@ Before creating the dspa object, your Data Science Project shows a button to *Co
 image::images/41_working_with_pipelines/01-configure-pipeline-server.png[Configure pipeline server]
 
 Instead of creating the pipeline server configuration using the RHOAI method that you have seen in previous enablemens, in these steps you are using the GitOps method to create the pipeline server configuration.
-
 ====
 
 . In the `overlays` directory, create a `kustomization.yaml` file with the following content:
@@ -103,12 +102,12 @@ resources:
   - ../base
 ----
 
-
 . Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
 
 . Modify file `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`.
 
 +
+.dspa.yaml
 [source,yaml]
 ----
 apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
@@ -162,6 +161,7 @@ spec:
 . Modify file `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
 
 +
+.kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -178,6 +178,198 @@ resources:
 . Modify the following file `tenants/parasol-insurance/model-training-pipeline/base/model-training-pipeline.yaml`.
 
 +
+.model-training-pipeline.yaml
+[source,yaml]
+----
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: model-retrain
+spec:
+  params:
+    - default: 'https://github.com/redhat-ai-services/ai-accelerator-bootcamp.git'
+      description: Repo URL
+      name: GIT_URL
+      type: string
+    - default: 'source_code/40_pipelines'
+      description: Repo URL
+      name: GIT_CONTEXT
+      type: string
+    - default: 'train-car-rekon.py'
+      name: PIPELINE_SCRIPT
+      type: string
+    - default: main
+      name: GIT_REVISION
+      type: string
+    - default: 3.11-ubi9
+      name: PYTHON_IMAGE
+      type: string
+    - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/model-retrain'
+      name: TARGET_IMAGE
+      type: string
+    - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
+      name: KUBEFLOW_ENDPOINT
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: $(params.GIT_URL)
+        - name: revision
+          value: $(params.GIT_REVISION)
+        - name: gitInitImage
+          value: 'registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:868966ef9d4b54952d8a74eb83bba40eb1f52c0148994fa704efd0e3797c61c5'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source
+    - name: s2i-python
+      params:
+        - name: VERSION
+          value: $(params.PYTHON_IMAGE)
+        - name: PATH_CONTEXT
+          value: $(params.GIT_CONTEXT)
+        - name: IMAGE
+          value: $(params.TARGET_IMAGE)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: s2i-python
+      workspaces:
+        - name: source
+          workspace: source
+    - name: execute-kubeflow-pipeline
+      params:
+        - name: IMAGE
+          value: $(params.TARGET_IMAGE)
+        - name: TAG
+          value: latest
+        - name: SCRIPT
+          value: $(params.PIPELINE_SCRIPT)
+        - name: KUBEFLOW_ENDPOINT
+          value: $(params.KUBEFLOW_ENDPOINT)
+      runAfter:
+        - s2i-python
+      taskRef:
+        kind: Task
+        name: execute-kubeflow-pipeline
+  workspaces:
+    - name: source
+----
+
+. Modify file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml`.
+
++
+.execute-kfp-task.yaml
+[source,yaml]
+----
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: execute-kubeflow-pipeline
+spec:
+  description: >-
+    This task will execute a python script, triggering a kubeflow pipeline
+  params:
+    - name: IMAGE
+      description: The image used to execute the script
+      type: string
+    - name: TAG
+      description: The tag for the image
+      type: string
+      default: "latest"
+    - name: SCRIPT
+      description: The location of the script to be executed
+    - name: KUBEFLOW_ENDPOINT
+      description: The endpoint URL for Kubeflow
+      default: "https://ds-pipeline-dspa:8443"
+  steps:
+    - name: execute-python
+      image: $(inputs.params.IMAGE):$(inputs.params.TAG)
+      env:
+        - name: KUBEFLOW_ENDPOINT
+          value: $(inputs.params.KUBEFLOW_ENDPOINT)
+      script: |
+        set -x
+        echo "lets start this cript"
+        pwd
+        ls -la
+        echo "about to execute python now"
+        python $(inputs.params.SCRIPT)
+        set +x
+----
+
+. Modify file `tenants/parasol-insurance/model-training-pipeline/base/kustomization.yaml`.
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: parasol-insurance
+
+resources:
+  - model-retrain-imagestream.yaml
+  - model-retrain-pipeline.yaml
+  - model-retrain-pipelinerun.yaml
+  - model-retrain-rbac.yaml
+  - execute-kfp-task.yaml
+----
+
+. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-imagestream.yaml`.
+
++
+.model-retrain-imagestream.yaml
+[source,yaml]
+----
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: dsp-example
+----
+
+. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipelinerun.yaml`.
+
++
+.model-retrain-pipelinerun.yaml
+[source,yaml]
+----
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: dsp-example-init
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  pipelineRef:
+    name: dsp-example
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+  - name: source
+    volumeClaimTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        volumeMode: Filesystem
+----
+
+. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
+
++
+.model-retrain.pipeline.yaml
 [source,yaml]
 ----
 apiVersion: tekton.dev/v1beta1
@@ -259,62 +451,34 @@ spec:
     - name: source
 ----
 
-. Modify file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml`.
+. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-rbac.yaml`.
 
 +
+.model-retrain-rbac.yaml
 [source,yaml]
 ----
-apiVersion: tekton.dev/v1beta1
-kind: Task
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: execute-kubeflow-pipeline
-spec:
-  description: >-
-    This task will execute a python script, triggering a kubeflow pipeline
-  params:
-    - name: IMAGE
-      description: The image used to execute the script
-      type: string
-    - name: TAG
-      description: The tag for the image
-      type: string
-      default: "latest"
-    - name: SCRIPT
-      description: The location of the script to be executed
-    - name: KUBEFLOW_ENDPOINT
-      description: The endpoint URL for Kubeflow
-      default: "https://ds-pipeline-dspa:8443"
-  steps:
-    - name: execute-python
-      image: $(inputs.params.IMAGE):$(inputs.params.TAG)
-      env:
-        - name: KUBEFLOW_ENDPOINT
-          value: $(inputs.params.KUBEFLOW_ENDPOINT)
-      script: |
-        set -x
-        echo "lets start this cript"
-        pwd
-        ls -la
-        echo "about to execute python now"
-        python $(inputs.params.SCRIPT)
-        set +x
+  name: pipelines-dsp-access
+subjects:
+  - kind: ServiceAccount
+    name: pipelines
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dsp-access
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dsp-access
+rules:
+  - verbs:
+      - get
+    apiGroups:
+      - ''
+      - route.openshift.io
+    resources:
+      - routes
 ----
-
-. Modify file `tenants/parasol-insurance/model-training-pipeline/base/kustomization.yaml`
-
-+
-[source,yaml]
-----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-namespace: parasol-insurance
-
-resources:
-  - dsp-example-imagestream.yaml
-  - dsp-example-pipeline.yaml
-  - dsp-example-pipelinerun.yaml
-  - dsp-example-rbac.yaml
-  - execute-kfp-task.yaml
-----
-
