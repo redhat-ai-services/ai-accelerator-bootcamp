@@ -292,7 +292,7 @@ image::images/30_gitops_setup/05_parasol-insurance-ds-project.png[RHOAI Data Sci
 
 [TIP]
 ====
-To check your work please refer to https://github.com/redhat-ai-services/ai-accelerator-qa/tree/30_gitops_env_setup_dev_prod[This Branch] 
+To check your work please refer to https://github.com/redhat-ai-services/ai-accelerator-qa/tree/30_gitops_env_setup_dev_prod[This Dev Branch] 
 ====
 
 ## Parasol-insurance-prod cluster
@@ -301,3 +301,8 @@ The steps to set up the _**parasol-insurance-prod**_ cluster are the same as _pa
 Make the changes for _prod_ in your forked repository and use it to set up the _prod_ cluster.
 
 When running the bootstrap script, select `bootstrap/overlays/parasol-insurance-prod`
+
+[TIP]
+====
+To check your work please refer to https://github.com/redhat-ai-services/ai-accelerator-qa/tree/30_gitops_env_setup_prod[This Prod Branch] 
+====
