@@ -108,3 +108,12 @@ image::images/Kustomization_patch4.png[]
 When ArgoCD reads the repository and the kustomization files, it reads the patches and applies the patches when deploying the resources.
 
 Explore the ai-accelerator project and understand how rhoai, operators, and applications are being deployed.
+
+[TIP]
+====
+If you are using a disconnected environment, you will need to first setup:
+
+- certificates for the customer certificate authorities
+- the registry for the images
+- the git repositories, proxies and credentials
+====
