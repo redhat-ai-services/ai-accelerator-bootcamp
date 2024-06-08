@@ -147,7 +147,7 @@ image::images/50_distributed_training/02-server-token.png[server token]
 ----
 cluster = Cluster(ClusterConfiguration(
     name='raytest', 
-    namespace='parasol-insurance', # Update to your namespace
+    namespace='parasol-insurance', 
     head_gpus=0, # For GPU enabled workloads set the head_gpus and num_gpus
     num_gpus=0,
     num_workers=2,
@@ -357,6 +357,206 @@ The `mnist_fashion.py` script trains a neural network model using the Fashion MN
 
 . Save the file.
 
+. Add a `requirements.txt` file with the following content:
+
++
+.requirements.txt
+[source]
+----
+pytorch_lightning==1.5.10
+ray_lightning
+torchmetrics==0.9.1
+torchvision==0.12.0
+----
+
 . Using the `standard-workbench` workbench, create a new Jupyter Notebook with the name `1_distributed_training.ipynb`.
 
-##TODO: Continue instructions for distributed training job setup##
+. Add a cell with the imports:
+
++
+[source,python]
+----
+from codeflare_sdk import Cluster, ClusterConfiguration, TokenAuthentication
+from codeflare_sdk import generate_cert
+----
+
+. Add a cell to authenticate with the OpenShift cluster:
+
++
+[source,python]
+----
+auth = TokenAuthentication(
+    token = "sha256~M1oYD5GM1mAXDrDCWPhXoGU2vEnwktp79JEhAvmS4Xo",
+    server = "https://api.cluster-clplg.dynamic.redhatworkshops.io:6443",
+    skip_tls=True
+)
+auth.login()
+----
+
++
+[IMPORTANT]
+====
+Replace the `token` and `server` values with the correct values for your OpenShift cluster.
+
+You can find these values in the OpenShift Web Console by clicking on your username in the top right corner and selecting `Copy Login Command`.
+
+image::images/50_distributed_training/02-server-token.png[server token]
+====
+
+. Add a cell to configure a Ray cluster:
+
++
+[source,python]
+----
+cluster = Cluster(ClusterConfiguration(
+    name='jobtest',
+    namespace='parasol-insurance',
+    head_gpus=0,
+    num_gpus=0,
+    num_workers=2,
+    min_cpus=1,
+    max_cpus=1,
+    min_memory=4,
+    max_memory=4,
+    image="quay.io/project-codeflare/ray:latest-py39-cu118",
+    write_to_file=False
+))
+----
+
+. Add a cell to start the Ray cluster:
+
++
+[source,python]
+----
+# Bring up the cluster
+cluster.up()
+cluster.wait_ready()
+----
+
++
+[NOTE]
+====
+This cell will start the Ray cluster and wait until the cluster is fully up and running.
+Note that the cell is taking longer to run because the Ray cluster is starting.
+Wait to continue until the cell finishes running (the asterisk `*` will change to a number).
+====
+
++
+[TIP]
+====
+In the OpenShift web console, you can monitor the Ray cluster pods in the `parasol-insurance` namespace, search for the pods with the `jobtest` name.
+
+image::images/50_distributed_training/06-jobtest-pods.png[Ray cluster pods]
+
+You can also search for the `workload` resource in the `parasol-insurance`:
+
+image::images/50_distributed_training/07-jobtest-workload.png[Ray cluster workload]
+
+In the workload details, you can see the *Conditions* section, where you can check the cluster provisioning status:
+
+image::images/50_distributed_training/08-jobtest-workload-conditions.png[Ray cluster workload conditions]
+
+====
+
+. Add a cell to setup the Ray cluster certificates for mutual TLS:
+
++
+[source,python]
+----
+generate_cert.generate_tls_cert(cluster.config.name, cluster.config.namespace)
+generate_cert.export_env(cluster.config.name, cluster.config.namespace)
+----
+
++
+[IMPORTANT]
+====
+The generate cert instructions only work in a Ray cluster that is up and running. If you run this cell before the cluster is ready, you will get an error.
+====
+
+. Add a cell to check on the cluster details:
+
++
+[source,python]
+----
+cluster.details()
+----
+
+. Add a cell to configure the training job submission:
+
++
+[source,python]
+----
+# Initialize the Job Submission Client
+"""
+The SDK will automatically gather the dashboard address and authenticate using the Ray Job Submission Client
+"""
+client = cluster.job_client
+# Submit an example mnist job using the Job Submission Client
+submission_id = client.submit_job(
+    entrypoint="python mnist_fashion.py",
+    runtime_env={"working_dir": "./","pip": "requirements.txt"},
+)
+print(submission_id)
+----
+
+. Use the following code lines to create cells to monitor the job status:
+
++
+[source,python]
+----
+# List all existing jobs
+client.list_jobs()
+
+# Get the job's status
+client.get_job_status(submission_id)
+
+# Get job related info
+client.get_job_info(submission_id)
+
+# Get the job's logs
+client.get_job_logs(submission_id)
+----
+
++
+[TIP]
+====
+You can use the `client.get_job_status(submission_id)` instruction to check the status of the job. The status can be `Pending`, `Running`, `Succeeded`, or `Failed`.
+
+You can iterate over the `client.get_job_status(submission_id)` instruction to create a cell that waits until the job reaches the `Succeeded` status.
+
+[source,python]
+----
+while client.get_job_status(submission_id) != "Succeeded":
+    pass
+print("Job Succeeded")
+----
+
+====
+
+. Open the Ray cluster dashboard and monitor the job status.
+
++
+image::images/50_distributed_training/09-ray-dashboard-job.png[Ray dashboard job]
+
+. Wait for the job to finish.
+
+. Add a cell to stop the Ray cluster:
+
++
+[source,python]
+----
+cluster.down()
+----
+
+. Notice that the Ray cluster will be stopped, and the status will be `Inactive`. Also, the Ray cluster dashboard will be unavailable.
+
+. Add a cell to log out of the OpenShift cluster:
+
++
+[source,python]
+----
+auth.logout()
+----
+
+. Save and close the notebook.
+
