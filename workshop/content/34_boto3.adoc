@@ -80,6 +80,11 @@ You should find your minio resource in the _**object-datastore**_ namespace.
 
 The *minio-ui* route can be found in _**object-datastore**_ namespace under _**Routes**_. Open this in a new tab and log in with `minio:minio123`.
 
+[TIP]
+====
+Compare your change to this in git https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/34_boto3[boto3 minio branch]
+====
+
 Explore the S3 storage.
 
 ## Set up an standard data science workbench to explore S3 with boto3
@@ -418,5 +423,4 @@ def get_minio_content(bucket):
 ----
 get_minio_content('models')
 ----
-
 
