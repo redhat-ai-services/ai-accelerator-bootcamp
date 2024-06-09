@@ -206,3 +206,17 @@ spec:
 To test if the served model is working as expected, go back to the workbench and navigate to parasol-insurance/lab-materials/04. Open the 04-05-model-serving notebook. We need to change the RestURL/infer_url value. We can get it from the model that we just deployed.
 
 After making these changes, run the notebook and we should see an output to the image that we pass to the model.
+
+[TIP]
+==== 
+Validate changes against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/36_deploy_model[Deploy model branch]
+====
+
+[CAUTION]
+====
+You have not entered the CHALLENGE PHASE of your project! You are now enabled! Your team lead has died! You must Deploy the model to prod using ideally fully using gitops. 
+- Level 1 Use minio ui to create your buckets and deploy your model serving rumtime!
+- Level 2 Use gitops to deploy your model to prod and deploy your model serving runtime!
+- Level 3 Train your own model and deploy it to prod and automate the uploading and model serving!
+====
+
