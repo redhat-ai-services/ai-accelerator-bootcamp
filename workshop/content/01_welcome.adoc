@@ -16,7 +16,7 @@ image::images/OrderAWS_env.png[width=35%]
 
 This will take around 1-1:20 hrs.
 
-## Spin up Dev and Prod Cluster
+### Spin up Dev and Prod Cluster
 
 Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+Platform+Cluster&item=babylon-catalog-prod%2Fopenshift-cnv.ocpmulti-wksp-cnv.prod and order 2 _**Red Hat OpenShift Container Platform Cluster**_. One for the _**Dev**_ environment and one for the _**Prod**_ environment. Create using the defaults:
 
@@ -25,11 +25,11 @@ image::images/clustersettings_Dev_Prod.png[width=50%]
 **We'll be using and setting up the DEV and PROD clusters for the later sections.**
 
 
-## Install and Setup RHOAI & Components: DEMO Environment
+## Install and Setup RHOAI & Components: Demo Environment
 
 The environment install and setup will be performed with the help of the Red Hat AI Accelerator repository. This repo is intended to provide a core set of OpenShift features that would commonly be used for a Data Science environment, but can also be highly customized for specific scenarios.
 
-## DEMO cluster
+### Set up Demo cluster
 Follow the following steps to complete the install and setup:
 
 . After the cluster is running and ready, log in as the admin.
