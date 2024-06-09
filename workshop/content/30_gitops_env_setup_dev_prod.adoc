@@ -274,7 +274,7 @@ git push origin main
 For _**parasol-insurance-dev**_ environments type the number 1 and press Enter.
 ====
 
-. After the script is done, you can check the ArgoCD console to see the applications deployed.
+. After the script is done, you can check the ArgoCD console to see the applications deployed. It will install RHOAI and relevent operators.
 
 +
 image::images/30_gitops_setup/04_parasol-insurance-dev-sync_1.png[ArgoCD Apps]
