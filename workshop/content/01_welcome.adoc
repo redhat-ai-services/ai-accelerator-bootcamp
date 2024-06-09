@@ -22,7 +22,7 @@ Navigate to https://demo.redhat.com/catalog?search=Red+Hat+OpenShift+Container+P
 
 image::images/clustersettings_Dev_Prod.png[width=50%]
 
-We'll be using the DEV and PROD clusters for the later sections.
+**We'll be using and setting up the DEV and PROD clusters for the later sections.**
 
 
 ## Install and Setup RHOAI & Components: DEMO Environment
