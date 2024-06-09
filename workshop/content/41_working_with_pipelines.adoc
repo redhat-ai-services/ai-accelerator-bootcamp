@@ -366,4 +366,4 @@ resources:
 
 . Click on the `model-retrain` pipeline, and validate that there is a pipeline run, wait the pipeline run to complete
 
-. Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelens > Runs* has a new pipeline run with a name starting with `accident detection`.
+. Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelines > Runs* has a new pipeline run with a name starting with `accident detection`.
