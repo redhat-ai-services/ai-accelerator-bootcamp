@@ -30,6 +30,7 @@ resources:
 . Create a file named `kustomization.yaml` inside the `multi-model-serving/base` directory with the following content:
 
 +
+.multi-model-serving/base/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -46,6 +47,7 @@ resources:
 . To create a data connection, create a file named 'data-connection.yaml' inside the `multi-model-serving/base` directory with the following content:
 
 +
+.multi-model-serving/base/data-connection.yaml
 [source,yaml]
 ----
 kind: Secret
@@ -71,6 +73,7 @@ type: Opaque
 . To create the custom serving Triton runtime, create a file named 'serving-runtime.yaml' inside the `multi-model-serving/base` directory with the following content: 
 
 +
+.multi-model-serving/base/serving-runtime.yaml
 [source,yaml]
 ----
 apiVersion: serving.kserve.io/v1alpha1
@@ -170,6 +173,7 @@ spec:
 . To create the inference service, create a file named 'inference-service.yaml' inside the `multi-model-serving/base` directory with the following content:
 
 +
+.multi-model-serving/base/inference-service.yaml
 [source,yaml]
 ----
 apiVersion: serving.kserve.io/v1beta1
@@ -203,7 +207,11 @@ spec:
 
 ## Test the served model
 
-To test if the served model is working as expected, go back to the workbench and navigate to parasol-insurance/lab-materials/04. Open the 04-05-model-serving notebook. We need to change the RestURL/infer_url value. We can get it from the model that we just deployed.
+To test if the served model is working as expected, go back to RHOAI `parasol-insurance` project and go to the _workbenches_ tab. Stop the `standard-workbench` and start the `custom-workbench`. Once the custom-workbench is running, navigate to `parasol-insurance/lab-materials/04`. Open the `04-05-model-serving` notebook. We need to change the RestURL/infer_url value. We can get it from the model that we just deployed.
+
+Make sure to change the values in the notebook when testing:
+
+image::images/model_serving_notebook_changes.png[]
 
 After making these changes, run the notebook and we should see an output to the image that we pass to the model.
 
