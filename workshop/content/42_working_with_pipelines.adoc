@@ -12,6 +12,123 @@ In the parasol-insurance repository, there is a python notebook that re-trains a
 
 ##TODO: Add steps to convert from python script into pipeline steps##
 
+<<<<<<< HEAD:workshop/content/42_working_with_pipelines.adoc
+=======
+## Setup the pipelines server (DSPA).
+
+. Create a `data-science-pipelines` directory in the `parasol-insurance` tenand directory.
+
+. Create the `base` and `overlays` directories in the `data-science-pipelines` directory.
+
+. Create a directory `parasol-insurance-dev` in `data-science-pipelines/overlays`.
+
+. In the `base` directory, create a `kustomization.yaml` file with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: parasol-insurance
+
+resources:
+  - dspa.yaml
+----
+
+. In the `base` directory, create a `dspa.yaml` file with the following content:
+
++
+.dspa.yaml
+[source,yaml]
+----
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
+kind: DataSciencePipelinesApplication
+metadata:
+  name: dspa
+spec:
+  apiServer:
+    stripEOF: true
+    dbConfigConMaxLifetimeSec: 120
+    applyTektonCustomResource: true
+    deploy: true
+    enableSamplePipeline: false
+    autoUpdatePipelineDefaultVersion: true
+    archiveLogs: false
+    terminateStatus: Cancelled
+    enableOauth: true
+    trackArtifacts: true
+    collectMetrics: true
+    injectDefaultScript: true
+  database:
+    disableHealthCheck: false
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 10Gi
+      username: mlpipeline
+  dspVersion: v2
+  objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
+    externalStorage:
+      basePath: ''
+      bucket: pipelines
+      host: 'minio.object-datastore.svc.cluster.local:9000'
+      port: ''
+      region: us-east-1
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: accident-model-data-conn
+      scheme: http
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true
+----
+
++
+[TIP]
+====
+Your Data Science Cluster requires of a dspa, so that you can create pipelines.
+
+Before creating the dspa object, your Data Science Project shows a button to *Configure pipeline server*:
+
+image::images/41_working_with_pipelines/01-configure-pipeline-server.png[Configure pipeline server]
+
+Instead of creating the pipeline server configuration using the RHOAI method that you have seen in previous enablemens, in these steps you are using the GitOps method to create the pipeline server configuration.
+====
+
+. In the `overlays/parasol-insurance-dev/` directory, create a `kustomization.yaml` file with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
+. Commit and push the changes to the Git repository.
+
+. Wait for ArgoCD to sync the changes.
+
+. Validate that the `parasol-insurance` Data Science project allows to import pipelines under the pipelines tab.
+
++
+[TIP]
+====
+Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/41_working_with_pipelines_dspa[Branch for DSPA configuratons]
+====
+
+>>>>>>> 23bd4da ( adding tip for model_retrain_pipeline, Last step failed and may need work):workshop/content/41_working_with_pipelines.adoc
 ## Create a pipeline to train a model
 
 . Create a `model-training-pipeline` directory in the `parasol-insurance` tenand directory.
@@ -259,3 +376,9 @@ resources:
 . Click on the `model-retrain` pipeline, and validate that there is a pipeline run, wait the pipeline run to complete
 
 . Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelines > Runs* has a new pipeline run with a name starting with `accident detection`.
+
++
+[TIP]
+====
+Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/41_working_with_pipelines_model_retrain[Branch for model_retrain pipeline config]
+====
