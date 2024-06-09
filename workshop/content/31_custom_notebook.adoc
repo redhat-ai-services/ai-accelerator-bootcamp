@@ -51,7 +51,7 @@ podman push quay.io/{quay id}/custom_notebook
 
 . A new repository named custom_notebook will get created in your quay.io account. This will get created as a Private repository. Convert it into a public repository.
 
-. In the `parasol-insurance` tenant, create a directory named `custom-workbench`
+. In the `parasol-insurance` tenant (`ai-accelerator/tenants/parasol-insurance`), create a directory named `custom-workbench`
 
 . Create the `base` and `overlays` directories inside the `custom-workbench` directory
 
