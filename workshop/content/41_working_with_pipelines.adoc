@@ -2,7 +2,17 @@
 
 In this module we will be working with pipelines. We will be creating a pipeline that will train a model and then deploy it to a serving runtime.
 
-## Creating a pipeline using gitops.
+## Develop a KFP pipeline to retrain a model
+
+In the parasol-insurance repository, there is a python notebook that re-trains a model: https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]. We will be using this notebook to create a pipeline that will retrain the model.
+
+. In RHOAI, open the *standard-workbench*.
+
+. Create a new notebook and name it `model-retraining-pipeline`.
+
+##TODO: Add steps to convert from python script into pipeline steps##
+
+## Setup the pipelines server (DSPA).
 
 . Create a `data-science-pipelines` directory in the `parasol-insurance` tenand directory.
 
@@ -102,209 +112,19 @@ resources:
   - ../base
 ----
 
-## CONTINUE INSTRUCTIONS FOR THE NEXT SECTIONS FOLLOWING THIS BY STEP PATTERN
+. Commit and push the changes to the Git repository.
 
-. Copy `tenants/ai-example/datascience-pipelines` and paste it as `tenants/parasol-insurance/datascience-pipelines`.
+. Wait for ArgoCD to sync the changes.
 
-. Modify file `tenants/parasol-insurance/datascience-pipelines/base/dspa.yaml`.
+. Validate that the `parasol-insurance` Data Science project allows to import pipelines under the pipelines tab.
 
-+
-.dspa.yaml
-[source,yaml]
-----
-apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
-kind: DataSciencePipelinesApplication
-metadata:
-  name: dspa
-spec:
-  apiServer:
-    stripEOF: true
-    dbConfigConMaxLifetimeSec: 120
-    applyTektonCustomResource: true
-    deploy: true
-    enableSamplePipeline: false
-    autoUpdatePipelineDefaultVersion: true
-    archiveLogs: false
-    terminateStatus: Cancelled
-    enableOauth: true
-    trackArtifacts: true
-    collectMetrics: true
-    injectDefaultScript: true
-  database:
-    disableHealthCheck: false
-    mariaDB:
-      deploy: true
-      pipelineDBName: mlpipeline
-      pvcSize: 10Gi
-      username: mlpipeline
-  dspVersion: v2
-  objectStorage:
-    disableHealthCheck: false
-    enableExternalRoute: false
-    externalStorage:
-      basePath: ''
-      bucket: pipelines
-      host: 'minio.object-datastore.svc.cluster.local:9000'
-      port: ''
-      region: us-east-1
-      s3CredentialsSecret:
-        accessKey: AWS_ACCESS_KEY_ID
-        secretKey: AWS_SECRET_ACCESS_KEY
-        secretName: accident-model-data-conn
-      scheme: http
-  persistenceAgent:
-    deploy: true
-    numWorkers: 2
-  scheduledWorkflow:
-    cronScheduleTimezone: UTC
-    deploy: true
-----
+## Create a pipeline to train a model
 
-. Modify file `tenants/parasol-insurance/datascience-pipelines/base/kustomization.yaml`.
+. Create a `model-training-pipeline` directory in the `parasol-insurance` tenand directory.
 
-+
-.kustomization.yaml
-[source,yaml]
-----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+. Create the `base` and `overlays` directories in the `model-training-pipeline` directory.
 
-namespace: parasol-insurance
-
-resources:
-  - dspa.yaml
-----
-
-. Copy `tenants/ai-example/dsp-example-pipeline` and paste it as `tenants/parasol-insurance/model-training-pipeline`.
-
-. Modify the following file `tenants/parasol-insurance/model-training-pipeline/base/model-training-pipeline.yaml`.
-
-+
-.model-training-pipeline.yaml
-[source,yaml]
-----
-apiVersion: tekton.dev/v1beta1
-kind: Pipeline
-metadata:
-  name: model-retrain
-spec:
-  params:
-    - default: 'https://github.com/redhat-ai-services/ai-accelerator-bootcamp.git'
-      description: Repo URL
-      name: GIT_URL
-      type: string
-    - default: 'source_code/40_pipelines'
-      description: Repo URL
-      name: GIT_CONTEXT
-      type: string
-    - default: 'train-car-rekon.py'
-      name: PIPELINE_SCRIPT
-      type: string
-    - default: main
-      name: GIT_REVISION
-      type: string
-    - default: 3.11-ubi9
-      name: PYTHON_IMAGE
-      type: string
-    - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/model-retrain'
-      name: TARGET_IMAGE
-      type: string
-    - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
-      name: KUBEFLOW_ENDPOINT
-      type: string
-  tasks:
-    - name: git-clone
-      params:
-        - name: url
-          value: $(params.GIT_URL)
-        - name: revision
-          value: $(params.GIT_REVISION)
-        - name: gitInitImage
-          value: 'registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:868966ef9d4b54952d8a74eb83bba40eb1f52c0148994fa704efd0e3797c61c5'
-      taskRef:
-        kind: ClusterTask
-        name: git-clone
-      workspaces:
-        - name: output
-          workspace: source
-    - name: s2i-python
-      params:
-        - name: VERSION
-          value: $(params.PYTHON_IMAGE)
-        - name: PATH_CONTEXT
-          value: $(params.GIT_CONTEXT)
-        - name: IMAGE
-          value: $(params.TARGET_IMAGE)
-      runAfter:
-        - git-clone
-      taskRef:
-        kind: ClusterTask
-        name: s2i-python
-      workspaces:
-        - name: source
-          workspace: source
-    - name: execute-kubeflow-pipeline
-      params:
-        - name: IMAGE
-          value: $(params.TARGET_IMAGE)
-        - name: TAG
-          value: latest
-        - name: SCRIPT
-          value: $(params.PIPELINE_SCRIPT)
-        - name: KUBEFLOW_ENDPOINT
-          value: $(params.KUBEFLOW_ENDPOINT)
-      runAfter:
-        - s2i-python
-      taskRef:
-        kind: Task
-        name: execute-kubeflow-pipeline
-  workspaces:
-    - name: source
-----
-
-. Modify file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml`.
-
-+
-.execute-kfp-task.yaml
-[source,yaml]
-----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: execute-kubeflow-pipeline
-spec:
-  description: >-
-    This task will execute a python script, triggering a kubeflow pipeline
-  params:
-    - name: IMAGE
-      description: The image used to execute the script
-      type: string
-    - name: TAG
-      description: The tag for the image
-      type: string
-      default: "latest"
-    - name: SCRIPT
-      description: The location of the script to be executed
-    - name: KUBEFLOW_ENDPOINT
-      description: The endpoint URL for Kubeflow
-      default: "https://ds-pipeline-dspa:8443"
-  steps:
-    - name: execute-python
-      image: $(inputs.params.IMAGE):$(inputs.params.TAG)
-      env:
-        - name: KUBEFLOW_ENDPOINT
-          value: $(inputs.params.KUBEFLOW_ENDPOINT)
-      script: |
-        set -x
-        echo "lets start this cript"
-        pwd
-        ls -la
-        echo "about to execute python now"
-        python $(inputs.params.SCRIPT)
-        set +x
-----
-
-. Modify file `tenants/parasol-insurance/model-training-pipeline/base/kustomization.yaml`.
+. In the `base` directory, create a `kustomization.yaml` file with the following content:
 
 +
 .kustomization.yaml
@@ -323,7 +143,7 @@ resources:
   - execute-kfp-task.yaml
 ----
 
-. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-imagestream.yaml`.
+. Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-imagestream.yaml` with the following content:
 
 +
 .model-retrain-imagestream.yaml
@@ -332,52 +152,19 @@ resources:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: dsp-example
+  name: model-retrain
 ----
 
-. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipelinerun.yaml`.
+. Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipeline.yaml` with the following content:
 
 +
-.model-retrain-pipelinerun.yaml
-[source,yaml]
-----
-apiVersion: tekton.dev/v1
-kind: PipelineRun
-metadata:
-  name: dsp-example-init
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
-spec:
-  pipelineRef:
-    name: dsp-example
-  taskRunTemplate:
-    serviceAccountName: pipeline
-  timeouts:
-    pipeline: 1h0m0s
-  workspaces:
-  - name: source
-    volumeClaimTemplate:
-      metadata:
-        creationTimestamp: null
-      spec:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
-        volumeMode: Filesystem
-----
-
-. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-pipeline.yaml`.
-
-+
-.model-retrain.pipeline.yaml
+.model-retrain-pipeline.yaml
 [source,yaml]
 ----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: dsp-example
+  name: model-retrain
 spec:
   params:
     - default: 'https://github.com/redhat-ai-services/ai-accelerator-bootcamp.git'
@@ -453,7 +240,40 @@ spec:
     - name: source
 ----
 
-. Create file `tenants/parasol-insurance/dsp-example-pipeline/base/dsp-example-rbac.yaml`.
+. Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipelinerun.yaml` with the following content:
+
++
+.model-retrain-pipelinerun.yaml
+[source,yaml]
+----
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: model-retrain-init
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  pipelineRef:
+    name: model-retrain
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+  - name: source
+    volumeClaimTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        volumeMode: Filesystem
+----
+
+. Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-rbac.yaml` with the following content:
 
 +
 .model-retrain-rbac.yaml
@@ -484,3 +304,64 @@ rules:
     resources:
       - routes
 ----
+
+. Create file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml` with the following content:
+
++
+.execute-kfp-task.yaml
+[source,yaml]
+----
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: execute-kubeflow-pipeline
+spec:
+  description: >-
+    This task will execute a python script, triggering a kubeflow pipeline
+  params:
+    - name: IMAGE
+      description: The image used to execute the script
+      type: string
+    - name: TAG
+      description: The tag for the image
+      type: string
+      default: "latest"
+    - name: SCRIPT
+      description: The location of the script to be executed
+    - name: KUBEFLOW_ENDPOINT
+      description: The endpoint URL for Kubeflow
+      default: "https://ds-pipeline-dspa:8443"
+  steps:
+    - name: execute-python
+      image: $(inputs.params.IMAGE):$(inputs.params.TAG)
+      env:
+        - name: KUBEFLOW_ENDPOINT
+          value: $(inputs.params.KUBEFLOW_ENDPOINT)
+      script: |
+        python $(inputs.params.SCRIPT)
+----
+
+. In the `overlays` directory, create a `parasol-insurance-dev` directory.
+
+. In the `parasol-insurance-dev` directory, create a `kustomization.yaml` file with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+----
+
+. Commit and push the changes to the Git repository.
+
+. Wait for ArgoCD to sync the changes.
+
+. Navigate to the OpenShift console, and validate that the `model-retrain` pipeline is available in the `parasol-insurance` namespace.
+
+. Click on the `model-retrain` pipeline, and validate that there is a pipeline run, wait the pipeline run to complete
+
+. Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelens > Runs* has a new pipeline run with a name starting with `accident detection`.
