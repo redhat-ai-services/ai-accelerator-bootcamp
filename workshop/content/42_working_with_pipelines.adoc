@@ -21,7 +21,7 @@ In the parasol-insurance repository, there is a python notebook that re-trains a
 . In the `base` directory, create a `kustomization.yaml` file with the following content:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -40,7 +40,7 @@ resources:
 . Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-imagestream.yaml` with the following content:
 
 +
-.model-retrain-imagestream.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/model-retrain-imagestream.yaml
 [source,yaml]
 ----
 apiVersion: image.openshift.io/v1
@@ -52,7 +52,7 @@ metadata:
 . Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipeline.yaml` with the following content:
 
 +
-.model-retrain-pipeline.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipeline.yaml
 [source,yaml]
 ----
 apiVersion: tekton.dev/v1beta1
@@ -137,7 +137,7 @@ spec:
 . Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipelinerun.yaml` with the following content:
 
 +
-.model-retrain-pipelinerun.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/model-retrain-pipelinerun.yaml
 [source,yaml]
 ----
 apiVersion: tekton.dev/v1
@@ -170,7 +170,7 @@ spec:
 . Create file `tenants/parasol-insurance/model-training-pipeline/base/model-retrain-rbac.yaml` with the following content:
 
 +
-.model-retrain-rbac.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/model-retrain-rbac.yaml
 [source,yaml]
 ----
 kind: RoleBinding
@@ -202,7 +202,7 @@ rules:
 . Create file `tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml` with the following content:
 
 +
-.execute-kfp-task.yaml
+.tenants/parasol-insurance/model-training-pipeline/base/execute-kfp-task.yaml
 [source,yaml]
 ----
 apiVersion: tekton.dev/v1beta1
@@ -240,7 +240,7 @@ spec:
 . In the `parasol-insurance-dev` directory, create a `kustomization.yaml` file with the following content:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/model-training-pipeline/overlays/parasol-insurance-dev/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
