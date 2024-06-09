@@ -152,121 +152,86 @@ def train_model(datasets: dsl.Input[dsl.Dataset],
 Notice here the use of the `shutil` package to copy from the default output directory from the YOLO package to the output path of our `model_onnx` output parameter.
 ====
 
-##TODO: Add steps to convert from python script into pipeline steps##
-
-## Setup the pipelines server (DSPA).
-
-. Create a `data-science-pipelines` directory in the `parasol-insurance` tenand directory.
-
-. Create the `base` and `overlays` directories in the `data-science-pipelines` directory.
-
-. Create a directory `parasol-insurance-dev` in `data-science-pipelines/overlays`.
-
-. In the `base` directory, create a `kustomization.yaml` file with the following content:
+. Add the `train_model` task to the pipeline:
 
 +
-.kustomization.yaml
-[source,yaml]
+[source,python]
 ----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-namespace: parasol-insurance
-
-resources:
-  - dspa.yaml
-----
-
-. In the `base` directory, create a `dspa.yaml` file with the following content:
-
-+
-.dspa.yaml
-[source,yaml]
-----
-apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
-kind: DataSciencePipelinesApplication
-metadata:
-  name: dspa
-spec:
-  apiServer:
-    stripEOF: true
-    dbConfigConMaxLifetimeSec: 120
-    applyTektonCustomResource: true
-    deploy: true
-    enableSamplePipeline: false
-    autoUpdatePipelineDefaultVersion: true
-    archiveLogs: false
-    terminateStatus: Cancelled
-    enableOauth: true
-    trackArtifacts: true
-    collectMetrics: true
-    injectDefaultScript: true
-  database:
-    disableHealthCheck: false
-    mariaDB:
-      deploy: true
-      pipelineDBName: mlpipeline
-      pvcSize: 10Gi
-      username: mlpipeline
-  dspVersion: v2
-  objectStorage:
-    disableHealthCheck: false
-    enableExternalRoute: false
-    externalStorage:
-      basePath: ''
-      bucket: pipelines
-      host: 'minio.object-datastore.svc.cluster.local:9000'
-      port: ''
-      region: us-east-1
-      s3CredentialsSecret:
-        accessKey: AWS_ACCESS_KEY_ID
-        secretKey: AWS_SECRET_ACCESS_KEY
-        secretName: accident-model-data-conn
-      scheme: http
-  persistenceAgent:
-    deploy: true
-    numWorkers: 2
-  scheduledWorkflow:
-    cronScheduleTimezone: UTC
-    deploy: true
+@kfp.dsl.pipeline(
+    name="Accident Detection",
+)
+def accident_detection_pipeline(model_obc: str = "accident-detection"):
+    download_data_task = download_data(dataset_type="sample")
+    train_model(datasets=download_data_task.output)
 ----
 
 +
 [TIP]
 ====
-Your Data Science Cluster requires of a dspa, so that you can create pipelines.
-
-Before creating the dspa object, your Data Science Project shows a button to *Configure pipeline server*:
-
-image::images/41_working_with_pipelines/01-configure-pipeline-server.png[Configure pipeline server]
-
-Instead of creating the pipeline server configuration using the RHOAI method that you have seen in previous enablemens, in these steps you are using the GitOps method to create the pipeline server configuration.
+Notice how we use the output of the `download_data` task as the input of the `train_model` task.
 ====
 
-. In the `overlays/parasol-insurance-dev/` directory, create a `kustomization.yaml` file with the following content:
+. Save and run your notebook.
+
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+
+. Create a cell to upload the model to s3 using the `boto3` package, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`):
 
 +
-.kustomization.yaml
-[source,yaml]
+[source,python]
 ----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+@dsl.component(
+    base_image=base_image,
+    packages_to_install=["boto3"],
+)
+def upload_to_s3(model_onnx: dsl.Input[dsl.Model]):
+    import os
+    import boto3
+    from botocore.client import Config
 
-resources:
-  - ../../base
+    print("configuring s3 instance")
+    # Configuration
+    minio_url = "http://minio.object-datastore.svc.cluster.local:9000"
+    access_key = "minio"
+    secret_key = "minio123"
+
+    # Setting up the MinIO client
+    s3 = boto3.client(
+        's3',
+        endpoint_url=minio_url,
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        config=Config(signature_version='s3v4'),
+    )
+
+    for (dirpath, dirnames, filenames) in os.walk(model_onnx.path):
+        for file in filenames:
+            print(f"uploading file {dirpath}/{file}")
+            s3.upload_file(f"{dirpath}/{file}", "models",
+                           f"accident_model/{file}")
 ----
 
-. Commit and push the changes to the Git repository.
-
-. Wait for ArgoCD to sync the changes.
-
-. Validate that the `parasol-insurance` Data Science project allows to import pipelines under the pipelines tab.
+. Add the `upload_to_s3` task to the pipeline:
 
 +
-[TIP]
-====
-Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/41_working_with_pipelines_dspa[Branch for DSPA configuratons]
-====
+[source,python]
+----
+@kfp.dsl.pipeline(
+    name="Accident Detection",
+)
+def accident_detection_pipeline(model_obc: str = "accident-detection"):
+    download_data_task = download_data(dataset_type="sample")
+    train_model_task = train_model(datasets=download_data_task.output)
+    upload_to_s3(model_onnx=train_model_task.outputs["model_onnx"])
+----
+
+. Save and run your notebook.
+
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+
+. Validate that the model is uploaded to the s3 bucket, by navigating to the s3 bucket in the OpenShift console.
+
+. Validate the resulting script: The script should look like this: https://github.com/redhat-ai-services/ai-accelerator-bootcamp/blob/main/source_code/40_pipelines/train-car-rekon.py[train-car-rekon.py]
 
 ## Create a pipeline to train a model
 
