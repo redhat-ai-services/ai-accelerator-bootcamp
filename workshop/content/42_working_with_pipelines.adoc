@@ -12,8 +12,6 @@ In the parasol-insurance repository, there is a python notebook that re-trains a
 
 ##TODO: Add steps to convert from python script into pipeline steps##
 
-<<<<<<< HEAD:workshop/content/42_working_with_pipelines.adoc
-=======
 ## Setup the pipelines server (DSPA).
 
 . Create a `data-science-pipelines` directory in the `parasol-insurance` tenand directory.
@@ -128,7 +126,6 @@ resources:
 Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/41_working_with_pipelines_dspa[Branch for DSPA configuratons]
 ====
 
->>>>>>> 23bd4da ( adding tip for model_retrain_pipeline, Last step failed and may need work):workshop/content/41_working_with_pipelines.adoc
 ## Create a pipeline to train a model
 
 . Create a `model-training-pipeline` directory in the `parasol-insurance` tenand directory.
