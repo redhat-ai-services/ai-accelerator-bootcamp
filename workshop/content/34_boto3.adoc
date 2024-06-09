@@ -107,6 +107,7 @@ We have previously used a custom workbench to explore how to train a model. Now 
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: parasol-insurance
 
 resources:
   - standard-workbench-pvc.yaml
