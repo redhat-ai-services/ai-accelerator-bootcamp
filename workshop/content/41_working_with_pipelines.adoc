@@ -18,6 +18,8 @@ In the parasol-insurance repository, there is a python notebook that re-trains a
 
 . Create the `base` and `overlays` directories in the `data-science-pipelines` directory.
 
+. Create a directory `parasol-insurance-dev` in `data-science-pipelines/overlays`.
+
 . In the `base` directory, create a `kustomization.yaml` file with the following content:
 
 +
@@ -99,7 +101,7 @@ image::images/41_working_with_pipelines/01-configure-pipeline-server.png[Configu
 Instead of creating the pipeline server configuration using the RHOAI method that you have seen in previous enablemens, in these steps you are using the GitOps method to create the pipeline server configuration.
 ====
 
-. In the `overlays` directory, create a `kustomization.yaml` file with the following content:
+. In the `overlays/parasol-insurance-dev/` directory, create a `kustomization.yaml` file with the following content:
 
 +
 .kustomization.yaml
