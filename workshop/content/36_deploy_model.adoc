@@ -214,9 +214,11 @@ Validate changes against https://github.com/redhat-ai-services/ai-accelerator-qa
 
 [CAUTION]
 ====
-You have not entered the CHALLENGE PHASE of your project! You are now enabled! Your team lead has died! You must Deploy the model to prod using ideally fully using gitops. 
-- Level 1 Use minio ui to create your buckets and deploy your model serving rumtime!
-- Level 2 Use gitops to deploy your model to prod and deploy your model serving runtime!
-- Level 3 Train your own model and deploy it to prod and automate the uploading and model serving!
+You have now entered the CHALLENGE PHASE of your project! You are now enabled! Your team lead has died! You must Deploy the model to prod ideally using gitops. 
+
+ - Level 1 Use minio ui to create your buckets and deploy your model serving rumtime!
+ - Level 2 Use gitops to deploy your model to prod and deploy your model serving runtime!
+ - Level 3 Train your own model and deploy it to prod and automate the uploading and model serving!
+
 ====
 
