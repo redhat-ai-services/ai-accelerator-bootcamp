@@ -50,7 +50,7 @@ In our case, we want to set up a _parasol-insurance-dev_ overlay.
 +
 image::images/30_gitops_setup/01_change_repo_url.png[Change repoUrl]
 
-. Copy `componets/argocd/apps/overlays/rhoai-fast` and paste it as `components/argocd/apps/overlays/parasol-insurance-dev`.
+. Next lets create a new overlay named `parasol-insurance-dev`. Copy `componets/argocd/apps/overlays/rhoai-fast` and paste it as `components/argocd/apps/overlays/parasol-insurance-dev`.
 
 . Change the `line 7` of the `patch-cluster-config-app-of-apps.yaml` file to `path: parasol-insurance-dev`.
 
@@ -62,7 +62,7 @@ image::images/30_gitops_setup/02_patch_cluster_path.png[Patch cluster path]
 +
 image::images/30_gitops_setup/03_patch_applicationset.png[Patch application set]
 
-. Create a new folder under the `bootstrap/overlays` folder named `parasol-insurance-dev`.
+. Next, create a new folder under the `bootstrap/overlays` folder named `parasol-insurance-dev`.
 
 +
 image::images/parasol-insurance-dev-overlay.png[ParaSol Insurance Dev Overlay]
@@ -254,7 +254,7 @@ git commit -m "Add parasol-insurance-dev overlay"
 git push origin main
 ----
 
-. Run the bootstrap script by running the bootstrap.sh script
+. Make sure you are logged into the _**Dev**_ cluster and run the bootstrap script by running the bootstrap.sh script.
 +
 [source,terminal]
 ----
