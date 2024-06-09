@@ -40,11 +40,14 @@ modules:
       exit_sign: Deploy Model
     36_deploy_model:
       name: Deploy Model
+      exit_sign: Setup Pipeline Server
+    40_setup_pipeline_server:
+      name: Setup Pipeline Server
       exit_sign: Introduction to KFP Pipelines
-    40_introduction_to_kfp_pipelines:
+    41_introduction_to_kfp_pipelines:
       name: Introduction to KFP Pipelines
       exit_sign: Working with Pipelines
-    41_working_with_pipelines:
+    42_working_with_pipelines:
       name: Working with Pipelines
       exit_sign: Distributed Training
     50_distributed_training:

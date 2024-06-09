@@ -1,0 +1,113 @@
+# Setup the pipelines server
+
+In this section, you will learn how to setup the pipelines server in the Parasol Insurance tenant using ArgoCD.
+
+The data science pipelines server is a component of RHOAI that allows you to create, run, and monitor machine learning pipelines.
+
+## Setup the pipelines server (DSPA).
+
+. Create a `data-science-pipelines` directory in the `parasol-insurance` tenand directory.
+
+. Create the `base` and `overlays` directories in the `data-science-pipelines` directory.
+
+. Create a directory `parasol-insurance-dev` in `data-science-pipelines/overlays`.
+
+. In the `base` directory, create a `kustomization.yaml` file with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: parasol-insurance
+
+resources:
+  - dspa.yaml
+----
+
+. In the `base` directory, create a `dspa.yaml` file with the following content:
+
++
+.dspa.yaml
+[source,yaml]
+----
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
+kind: DataSciencePipelinesApplication
+metadata:
+  name: dspa
+spec:
+  apiServer:
+    stripEOF: true
+    dbConfigConMaxLifetimeSec: 120
+    applyTektonCustomResource: true
+    deploy: true
+    enableSamplePipeline: false
+    autoUpdatePipelineDefaultVersion: true
+    archiveLogs: false
+    terminateStatus: Cancelled
+    enableOauth: true
+    trackArtifacts: true
+    collectMetrics: true
+    injectDefaultScript: true
+  database:
+    disableHealthCheck: false
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 10Gi
+      username: mlpipeline
+  dspVersion: v2
+  objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
+    externalStorage:
+      basePath: ''
+      bucket: pipelines
+      host: 'minio.object-datastore.svc.cluster.local:9000'
+      port: ''
+      region: us-east-1
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: accident-model-data-conn
+      scheme: http
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true
+----
+
++
+[TIP]
+====
+Your Data Science Cluster requires of a dspa, so that you can create pipelines.
+
+Before creating the dspa object, your Data Science Project shows a button to *Configure pipeline server*:
+
+image::images/41_working_with_pipelines/01-configure-pipeline-server.png[Configure pipeline server]
+
+Instead of creating the pipeline server configuration using the RHOAI method that you have seen in previous enablemens, in these steps you are using the GitOps method to create the pipeline server configuration.
+====
+
+. In the `overlays/parasol-insurance-dev/` directory, create a `kustomization.yaml` file with the following content:
+
++
+.kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
+. Commit and push the changes to the Git repository.
+
+. Wait for ArgoCD to sync the changes.
+
+. Validate that the `parasol-insurance` Data Science project allows to import pipelines under the pipelines tab.
