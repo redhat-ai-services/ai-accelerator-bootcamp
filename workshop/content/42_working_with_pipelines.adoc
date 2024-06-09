@@ -10,6 +10,148 @@ In the parasol-insurance repository, there is a python notebook that re-trains a
 
 . Create a new notebook and name it `model-retraining-pipeline`.
 
+. Start the notebook with a cell to import the packages neccesary to work with `kfp` pipelines sdk:
+
++
+[source,python]
+----
+import kfp.compiler
+from kfp import dsl
+----
+
+. Add a cell to define the kubeflow endpoint, and the image that will be used to create containers that will execute each task:
+
++
+[source,python]
+----
+KUBEFLOW_ENDPOINT = 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
+PYTHON_IMAGE = '3.11-ubi9'
+----
+
+. Add a cell to define the task that will download the dataset (see the `retrieve_dataset` function defined at  https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb])
+
++
+[source,python]
+----
+@dsl.component(
+    base_image=PYTHON_IMAGE,
+    packages_to_install=["requests", "zipp"],
+)
+def download_data(dataset_type: str,
+                  datasets: dsl.Output[dsl.Dataset]):
+    import requests
+    import zipfile
+
+    URL = f"https://rhods-public.s3.amazonaws.com/sample-data/accident-data/accident-{dataset_type}.zip"
+
+    print("Downloading file...")
+    response = requests.get(URL, stream=True)
+    block_size = 1024
+    with open(f'./accident-{dataset_type}.zip', 'wb') as f:
+        for data in response.iter_content(block_size):
+            f.write(data)
+
+    print("Unzipping file...")
+    with zipfile.ZipFile(f'./accident-{dataset_type}.zip', 'r') as zip_ref:
+        zip_ref.extractall(path=datasets.path)
+    print("Done!")
+----
+
++
+[TIP]
+====
+Notice the output dataset parameter (`datasets: dsl.Output[dsl.Dataset]`), and how we use the path of such dataset to unzip the contents of the downloaded dataset.
+====
+
+. Create a cell to define the pipeline, and use the previously defined task:
+
++
+[source,python]
+----
+@kfp.dsl.pipeline(
+    name="Accident Detection",
+)
+def accident_detection_pipeline(model_obc: str = "accident-detection"):
+    download_data(dataset_type="sample")
+----
+
+. Create a cell to connect to the `KUBEFLOW_ENDPOINT`, and create your pipeline run:
+
++
+[source,python]
+----
+print(f"Connecting to kfp: {kubeflow_endpoint}")
+
+bearer_token = "sha256~P0wEh46fxWa4uzPKR-b3fhcnsyXvCju4GovRd2YNNKM"
+
+sa_ca_cert = "/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+if os.path.isfile(sa_ca_cert) and "svc" in kubeflow_endpoint:
+    ssl_ca_cert = sa_ca_cert
+else:
+    ssl_ca_cert = None
+
+client = kfp.Client(
+    host=kubeflow_endpoint,
+    existing_token=bearer_token,
+    ssl_ca_cert=ssl_ca_cert,
+)
+result = client.create_run_from_pipeline_func(
+    accident_detection_pipeline, arguments={}, experiment_name="accident-detection")
+----
+
++
+[IMPORTANT]
+====
+Provide your own token, you can find the token in the OpenShift Web Console by clicking on your username in the top right corner and selecting `Copy Login Command`.
+====
+
+. Save and run your notebook.
+
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+
+. Create a cell to train the model, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`). The contents of this cell were crafter after from a combination of functions from https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]; we recommend you to compare this cell with the original notebook contents:
+
++
+[source,python]
+----
+@dsl.component(
+    base_image=base_image,
+    packages_to_install=["ultralytics", "opencv-python-headless"],
+)
+def train_model(datasets: dsl.Input[dsl.Dataset],
+                model_onnx: dsl.Output[dsl.Model]):
+    import os
+    import shutil
+    import datetime
+    from ultralytics import YOLO
+
+    print("setting the symlink for the datasets")
+    os.symlink(datasets.path, "/opt/app-root/src/datasets")
+
+    # Load model
+    print("using a base model to start the training")
+    model = YOLO('yolov8m.pt')  # load a pretrained model (recommended for training)
+    print("training the model")
+    model.train(data=f'{datasets.path}/accident-sample/data.yaml', 
+                          epochs=1, imgsz=640, batch=2)
+
+    print("saving the file as onnx")
+
+    # create runs/detect/train/weights/best.onnx
+    YOLO("/opt/app-root/src/runs/detect/train/weights/best.pt").export(format="onnx")
+
+    # save runs/detect/train/weights/best.onnx as {model_onnx.path}/accident-detection_{timestamp}.onnx
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M")
+    os.makedirs(model_onnx.path, exist_ok=True)
+    shutil.copy('/opt/app-root/src/runs/detect/train/weights/best.onnx',
+                f'{model_onnx.path}/accident-detection_{timestamp}.onnx')
+----
+
+[TIP]
+====
+Notice here the use of the `shutil` package to copy from the default output directory from the YOLO package to the output path of our `model_onnx` output parameter.
+====
+
 ##TODO: Add steps to convert from python script into pipeline steps##
 
 ## Setup the pipelines server (DSPA).

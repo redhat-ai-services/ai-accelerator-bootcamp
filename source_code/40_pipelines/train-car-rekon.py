@@ -21,9 +21,7 @@ def download_data(dataset_type: str,
     import requests
     import zipfile
 
-    rhods_public = "rhods-public.s3.amazonaws.com"
-    dataset_path = f"sample-data/accident-data/accident-{dataset_type}.zip"
-    URL = f"https://{rhods_public}/{dataset_path}"
+    URL = f"https://rhods-public.s3.amazonaws.com/sample-data/accident-data/accident-{dataset_type}.zip"
 
     print("Downloading file...")
     response = requests.get(URL, stream=True)
@@ -36,7 +34,6 @@ def download_data(dataset_type: str,
     with zipfile.ZipFile(f'./accident-{dataset_type}.zip', 'r') as zip_ref:
         zip_ref.extractall(path=datasets.path)
     print("Done!")
-
 
 @dsl.component(
     base_image=base_image,
