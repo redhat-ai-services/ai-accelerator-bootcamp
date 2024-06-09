@@ -21,7 +21,7 @@ def download_data(dataset_type: str,
     import requests
     import zipfile
 
-    rhods_public = "https://rhods-public.s3.amazonaws.com"
+    rhods_public = "rhods-public.s3.amazonaws.com"
     dataset_path = f"sample-data/accident-data/accident-{dataset_type}.zip"
     URL = f"https://{rhods_public}/{dataset_path}"
 
