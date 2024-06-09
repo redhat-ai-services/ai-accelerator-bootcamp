@@ -75,7 +75,7 @@ resources:
 The same content will work for both overlays (dev and prod)
 ====
 
-
+Commit your changes to your fork of ai-accelerator project. Let ArgoCD sync and deploy minio.
 You should find your minio resource in the _**object-datastore**_ namespace.
 
 The *minio-ui* route can be found in _**object-datastore**_ namespace under _**Routes**_. Open this in a new tab and log in with `minio:minio123`.
