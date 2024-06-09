@@ -306,6 +306,11 @@ image::images/standard-workbench.png[Standard workbench]
 
 . As you can see there is a workbench running named _standard-workbench_. 
 
+. Use the kebab menu and select `Edit workbench`. View the _Environment Variables_ and notice how the minio values are loaded as environment variables. Also notice in the _Data Connection_ section that it is selected to the minio data connection.
+
++
+image::images/Workbench_env_vars.png[]
+
 . Launch the workbench and wait for the Jupyter notebook to spin up.
 
 . Create a new Notebook. 
