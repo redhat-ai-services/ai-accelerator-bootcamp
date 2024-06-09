@@ -285,6 +285,12 @@ resources:
 
 . Push the changes to git, and wait for the synchrnization to complete.
 
++
+[TIP]
+====
+Validate against  https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/34_boto3_standard_workbench[boto3 standard_workbench branch]
+====
+
 . Navigate to RHOAI dashboard, and you should see an `Standard Workbench` available in the `Workbenches` tab.
 
 +
