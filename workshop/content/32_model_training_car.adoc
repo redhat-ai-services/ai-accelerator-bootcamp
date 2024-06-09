@@ -15,9 +15,10 @@ image::images/31_custom_notebook/01_custom_workbench.png[Custom Workbench]
 
 . Open Workbench and git clone parasol insuance repository https://github.com/rh-aiservices-bu/parasol-insurance.git
 
++
 image::images/Git_Clone_Parasol_Insurance.png[click on source code button and enter repo url]
 
-. Navigate to parasol-insurance/lab-materials/04 and run the notebooks 04-01-over-approach, 04-02-car-recognition, 04-03-model-retraining and 04-04-accident-recog
+. Navigate to `parasol-insurance/lab-materials/04` and run the notebooks 04-01-over-approach, 04-02-car-recognition, 04-03-model-retraining and 04-04-accident-recog.
 
 [NOTE]
 ====
