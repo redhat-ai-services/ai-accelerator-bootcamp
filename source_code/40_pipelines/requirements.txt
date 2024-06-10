@@ -1,11 +1,9 @@
-kfp
-requests
-ultralytics
 boto3
-
-python-dotenv
+kfp
+opencv-python-headless
 pandas
+python-dotenv
+requests
 scikit-learn
-
+ultralytics
 zipp
-opencv-python
