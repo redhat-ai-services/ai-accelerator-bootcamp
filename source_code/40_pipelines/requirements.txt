@@ -1,9 +1,18 @@
-boto3
+# pipeline requirements
 kfp
-opencv-contrib-python-headless
-pandas
 python-dotenv
-requests
+
+# download data task
+requests~=2.32.0
+zipp~=3.19.0
+
+# train task
+opencv-contrib-python-headless~=4.10.0
+ultralytics~=8.2.0
+
+# upload to s3 task
+boto3
+
+# other requirements
+pandas
 scikit-learn
-ultralytics
-zipp
