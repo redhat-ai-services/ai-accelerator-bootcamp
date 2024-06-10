@@ -14,7 +14,7 @@ base_image = os.getenv(
 
 @dsl.component(
     base_image=base_image,
-    packages_to_install=["requests", "zipp"],
+    packages_to_install=["requests~=2.32.0", "zipp~=3.19.0"],
 )
 def download_data(dataset_type: str,
                   datasets: dsl.Output[dsl.Dataset]):
@@ -37,7 +37,7 @@ def download_data(dataset_type: str,
 
 @dsl.component(
     base_image=base_image,
-    packages_to_install=["ultralytics", "opencv-contrib-python-headless"],
+    packages_to_install=["ultralytics~=8.2.0", "opencv-contrib-python-headless~=4.10.0"],
 )
 def train_model(datasets: dsl.Input[dsl.Dataset],
                 model_onnx: dsl.Output[dsl.Model]):
