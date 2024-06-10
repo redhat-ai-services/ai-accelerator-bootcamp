@@ -484,5 +484,5 @@ resources:
 +
 [TIP]
 ====
-Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/41_working_with_pipelines_model_retrain[Branch for model_retrain pipeline config]
+Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/42_working_with_pipeline[Branch for model_retrain pipeline config]
 ====
