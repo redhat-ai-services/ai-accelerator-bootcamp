@@ -136,6 +136,6 @@ if __name__ == "__main__":
     result = client.create_run_from_pipeline_func(
         accident_detection_pipeline, arguments={},
         experiment_name="accident detection")
+    print(f"Starting pipeline run with run_id: {result.run_id}")
     # Wait 20 minutes for the pipeline to complete
     client.wait_for_run_completion(run_id=result.run_id, timeout=1200)
-    print(f"Starting pipeline run with run_id: {result.run_id}")
