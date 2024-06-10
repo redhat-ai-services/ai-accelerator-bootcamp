@@ -37,7 +37,7 @@ def download_data(dataset_type: str,
 
 @dsl.component(
     base_image=base_image,
-    packages_to_install=["ultralytics", "opencv-python-headless"],
+    packages_to_install=["ultralytics", "opencv-contrib-python-headless"],
 )
 def train_model(datasets: dsl.Input[dsl.Dataset],
                 model_onnx: dsl.Output[dsl.Model]):

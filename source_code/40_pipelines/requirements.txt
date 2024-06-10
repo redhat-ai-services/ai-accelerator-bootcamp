@@ -1,6 +1,6 @@
 boto3
 kfp
-opencv-python-headless
+opencv-contrib-python-headless
 pandas
 python-dotenv
 requests
