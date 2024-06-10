@@ -115,8 +115,8 @@ Provide your own token, you can find the token in the OpenShift Web Console by c
 [source,python]
 ----
 @dsl.component(
-    base_image=base_image,
-    packages_to_install=["ultralytics", "opencv-python-headless"],
+    base_image=PYTHON_IMAGE,
+    packages_to_install=["ultralytics", "opencv-contrib-python-headless"],
 )
 def train_model(datasets: dsl.Input[dsl.Dataset],
                 model_onnx: dsl.Output[dsl.Model]):
@@ -181,7 +181,7 @@ Notice how we use the output of the `download_data` task as the input of the `tr
 [source,python]
 ----
 @dsl.component(
-    base_image=base_image,
+    base_image=PYTHON_IMAGE,
     packages_to_install=["boto3"],
 )
 def upload_to_s3(model_onnx: dsl.Input[dsl.Model]):
