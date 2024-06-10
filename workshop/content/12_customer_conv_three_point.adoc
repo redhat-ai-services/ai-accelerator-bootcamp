@@ -22,3 +22,7 @@ image::images/Three-Point_AI-Accel-Soln.png[]
 ** Click 'Import' and wait for the import to complete
 . The tabs are organized in the order you should complete them, from left to right.
 ** Each tab has tab specific instructions to reference that go into more detail then the high level instructions here.
+
+### Additional training
+
+If you are not familiar with the three-point estimate, review the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinklp%3D55631065[3PE training course] on the Red Hat Learning Platform.
