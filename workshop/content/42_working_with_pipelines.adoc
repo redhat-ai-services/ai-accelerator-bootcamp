@@ -299,7 +299,7 @@ spec:
     - default: 3.11-ubi9
       name: PYTHON_IMAGE
       type: string
-    - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/dsp-example'
+    - default: 'image-registry.openshift-image-registry.svc:5000/parasol-insurance/model-retrain'
       name: TARGET_IMAGE
       type: string
     - default: 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
