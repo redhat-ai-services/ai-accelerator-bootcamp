@@ -12,7 +12,7 @@ If you need a reference, the ai-accelerator project has minio set up in under th
 . Create a `object-datastore.yaml` file in the `tenants/parasol-insurance/namespaces/base` directory with the following content:
 
 +
-.object-datastore.yaml
+.tenants/parasol-insurance/namespaces/bases/object-datastore.yaml
 [source,yaml]
 ----
 apiVersion: v1
@@ -26,7 +26,7 @@ metadata:
 . Modify the `tenants/parasol-insurance/namespaces/base/kustomization.yaml` file to include the new namespace:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/namespaces/base/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -44,7 +44,7 @@ resources:
 . Create a file named `kustomization.yaml` inside the `minio/base` directory with the following content:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/minio/base/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -59,7 +59,17 @@ resources:
 . Add the overlay for `parasol-insurance-dev`, and `parasol-insurance-prod` with the following `kustomization.yaml` file content:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/minio/overlays/parasol-insurance-dev/kustomization.yaml
+[source,yaml]
+----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+----
+
+.tenants/parasol-insurance/minio/overlays/parasol-insurance-prod/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -102,7 +112,7 @@ We have previously used a custom workbench to explore how to train a model. Now 
 . Create a file named `kustomization.yaml` inside the `standard-workbench/base` directory with the following content:
 
 +
-.kustomization.yaml
+.tenants/parasol-insurance/standard-workbench/base/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -118,7 +128,7 @@ resources:
 . Create a file named `standard-workbench-pvc.yaml` inside the `standard-workbench/base` directory with the following content:
 
 +
-.standard-workbench-pvc.yaml
+.tenants/parasol-insurance/standard-workbench/base/standard-workbench-pvc.yaml
 [source,yaml]
 ----
 kind: PersistentVolumeClaim
@@ -138,7 +148,7 @@ spec:
 . Create a file named `minio-data-connection.yaml` inside the `standard-workbench/base` directory with the following content:
 
 +
-.minio-data-connection.yaml
+.tenants/parasol-insurance/standard-workbench/base/minio-data-connection.yaml
 [source,yaml]
 ----
 kind: Secret
@@ -163,7 +173,7 @@ type: Opaque
 . Create a file named `standard-workbench-notebook.yaml` inside the `standard-workbench/base` directory with the following content:
 
 +
-.standard-workbench-notebook.yaml
+.tenants/parasol-insurance/standard-workbench/base/standard-workbench-notebook.yaml
 [source,yaml]
 ----
 apiVersion: kubeflow.org/v1
@@ -273,7 +283,7 @@ spec:
 . Create a file named `kustomization.yaml` inside the `standard-workbench/overlays/parasol-insurance-dev` directory with the following content:
 
 +
-.kustomization.yaml
+.tenants/standard-workbench/overlays/parasol-insurance-dev/kustomization.yaml
 [source,yaml]
 ----
 apiVersion: kustomize.config.k8s.io/v1beta1
