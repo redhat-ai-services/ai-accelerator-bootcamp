@@ -100,3 +100,10 @@ The substitution i choose assure unique-ness on any given point in time, so  you
 ## Other useful commands
 
 * Covert ipython notebook to script: jupyter nbconvert --to script config_template.ipynb
+
+## Useful links shared during bootcamp. 
+
+https://gitlab.consulting.redhat.com/ai-practice/awesome-red-hat-ai[awesome Red Hat AI]
+https://rh-aiservices-bu.github.io/parasol-insurance/modules/index.html[Parsol Insurance Demo]
+https://github.com/opendatahub-io-contrib/workbench-images[Open Data Hub Workbench Images]
+http://quay.io/modh[RH supported images] 
