@@ -107,3 +107,4 @@ https://gitlab.consulting.redhat.com/ai-practice/awesome-red-hat-ai[awesome Red 
 https://rh-aiservices-bu.github.io/parasol-insurance/modules/index.html[Parsol Insurance Demo]
 https://github.com/opendatahub-io-contrib/workbench-images[Open Data Hub Workbench Images]
 http://quay.io/modh[RH supported images] 
+https://github.com/rh-aiservices-bu/gpu-partitioning-guide[GPU partitioning]
