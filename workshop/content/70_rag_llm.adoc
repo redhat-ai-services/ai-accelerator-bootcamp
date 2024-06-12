@@ -66,16 +66,25 @@ Combining RAG and fine-tuning can be a powerful approach. By fine-tuning an LLM 
 ## How RAG with LLM works
 ### Retriever and Knowledge Base and Text Embeddings
 The process of getting information from the knowledge base is as such:
+
 1. The user inputs a question.
+
 2. The user query gets passed to the RAG module. 
+
 3. The RAG module connects to knowledge base and grabs pieces of information that are relevant to user query and creates a prompt for the LLM. 
+
 4. The prompt then gets passed to the LLM.
+
 5. LLM's answer gets passed back to the user.
 
 In RAG, the data is stored (usually) in a vector database. The process is as follows:
+
 1. Load the documents or raw information. The documents are collected into a ready to parse format such as text. (LLMs understand text)
+
 2. Chunk or split the documents. We can't dump all the documents to the LLM. Smaller chunks allows the LLM to consume better and relevant information.
+
 3. Take these chunks, and translate it to a vector or a set of numbers that represent the meaning of the text (text embeddings).
+
 4. Load these vectors into the vector database.
 
 #### What are Text Embeddings?
