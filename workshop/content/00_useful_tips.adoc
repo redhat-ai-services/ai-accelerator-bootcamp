@@ -101,6 +101,12 @@ The substitution i choose assure unique-ness on any given point in time, so  you
 
 * Covert ipython notebook to script: jupyter nbconvert --to script config_template.ipynb
 
+## using ROSA
+
+* your env is provisioned log into the ROSA console to generate your login command or connect to your bastion host. 
+
+image::images/awsrosaclipping.png[ROSA credentials]
+
 ## Useful links shared during bootcamp. 
 
 https://gitlab.consulting.redhat.com/ai-practice/awesome-red-hat-ai[awesome Red Hat AI]
