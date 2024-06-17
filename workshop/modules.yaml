@@ -58,3 +58,5 @@ modules:
       exit_sign: RAG with LLM
     70_rag_llm:
       name: RAG with LLM
+    02_argocd_url_fix:
+      name: ArgoCD URL fix

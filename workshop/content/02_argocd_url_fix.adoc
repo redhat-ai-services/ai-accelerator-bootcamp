@@ -1,0 +1,10 @@
+## ArgoCD 
+
+There is currently an issue where after a cluster shutdown your argoCD url stops working. There is a script in source_code/00_useful_tips/ for your convenience, the commands to recovery are also below.  
+
+```bash
+oc delete argocd --all -n openshift-gitops
+oc delete pods --all -n openshift-gitops-operator
+```
+
+Rerun the _**bootstrap.sh**_ script and choose the correct overlay.
