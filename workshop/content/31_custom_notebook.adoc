@@ -14,6 +14,22 @@ The best and recommended solution in this case is to create a custom notebook. R
 
 . Install Podman and log into https://quay.io[quay.io]
 
++
+.If you get an error saying your account is already associated with an existing Quay account.
+[%collapsible]
+====
+If you get this error: 
+
+_The e-mail address your-username@redhat.com is already associated with an existing Quay account. Please log in with your username and password and associate your Red Hat account to use it in the future._
+
+The error message you see can be remedied by the following steps:
+
+* Please go to https://recovery.quay.io/signin[https://recovery.quay.io/signin/] and sign in with your existing Quay.io email address and password.
+* Once in, open account settings, click on "External logins" on the left side, and then on the "Attach" link.
+* Go to quay.io/signin and enter your RHCP data and you should be set, RHSSO button should work now. If needed try to Detach and reattach when in recovery mode.
+All accounts in Quay must have unique e-mail addresses and usernames. The issue here is that there exists a user under e-mail (your email address) in Quay's db. Logging in with a user with the same e-mail address will not work because users are not connected via a special table in Quay's db and Quay will perceive logging in via that button as though a new user is coming in. Quay will then check if the e-mail address is unique and will find that it's not and will error out.
+====
+
 . Clone the bootcamp git repository with the following command:
 
 +
@@ -41,7 +57,26 @@ podman build -t quay.io/{quay id}/custom_notebook .
 +
 WARNING: if using an M-powered Mac, build with `podman build -t quay.io/{quay id}/custom_notebook . --platform linux/amd64`
 
-. After the image is built successfully, push it to your quay repository. Replace {quay id} with your quay id
+. After the image is built successfully, push it to your quay repository. Before pushing, log into quay.io:
+
++
+[source,terminal]
+----
+podman login quay.io
+----
+
++
+.Generate quay.io cli password from settings
+[%collapsible]
+====
+Log into https://quay.io[quay.io] and go to _**Account Settings**_ in the top right. In the Account settings, _**Generate Encrypted Password**_ in order for you to login using the command line. Use this when logging into quay.io from podman
+
+image::images/quay_cli_password.png[]
+
+====
+
+. Push the image to your quay repository:
+Replace {quay id} with your quay id
 
 +
 [source,terminal]
