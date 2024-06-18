@@ -352,6 +352,10 @@ spec:
 
 You'll need a `HUGGING_FACE_HUB_TOKEN` to download and use the LLM. You can get this by creating an account on https://huggingface.co/[Hugging Face] and creating an access token in the https://huggingface.co/settings/tokens [Settings>Access Tokens] page. Insert your token in the `env` section.
 
+Once logged in, you'll also need to go to the https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2[model page] on HuggingFace and agree to share your contact information to access the model.
+
+image::images/huggingface_agree_and_access.png[]
+
 .vLLM Deployment
 [%collapsible]
 ====
