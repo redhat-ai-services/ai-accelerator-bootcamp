@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/redhat-saia/phoenix
+  tag: 1.0.0
+  pullPolicy: IfNotPresent
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+fullnameOverride: phoenix

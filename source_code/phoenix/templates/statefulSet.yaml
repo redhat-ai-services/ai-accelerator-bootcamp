@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "phoenix.fullname" . }}
+  labels:
+    {{- include "phoenix.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "phoenix.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
+      labels:
+        {{- include "phoenix.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: phoenix
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 6006
+          protocol: TCP
+        - containerPort: 4317
+          protocol: TCP
+        - containerPort: 9090
+          protocol: TCP
+        command:
+        - python
+        args:
+        - -m
+        - phoenix.server.main
+        - serve
+        envFrom:
+          - configMapRef:
+              name: phoenix-config-map
+        volumeMounts:
+        - mountPath: "/var/lib/phoenix"
+          name: phoenix-data
+      volumes:
+        - name: phoenix-data
+          persistentVolumeClaim:
+            claimName: phoenix-data-claim
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

@@ -1,0 +1,18 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: phoenix-data-claim
+  labels:
+    {{- include "labels" . | nindent 4 }}
+  finalizers:
+    - kubernetes.io/pvc-protection
+spec:
+  storageClassName: gp3-csi
+  resources:
+    requests:
+      storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+...

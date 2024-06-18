@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: phoenix-config-map
+  labels:
+    {{- include "labels" . | nindent 4 }}
+data:
+  OPENAI_API_KEY: ''
+  COLLECTOR_ENDPOINT: "http://phoenix:6006/v1/traces"
+  PROD_CORS_ORIGIN: "http://localhost:3000"
+  INSTRUMENT_LLAMA_INDEX: 'true'
+  PHOENIX_WORKING_DIR: '/var/lib/phoenix'
+  NUMBA_CACHE_DIR: '/tmp'
+  PHOENIX_PORT: '6006'
+  PHOENIX_GRPC_PORT: '4317'
+  PHOENIX_HOST: '0.0.0.0'
+  PHOENIX_ENABLE_PROMETHEUS: 'true'
+  PHOENIX_SERVER_INSTRUMENTATION_OTLP_TRACE_COLLECTOR_HTTP_ENDPOINT: ''
+  PHOENIX_SERVER_INSTRUMENTATION_OTLP_TRACE_COLLECTOR_GRPC_ENDPOINT: ''
+  PHOENIX_NOTEBOOK_ENV: 'ocpai'
+  PHOENIX_PROJECT_NAME: 'parasol-insurance'
+binaryData: {}
+immutable: false
