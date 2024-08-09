@@ -1,12 +1,9 @@
 import os
-
 import kfp.compiler
-from dotenv import load_dotenv
 from kfp import dsl
 
-load_dotenv(override=True)
-
 kubeflow_endpoint = os.environ["KUBEFLOW_ENDPOINT"]
+#kubeflow_endpoint = 'https://ds-pipeline-dspa.parasol-insurance.svc.cluster.local:8443'
 base_image = os.getenv(
     "BASE_IMAGE",
     "image-registry.openshift-image-registry.svc:5000/openshift/python:latest")
@@ -80,7 +77,7 @@ def upload_to_s3(model_onnx: dsl.Input[dsl.Model]):
 
     print("configuring s3 instance")
     # Configuration
-    minio_url = "http://minio.object-datastore.svc.cluster.local:9000"
+    minio_url = "http://minio.parasol-insurance.svc.cluster.local:9000"
     access_key = "minio"
     secret_key = "minio123"
 
@@ -112,18 +109,18 @@ def accident_detection_pipeline(model_obc: str = "accident-detection"):
 if __name__ == "__main__":
     print(f"Connecting to kfp: {kubeflow_endpoint}")
 
-    sa_token_path = "/run/secrets/kubernetes.io/serviceaccount/token"
-    if os.path.isfile(sa_token_path):
+    sa_token_path = "/run/secrets/kubernetes.io/serviceaccount/token"  # noqa: S105
+    if "BEARER_TOKEN" in os.environ:
+        bearer_token = os.environ["BEARER_TOKEN"]
+    elif os.path.isfile(sa_token_path):
         with open(sa_token_path) as f:
             bearer_token = f.read().rstrip()
-    else:
-        bearer_token = os.environ["BEARER_TOKEN"]
 
     # Check if the script is running in a k8s pod
     # Get the CA from the service account if it is
     # Skip the CA if it is not
     sa_ca_cert = "/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
-    if os.path.isfile(sa_ca_cert):
+    if os.path.isfile(sa_ca_cert) and "svc" in kubeflow_endpoint:
         ssl_ca_cert = sa_ca_cert
     else:
         ssl_ca_cert = None
@@ -133,9 +130,7 @@ if __name__ == "__main__":
         existing_token=bearer_token,
         ssl_ca_cert=ssl_ca_cert,
     )
-    result = client.create_run_from_pipeline_func(
-        accident_detection_pipeline, arguments={},
-        experiment_name="accident detection")
+    result = client.create_run_from_pipeline_func(accident_detection_pipeline, arguments={}, experiment_name="accident_detection")
     print(f"Starting pipeline run with run_id: {result.run_id}")
     # Wait 20 minutes for the pipeline to complete
     client.wait_for_run_completion(run_id=result.run_id, timeout=1200)
