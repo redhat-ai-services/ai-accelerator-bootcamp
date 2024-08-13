@@ -81,6 +81,7 @@ def accident_detection_pipeline(model_obc: str = "accident-detection"):
 [source,python]
 ----
 print(f"Connecting to kfp: {KUBEFLOW_ENDPOINT}")
+import os
 
 bearer_token = "sha256~P0wEh46fxWa4uzPKR-b3fhcnsyXvCju4GovRd2YNNKM"
 
@@ -173,7 +174,7 @@ Notice how we use the output of the `download_data` task as the input of the `tr
 
 . Save and run your notebook.
 
-. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 . Create a cell to upload the model to s3 using the `boto3` package, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`):
 
@@ -227,7 +228,7 @@ def accident_detection_pipeline(model_obc: str = "accident-detection"):
 
 . Save and run your notebook.
 
-. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 . Validate that the model is uploaded to the s3 bucket, by navigating to the s3 bucket in the OpenShift console.
 
@@ -479,7 +480,7 @@ resources:
 
 . Click on the `model-retrain` pipeline, and validate that there is a pipeline run, wait the pipeline run to complete
 
-. Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelines > Runs* has a new pipeline run with a name starting with `accident detection`.
+. Navigate to the RHOAI dashboard -> *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 +
 [TIP]

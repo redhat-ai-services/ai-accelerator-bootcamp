@@ -67,8 +67,10 @@ image::images/Compiled_pipeline.png[]
 
 +
 `python pipelines/02_submitted_pipeline_via_route.py`
-
-This will create a pipeline and also submit a run. To view this run go to RHOAI into Data Science Pipelines and check the Runs section.
++
+This will create a pipeline and also submit a run. To view this run go to `RHOAI Dashboard` -> `Experiments` -> `Experiments and runs`.
++
+image::images/41_working_with_pipelines/pipeline_runs.png[]
 
 [start=4]
 . The next file, `03_outputs_pipeline.py`, introduces the output capability. Run it in the notebook terminal with the below command and check the output in the Runs section in RHOAI:
