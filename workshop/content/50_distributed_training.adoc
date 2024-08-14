@@ -526,7 +526,7 @@ You can iterate over the `client.get_job_status(submission_id)` instruction to c
 
 [source,python]
 ----
-while client.get_job_status(submission_id) != "Succeeded":
+while client.get_job_status(submission_id).upper() != "SUCCEEDED":
     pass
 print("Job Succeeded")
 ----
