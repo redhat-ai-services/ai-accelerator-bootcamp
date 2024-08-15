@@ -110,7 +110,7 @@ Provide your own token, you can find the token in the OpenShift Web Console by c
 
 . Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
 
-. Create a cell to train the model, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`). The contents of this cell were crafter after from a combination of functions from https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]; we recommend you to compare this cell with the original notebook contents:
+. Create a cell to train the model, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`). The contents of this cell were crafted after from a combination of functions from https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]; we recommend you to compare this cell with the original notebook contents:
 
 +
 [source,python]

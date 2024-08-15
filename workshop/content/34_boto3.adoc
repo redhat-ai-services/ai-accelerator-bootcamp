@@ -79,7 +79,7 @@ resources:
   - ../../base
 ----
 
-+
+
 [TIP]
 ====
 The same content will work for both overlays (dev and prod)
