@@ -2,7 +2,7 @@
 
 ## Need for custom notebooks
 
-RHOAI provides many pre-built notebooks like Standard Data Science notebook, Tensorflow notebook, Pytorch notebook etc. Data scientists can spin up these notebooks and start runnings their experiments and creating their machine learning models without much set up.
+RHOAI provides many pre-built notebooks like Standard Data Science notebook, Tensorflow notebook, Pytorch notebook etc. Data scientists can spin up these notebooks and start running their experiments and creating their machine learning models without much set up.
 
 These inbuilt notebooks come with most of the packages that one would need to run their Data Science projects. But the world of Data Science and Machine Learning is vast and there might be a need to download other python packages.
 

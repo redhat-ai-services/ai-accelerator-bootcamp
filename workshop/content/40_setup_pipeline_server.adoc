@@ -84,7 +84,7 @@ spec:
 +
 [TIP]
 ====
-Your Data Science Cluster requires of a dspa, so that you can create pipelines.
+Your Data Science Cluster requires a dspa, so that you can create pipelines.
 
 Before creating the dspa object, your Data Science Project shows a button to *Configure pipeline server*:
 
