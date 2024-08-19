@@ -79,7 +79,7 @@ resources:
   - ../../base
 ----
 
-+
+
 [TIP]
 ====
 The same content will work for both overlays (dev and prod)
@@ -423,7 +423,7 @@ def upload_file(file_path, bucket_name, object_name):
 from ultralytics import YOLO
 model = YOLO("https://rhods-public.s3.amazonaws.com/demo-models/ic-models/accident/accident_detect.onnx", task="detect")
 # Upload the file
-upload_file('accident_detect.onnx', 'models', 'accident_model/accident_detect.onnx')
+upload_file('weights/accident_detect.onnx', 'models', 'accident_model/accident_detect.onnx')
 ----
 
 . View the contents of the bucket

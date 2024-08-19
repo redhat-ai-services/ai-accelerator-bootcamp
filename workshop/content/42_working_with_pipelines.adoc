@@ -81,6 +81,7 @@ def accident_detection_pipeline(model_obc: str = "accident-detection"):
 [source,python]
 ----
 print(f"Connecting to kfp: {KUBEFLOW_ENDPOINT}")
+import os
 
 bearer_token = "sha256~P0wEh46fxWa4uzPKR-b3fhcnsyXvCju4GovRd2YNNKM"
 
@@ -109,7 +110,7 @@ Provide your own token, you can find the token in the OpenShift Web Console by c
 
 . Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
 
-. Create a cell to train the model, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`). The contents of this cell were crafter after from a combination of functions from https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]; we recommend you to compare this cell with the original notebook contents:
+. Create a cell to train the model, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`). The contents of this cell were crafted after from a combination of functions from https://github.com/rh-aiservices-bu/parasol-insurance/blob/dev/lab-materials/04/04-03-model-retraining.ipynb[04-03-model-retraining.ipynb]; we recommend you to compare this cell with the original notebook contents:
 
 +
 [source,python]
@@ -173,7 +174,7 @@ Notice how we use the output of the `download_data` task as the input of the `tr
 
 . Save and run your notebook.
 
-. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 . Create a cell to upload the model to s3 using the `boto3` package, organize this cell to appear before the cell that defines the pipeline (`@kfp.dsl.pipeline`):
 
@@ -227,7 +228,7 @@ def accident_detection_pipeline(model_obc: str = "accident-detection"):
 
 . Save and run your notebook.
 
-. Validate that the pipeline is running, using the RHOAI dashboard, navigate to the *pipeline runs* of the *parasol-insurance* data science project: You should find a run with a name starting with *accident-detection*
+. Validate that the pipeline is running, using the RHOAI dashboard, navigate to *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 . Validate that the model is uploaded to the s3 bucket, by navigating to the s3 bucket in the OpenShift console.
 
@@ -479,10 +480,53 @@ resources:
 
 . Click on the `model-retrain` pipeline, and validate that there is a pipeline run, wait the pipeline run to complete
 
-. Navigate to the RHOAI dashboard, and validate that the *Data Science Pipelines > Runs* has a new pipeline run with a name starting with `accident detection`.
+. Navigate to the RHOAI dashboard -> *Experiments* -> *Experiments and runs*: You should find a run with a name starting with *accident-detection*
 
 +
 [TIP]
 ====
 Validate your code against https://github.com/redhat-ai-services/ai-accelerator-qa/pull/new/42_working_with_pipeline[Branch for model_retrain pipeline config]
 ====
+
+## Experiments 
+A pipeline experiment is a workspace where you can try different configurations of your pipelines. You can use experiments to organize your runs into logical groups. 
+
+### Experiments and Runs
+
+. Navigate to RHOAI Dasboard, click on *Experiments* > *Experiments and Runs*. Validate that new experiment `accident_detection` is created
+
+image::images/41_working_with_pipelines/experiments_runs.png[]
+
+. Click on the experiment `accident_detection` to view pipeline runs. 
+
+image::images/41_working_with_pipelines/pipeline_runs.png[]
+
+. Click on each pipeline run to view more details. 
+
+image::images/41_working_with_pipelines/pipeline_run_details.png[]
+
+. We can schedule periodic pipeline runs for an experiment. Click on 'Schedules'. Click on 'Create Schedule'. Please fill following details: 
+* *Experiment:* We can choose an existing Experiment or create a new Experiment. 
+* *Name:* Name for the schedule 
+* *Trigger Type:* Periodic
+* *Run Every:* 1 hour
+* *Start Date:* Start date for the schedule
+* *End Date:* End Date for the schedule
+* *Pipeline:* Name of the pipeline 
+* *Pipeline version:* Version of the pipeline
+
+image::images/41_working_with_pipelines/schedule-1.png[]
+
+image::images/41_working_with_pipelines/schedule-2.png[]
+
+## Executions
+
+On Executions page, you can view the execution details of each pipeline task execution, such as its name, status, unique ID, and execution type.
+
+image::images/41_working_with_pipelines/executions.png[]
+
+## Artifacts
+
+On Artifacts page, you can view the pipeline artifacts. It helps you to evaluate the performance of your pipeline runs.
+
+image::images/41_working_with_pipelines/artifacts.png[]
