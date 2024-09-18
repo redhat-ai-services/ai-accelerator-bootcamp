@@ -19,4 +19,5 @@ modules:
     - 50_distributed_training
     - 60_llm_explore
     - 70_rag_llm
+    - 80_dashboard_configuration
     - 02_argocd_url_fix
