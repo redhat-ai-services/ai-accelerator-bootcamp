@@ -123,7 +123,7 @@ if __name__ == "__main__":
     # Get the CA from the service account if it is
     # Skip the CA if it is not
     sa_ca_cert = "/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
-    if os.path.isfile(sa_ca_cert) and "svc" in kubeflow_endpoint::
+    if os.path.isfile(sa_ca_cert) and "svc" in kubeflow_endpoint:
         ssl_ca_cert = sa_ca_cert
     else:
         ssl_ca_cert = None
